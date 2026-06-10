@@ -25,7 +25,6 @@
     var els = {
       introLoader: document.querySelector('#introLoader'),
       introCanvas: document.querySelector('#introCanvas'),
-      introCount: document.querySelector('#introCount'),
       introPercent: document.querySelector('#introPercent'),
       introProgress: document.querySelector('#introProgress'),
       introEnter: document.querySelector('#introEnter'),
@@ -51,7 +50,6 @@
       function tick(now) {
         if (!machine.is('boot')) return;
         var p = Math.min(100, Math.round(((now - started) / duration) * 100));
-        els.introCount.textContent = String(p).padStart(2, '0');
         els.introPercent.textContent = p + '%';
         els.introProgress.style.width = p + '%';
         if (p < 100) { requestAnimationFrame(tick); return; }
@@ -70,7 +68,6 @@
         SNFM.finale.clear(els.finaleCanvas);
         els.districts.forEach(function (d) { d.classList.remove('active', 'done'); });
         els.introEnter.disabled = true;
-        els.introCount.textContent = '00';
         els.introPercent.textContent = '0%';
         els.introProgress.style.width = '0%';
         runLoader();

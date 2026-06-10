@@ -228,9 +228,7 @@ body {
 [data-phase="map"] .intro-word,
 [data-phase="map"] .intro-progress,
 [data-phase="map"] .intro-percent,
-[data-phase="map"] .intro-enter,
-[data-phase="map"] .intro-meta,
-[data-phase="map"] .intro-status {
+[data-phase="map"] .intro-enter {
   opacity: 0;
 }
 
@@ -282,27 +280,6 @@ body {
 
 [data-phase="launch"] .intro-loader::before { animation: launchOrb 3.8s cubic-bezier(.11, .86, .18, 1) forwards; }
 [data-phase="launch"] .intro-loader::after { animation: launchSignals 3.8s cubic-bezier(.11, .86, .18, 1) forwards; }
-
-.intro-meta,
-.intro-status {
-  position: absolute;
-  left: 34px;
-  right: 34px;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-}
-
-.intro-meta { top: 30px; }
-.intro-status { bottom: 28px; }
-.intro-meta b { color: var(--data); font-weight: 700; }
 
 .intro-word {
   position: relative;
@@ -455,9 +432,7 @@ body {
 [data-phase="launch"] .intro-word,
 [data-phase="launch"] .intro-progress,
 [data-phase="launch"] .intro-percent,
-[data-phase="launch"] .intro-enter,
-[data-phase="launch"] .intro-meta,
-[data-phase="launch"] .intro-status {
+[data-phase="launch"] .intro-enter {
   animation: introUiVanish .42s var(--ease-out) forwards;
 }
 
@@ -498,7 +473,7 @@ body {
 }
 
 [data-phase="map"]:not([data-arrived]) .city-logo-badge {
-  animation: emblemIn 1s 1.5s var(--ease-out) backwards;
+  animation: emblemIn .9s .5s var(--ease-out) backwards;
 }
 
 .credit {
