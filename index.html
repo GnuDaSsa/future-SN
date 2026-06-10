@@ -7,7 +7,26 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="stage" aria-label="&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;">
+  <main class="stage is-intro" aria-label="&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;">
+    <div class="intro-loader" id="introLoader" aria-hidden="true">
+      <div class="intro-meta">
+        <span>SEONGNAM FUTURE MAP</span>
+        <span>AI SEMICONDUCTOR DEPT</span>
+        <span>BOOT <b id="introCount">00</b></span>
+      </div>
+      <div class="intro-word" aria-label="&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;">
+        <span style="--i:0">&#49457;</span>
+        <span style="--i:1">&#45224;</span>
+        <span style="--i:2">&#48120;</span>
+        <span style="--i:3">&#47000;</span>
+        <span style="--i:4">&#51648;</span>
+        <span style="--i:5">&#46020;</span>
+      </div>
+      <div class="intro-status">
+        <span>LOCAL CIVIC DATA</span>
+        <span>FIVE AGENDAS MERGING</span>
+      </div>
+    </div>
     <header>
       <h1>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h1>
       <p class="subtitle">&#49457;&#45224;&#49884;&#51032; &#48120;&#47000; &#51032;&#51228;&#47484; 5&#44060;&#51032; &#50689;&#50669;&#51004;&#47196; &#54204;&#52824;&#44256;, &#48516;&#50556;&#48324; &#50689;&#49345;&#51060; &#50756;&#49457;&#46112;&#49688;&#47197; &#54616;&#45208;&#51032; &#48120;&#47000;&#51648;&#46020;&#47196; &#54633;&#52432;&#51648;&#45716; &#51064;&#53552;&#47001;&#54000;&#48652; &#53080;&#49481;&#53944;</p>
@@ -107,6 +126,8 @@
     const progressText = document.querySelector('#progressText');
     const progressBar = document.querySelector('#progressBar');
     const completion = document.querySelector('#completion');
+    const introLoader = document.querySelector('#introLoader');
+    const introCount = document.querySelector('#introCount');
     const stage = document.querySelector('.stage');
     const testRun = document.querySelector('#testRun');
     const segmentOrder = ['renovation', 'enterprise', 'market', 'youth', 'senior'];
@@ -115,6 +136,31 @@
     let completionTimer = null;
     let completionShown = false;
     let sequenceRunning = false;
+
+    function runIntro() {
+      if (!introLoader || !introCount) {
+        stage.classList.remove('is-intro');
+        return;
+      }
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const duration = reduceMotion ? 250 : 1900;
+      const started = performance.now();
+
+      function tick(now) {
+        const progress = Math.min(100, Math.round(((now - started) / duration) * 100));
+        introCount.textContent = String(progress).padStart(2, '0');
+        if (progress < 100) {
+          requestAnimationFrame(tick);
+          return;
+        }
+        stage.classList.remove('is-intro');
+        stage.classList.add('intro-ready');
+        introLoader.classList.add('is-hiding');
+        setTimeout(() => introLoader.remove(), reduceMotion ? 260 : 900);
+      }
+
+      requestAnimationFrame(tick);
+    }
 
     function playSegment(id) {
       if (sequenceRunning) return;
@@ -199,6 +245,7 @@
       d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSegment(d.dataset.id); } });
     });
     testRun.addEventListener('click', runFullSequence);
+    runIntro();
   </script>
 </body>
 </html>
