@@ -8,6 +8,16 @@
 </head>
 <body>
   <main class="stage is-intro" aria-label="&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;">
+    <div class="backdrop" aria-hidden="true">
+      <span class="aurora aurora-a"></span>
+      <span class="aurora aurora-b"></span>
+      <span class="aurora aurora-c"></span>
+      <span class="bg-grid"></span>
+      <span class="bg-stars"></span>
+      <span class="bg-stars bg-stars-far"></span>
+      <span class="bg-vignette"></span>
+      <span class="spotlight" id="spotlight"></span>
+    </div>
     <div class="intro-loader" id="introLoader" aria-hidden="true">
       <canvas class="intro-canvas" id="introCanvas"></canvas>
       <div class="intro-meta">
@@ -32,18 +42,30 @@
         <span>FIVE AGENDAS MERGING</span>
       </div>
     </div>
-    <header>
-      <h1>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h1>
-      <p class="subtitle">&#49457;&#45224;&#49884;&#51032; &#48120;&#47000; &#51032;&#51228;&#47484; 5&#44060;&#51032; &#50689;&#50669;&#51004;&#47196; &#54204;&#52824;&#44256;, &#48516;&#50556;&#48324; &#50689;&#49345;&#51060; &#50756;&#49457;&#46112;&#49688;&#47197; &#54616;&#45208;&#51032; &#48120;&#47000;&#51648;&#46020;&#47196; &#54633;&#52432;&#51648;&#45716; &#51064;&#53552;&#47001;&#54000;&#48652; &#53080;&#49481;&#53944;</p>
+    <header class="hud-title">
+      <div class="hud-logo"><img src="seongnam-logo.png" alt="&#49457;&#45224;&#49884;"></div>
+      <div class="hud-text">
+        <span class="hud-eyebrow">Seongnam Future Map</span>
+        <h1>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h1>
+        <p class="subtitle">&#45796;&#49455; &#44060;&#51032; &#48120;&#47000; &#51032;&#51228;&#44032; &#54616;&#45208;&#51032; &#51648;&#46020;&#47196; &#50756;&#49457;&#46121;&#45768;&#45796;</p>
+      </div>
     </header>
-    <div class="city-logo-badge" aria-label="&#49457;&#45224;&#49884; &#50656;&#48660;&#47000;">
-      <img src="seongnam-logo.png" alt="&#49457;&#45224;&#49884;">
+    <div class="hud-panel">
+      <div class="progress" aria-live="polite">
+        <div class="progress-meta">
+          <span class="progress-label">&#50756;&#49457;&#46020;</span>
+          <span class="progress-count"><b id="progressCount">0</b><i>/ 5</i></span>
+        </div>
+        <div class="progress-track" aria-hidden="true">
+          <span class="progress-cell" data-id="renovation" style="--color: var(--renovation)"></span>
+          <span class="progress-cell" data-id="enterprise" style="--color: var(--enterprise)"></span>
+          <span class="progress-cell" data-id="market" style="--color: var(--market)"></span>
+          <span class="progress-cell" data-id="youth" style="--color: var(--youth)"></span>
+          <span class="progress-cell" data-id="senior" style="--color: var(--senior)"></span>
+        </div>
+      </div>
+      <button class="test-run" type="button" id="testRun"><span class="test-run-dot"></span>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</button>
     </div>
-    <div class="progress" aria-live="polite">
-      <span id="progressText">0 / 5 &#50756;&#49457;</span>
-      <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
-    </div>
-    <button class="test-run" type="button" id="testRun">&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</button>
 
     <section class="map-wrap">
       <div class="map-shell">
@@ -104,6 +126,23 @@
       </div>
     </section>
 
+    <nav class="legend" aria-label="&#48120;&#47000; &#51032;&#51228;">
+      <button class="legend-chip" type="button" data-id="renovation" style="--color: var(--renovation)">
+        <i class="legend-dot"></i><span class="legend-num">01</span><span class="legend-name">&#51116;&#44148;&#52629;</span><span class="legend-check" aria-hidden="true"></span>
+      </button>
+      <button class="legend-chip" type="button" data-id="enterprise" style="--color: var(--enterprise)">
+        <i class="legend-dot"></i><span class="legend-num">02</span><span class="legend-name">&#45824;&#44592;&#50629;/IT</span><span class="legend-check" aria-hidden="true"></span>
+      </button>
+      <button class="legend-chip" type="button" data-id="market" style="--color: var(--market)">
+        <i class="legend-dot"></i><span class="legend-num">03</span><span class="legend-name">&#44264;&#47785;&#49345;&#44428;</span><span class="legend-check" aria-hidden="true"></span>
+      </button>
+      <button class="legend-chip" type="button" data-id="youth" style="--color: var(--youth)">
+        <i class="legend-dot"></i><span class="legend-num">04</span><span class="legend-name">&#52397;&#45380;</span><span class="legend-check" aria-hidden="true"></span>
+      </button>
+      <button class="legend-chip" type="button" data-id="senior" style="--color: var(--senior)">
+        <i class="legend-dot"></i><span class="legend-num">05</span><span class="legend-name">&#50612;&#47476;&#49888;</span><span class="legend-check" aria-hidden="true"></span>
+      </button>
+    </nav>
     <p class="hint">&#51648;&#46020; &#50689;&#50669;&#51012; &#53364;&#47533;&#54616;&#47732; &#54644;&#45817; &#48516;&#50556;&#44032; &#48157;&#50500;&#51648;&#44256; &#51204;&#52404;&#54868;&#47732; &#50689;&#49345; &#50672;&#52636;&#51060; &#51116;&#49373;&#46121;&#45768;&#45796;.</p>
     <p class="credit">&#51228;&#51089;:AI&#48152;&#46020;&#52404;&#44284; &#49324;&#51652;&#50864;</p>
     <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
@@ -113,23 +152,29 @@
         <span class="final-ring ring-two"></span>
         <span class="final-sparks"></span>
       </div>
-      <h2>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h2>
+      <div class="completion-text">
+        <span class="completion-eyebrow">Five Agendas &middot; One City</span>
+        <h2>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h2>
+        <p class="completion-sub">&#45796;&#49455; &#44060;&#51032; &#48780;&#51060; &#54616;&#45208;&#51032; &#48120;&#47000;&#47196; &#50756;&#49457;&#46104;&#50632;&#49845;&#45768;&#45796;</p>
+      </div>
     </div>
   </main>
 
   <script>
     const segments = {
-      renovation: { title: "&#51116;&#44148;&#52629;", copy: "&#45432;&#54980; &#51452;&#44144;&#51648;&#51032; &#48320;&#54868;&#44032; &#49373;&#54876; &#51064;&#54532;&#46972;&#50752; &#50672;&#44208;&#46104;&#47728; &#49457;&#45224;&#51032; &#49352; &#51452;&#44144; &#52629;&#51004;&#47196; &#49332;&#50500;&#45208;&#45716; &#51109;&#47732;.", color: "var(--renovation)", mark: "01" },
-      enterprise: { title: "&#45824;&#44592;&#50629;/IT", copy: "&#54032;&#44368;&#50752; &#52392;&#45800; &#49328;&#50629; &#44592;&#48152;&#51060; &#46020;&#49884; &#51204;&#52404;&#47196; &#54869;&#49328;&#46104;&#45716; &#55120;&#47492;&#51012; &#45936;&#51060;&#53552; &#46972;&#51064;&#44284; &#48731;&#51032; &#49549;&#46020;&#47196; &#54364;&#54788;.", color: "var(--enterprise)", mark: "02" },
-      market: { title: "&#44264;&#47785;&#49345;&#44428;", copy: "&#51204;&#53685;&#49884;&#51109;&#44284; &#49373;&#54876; &#49345;&#44428;&#51060; &#45796;&#49884; &#49324;&#46988;&#51012; &#47784;&#51004;&#45716; &#54876;&#47141;&#51032; &#45348;&#53944;&#50892;&#53356;&#47196; &#46496;&#50724;&#47476;&#45716; &#51109;&#47732;.", color: "var(--market)", mark: "03" },
-      youth: { title: "&#52397;&#45380;", copy: "&#51068;&#51088;&#47532;, &#51452;&#44144;, &#52285;&#50629;, &#47928;&#54868;&#44032; &#47582;&#47932;&#47532;&#47728; &#52397;&#45380;&#51032; &#49884;&#46020;&#44032; &#46020;&#49884;&#51032; &#49549;&#46020;&#44032; &#46104;&#45716; &#49692;&#44036;.", color: "var(--youth)", mark: "04" },
-      senior: { title: "&#50612;&#47476;&#49888;", copy: "&#46028;&#48388;, &#44148;&#44053;, &#51060;&#46041; &#54200;&#51032;&#44032; &#54616;&#45208;&#51032; &#50504;&#51204;&#47581;&#51004;&#47196; &#51060;&#50612;&#51256; &#54408;&#44201; &#51080;&#45716; &#51068;&#49345;&#51012; &#48157;&#55176;&#45716; &#51109;&#47732;.", color: "var(--senior)", mark: "05" }
+      renovation: { title: "재건축", copy: "노후 주거지의 변화가 생활 인프라와 연결되며 성남의 새 주거 축으로 살아나는 장면.", color: "var(--renovation)", mark: "01" },
+      enterprise: { title: "대기업/IT", copy: "판교와 첨단 산업 기반이 도시 전체로 확산되는 흐름을 데이터 라인과 빛의 속도로 표현.", color: "var(--enterprise)", mark: "02" },
+      market: { title: "골목상권", copy: "전통시장과 생활 상권이 다시 사람을 모으는 활력의 네트워크로 떠오르는 장면.", color: "var(--market)", mark: "03" },
+      youth: { title: "청년", copy: "일자리, 주거, 창업, 문화가 맞물리며 청년의 시도가 도시의 속도가 되는 순간.", color: "var(--youth)", mark: "04" },
+      senior: { title: "어르신", copy: "돌봄, 건강, 이동 편의가 하나의 안전망으로 이어져 품격 있는 일상을 밝히는 장면.", color: "var(--senior)", mark: "05" }
     };
     const done = new Set();
     const districts = [...document.querySelectorAll('.district')];
     const videoLayer = document.querySelector('#videoLayer');
-    const progressText = document.querySelector('#progressText');
-    const progressBar = document.querySelector('#progressBar');
+    const progressCount = document.querySelector('#progressCount');
+    const progressCells = [...document.querySelectorAll('.progress-cell')];
+    const legendChips = [...document.querySelectorAll('.legend-chip')];
+    const spotlight = document.querySelector('#spotlight');
     const completion = document.querySelector('#completion');
     const introLoader = document.querySelector('#introLoader');
     const introCanvas = document.querySelector('#introCanvas');
@@ -500,11 +545,17 @@
       if (!item) return;
       clearTimeout(activeTimer);
       districts.forEach(d => d.classList.toggle('active', d.dataset.id === id));
+      legendChips.forEach(chip => chip.classList.toggle('active', chip.dataset.id === id));
       showVideo(item, () => {
         done.add(id);
         districts.forEach(d => { d.classList.remove('active'); d.classList.toggle('done', done.has(d.dataset.id)); });
+        legendChips.forEach(chip => chip.classList.remove('active'));
         updateProgress();
       });
+    }
+
+    function kineticChars(text) {
+      return [...text].map((ch, i) => `<span class="vt-char" style="--ci:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
     }
 
     function showVideo(item, onFinish, duration = videoDuration) {
@@ -512,7 +563,16 @@
       const pop = document.createElement('article');
       pop.className = 'video-pop';
       pop.style.setProperty('--color', item.color);
-      pop.innerHTML = `<p class="video-title">${item.title}<br>&#48120;&#47000; &#50689;&#49345;</p><span class="video-mark">${item.mark}</span><p class="video-copy">${item.copy}</p><div class="video-progress"><span></span></div>`;
+      pop.innerHTML = `
+        <span class="video-num" aria-hidden="true">${item.mark}</span>
+        <span class="video-beam" aria-hidden="true"></span>
+        <div class="video-frame">
+          <p class="video-eyebrow"><i></i>Seongnam Future ${item.mark} &middot; 미래 영상</p>
+          <h3 class="video-title">${kineticChars(item.title)}</h3>
+          <p class="video-copy">${item.copy}</p>
+        </div>
+        <span class="video-mark">${item.mark}</span>
+        <div class="video-progress"><span></span></div>`;
       videoLayer.appendChild(pop);
       requestAnimationFrame(() => pop.classList.add('show'));
       activeTimer = setTimeout(() => {
@@ -536,8 +596,9 @@
 
     function updateProgress(completionDelay = 650) {
       const count = done.size;
-      progressText.textContent = `${count} / 5 \uC644\uC131`;
-      progressBar.style.width = `${count * 20}%`;
+      progressCount.textContent = String(count);
+      progressCells.forEach(cell => cell.classList.toggle('on', done.has(cell.dataset.id)));
+      legendChips.forEach(chip => chip.classList.toggle('done', done.has(chip.dataset.id)));
       if (count === 5) showCompletion(completionDelay);
     }
 
@@ -575,8 +636,23 @@
     districts.forEach(d => {
       d.addEventListener('click', () => playSegment(d.dataset.id));
       d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSegment(d.dataset.id); } });
+      d.addEventListener('pointerenter', () => legendChips.forEach(chip => chip.classList.toggle('hover', chip.dataset.id === d.dataset.id)));
+      d.addEventListener('pointerleave', () => legendChips.forEach(chip => chip.classList.remove('hover')));
     });
+    legendChips.forEach(chip => chip.addEventListener('click', () => playSegment(chip.dataset.id)));
     testRun.addEventListener('click', runFullSequence);
+
+    if (spotlight && window.matchMedia('(pointer: fine)').matches) {
+      let spotFrame = null;
+      stage.addEventListener('pointermove', event => {
+        if (spotFrame) return;
+        spotFrame = requestAnimationFrame(() => {
+          spotlight.style.setProperty('--mx', `${event.clientX}px`);
+          spotlight.style.setProperty('--my', `${event.clientY}px`);
+          spotFrame = null;
+        });
+      });
+    }
     runIntro();
   </script>
 </body>
