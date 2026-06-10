@@ -3,58 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</title>
+  <title>성남 미래지도</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="stage is-intro" aria-label="&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;">
+  <main class="stage" id="stage" data-phase="boot" aria-label="성남 미래지도">
+
     <div class="backdrop" aria-hidden="true">
-      <span class="aurora aurora-a"></span>
-      <span class="aurora aurora-b"></span>
-      <span class="aurora aurora-c"></span>
+      <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
+      <span class="bg-wash"></span>
       <span class="bg-grid"></span>
-      <span class="bg-stars"></span>
-      <span class="bg-stars bg-stars-far"></span>
       <span class="bg-vignette"></span>
-      <span class="spotlight" id="spotlight"></span>
+      <span class="spotlight"></span>
     </div>
-    <div class="intro-loader" id="introLoader" aria-hidden="true">
-      <canvas class="intro-canvas" id="introCanvas"></canvas>
-      <div class="intro-meta">
-        <span>SEONGNAM FUTURE MAP</span>
-        <span>AI SEMICONDUCTOR DEPT</span>
-        <span>BOOT <b id="introCount">00</b></span>
+
+    <header class="hud-bar">
+      <div class="hud-bar-left">
+        <img class="hud-logo" src="seongnam-logo.png" alt="성남시">
+        <div class="hud-ops">
+          <span class="ops-code">SNFM-2026</span>
+          <span class="ops-label">Civic Future Ops</span>
+        </div>
       </div>
-      <div class="intro-word" aria-label="&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;">
-        <span style="--i:0">&#49457;</span>
-        <span style="--i:1">&#45224;</span>
-        <span style="--i:2">&#48120;</span>
-        <span style="--i:3">&#47000;</span>
-        <span style="--i:4">&#51648;</span>
-        <span style="--i:5">&#46020;</span>
+      <div class="hud-bar-center">
+        <span class="bar-eyebrow">Seongnam Future Map</span>
+        <h1>성남 미래지도</h1>
       </div>
-      <div class="intro-burst" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div class="intro-percent" id="introPercent">0%</div>
-      <div class="intro-progress" aria-hidden="true"><span id="introProgress"></span></div>
-      <button class="intro-enter" id="introEnter" type="button" disabled>&#48120;&#47000;&#51648;&#46020; &#50676;&#44592;</button>
-      <div class="intro-status">
-        <span>LOCAL CIVIC DATA</span>
-        <span>FIVE AGENDAS MERGING</span>
-      </div>
-    </div>
-    <header class="hud-title">
-      <div class="hud-logo"><img src="seongnam-logo.png" alt="&#49457;&#45224;&#49884;"></div>
-      <div class="hud-text">
-        <span class="hud-eyebrow">Seongnam Future Map</span>
-        <h1>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h1>
-        <p class="subtitle">&#45796;&#49455; &#44060;&#51032; &#48120;&#47000; &#51032;&#51228;&#44032; &#54616;&#45208;&#51032; &#51648;&#46020;&#47196; &#50756;&#49457;&#46121;&#45768;&#45796;</p>
+      <div class="hud-bar-right">
+        <div class="mission-clock"><span class="clock-label">KST</span><b id="missionClock">00:00:00</b></div>
+        <div class="status-lamp" id="statusLamp" data-tone="ok"><i></i><span id="statusLampText">SYSTEMS NOMINAL</span></div>
       </div>
     </header>
-    <div class="hud-panel">
-      <div class="progress" aria-live="polite">
-        <div class="progress-meta">
-          <span class="progress-label">&#50756;&#49457;&#46020;</span>
-          <span class="progress-count"><b id="progressCount">0</b><i>/ 5</i></span>
+
+    <aside class="agenda-rail" aria-label="미래 의제">
+      <p class="rail-heading"><i></i>Agenda Systems</p>
+      <button class="rail-row" type="button" data-id="renovation" style="--color: var(--renovation)">
+        <span class="row-num">01</span>
+        <span class="row-text"><b>재건축</b><i>도시를 다시 세우는 빛</i></span>
+        <span class="row-state" data-state="standby">STANDBY</span>
+      </button>
+      <button class="rail-row" type="button" data-id="enterprise" style="--color: var(--enterprise)">
+        <span class="row-num">02</span>
+        <span class="row-text"><b>대기업/IT</b><i>판교에서 확장되는 엔진</i></span>
+        <span class="row-state" data-state="standby">STANDBY</span>
+      </button>
+      <button class="rail-row" type="button" data-id="market" style="--color: var(--market)">
+        <span class="row-num">03</span>
+        <span class="row-text"><b>골목상권</b><i>생활권을 잇는 경제</i></span>
+        <span class="row-state" data-state="standby">STANDBY</span>
+      </button>
+      <button class="rail-row" type="button" data-id="youth" style="--color: var(--youth)">
+        <span class="row-num">04</span>
+        <span class="row-text"><b>청년</b><i>기회가 머무는 도시</i></span>
+        <span class="row-state" data-state="standby">STANDBY</span>
+      </button>
+      <button class="rail-row" type="button" data-id="senior" style="--color: var(--senior)">
+        <span class="row-num">05</span>
+        <span class="row-text"><b>어르신</b><i>돌봄과 품격의 기반</i></span>
+        <span class="row-state" data-state="standby">STANDBY</span>
+      </button>
+      <div class="rail-footer">
+        <div class="rail-progress">
+          <span class="rail-progress-label">완성도</span>
+          <span class="rail-progress-count"><b id="progressCount">0</b><i>/ 5</i></span>
         </div>
         <div class="progress-track" aria-hidden="true">
           <span class="progress-cell" data-id="renovation" style="--color: var(--renovation)"></span>
@@ -63,22 +74,39 @@
           <span class="progress-cell" data-id="youth" style="--color: var(--youth)"></span>
           <span class="progress-cell" data-id="senior" style="--color: var(--senior)"></span>
         </div>
+        <button class="test-run" type="button" id="testRun"><span class="test-run-dot"></span>RUN ALL · 일괄 완성</button>
       </div>
-      <button class="test-run" type="button" id="testRun"><span class="test-run-dot"></span>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</button>
-    </div>
+    </aside>
 
-    <section class="map-wrap">
+    <section class="map-frame">
+      <span class="frame-corner tl" aria-hidden="true"></span>
+      <span class="frame-corner tr" aria-hidden="true"></span>
+      <span class="frame-corner bl" aria-hidden="true"></span>
+      <span class="frame-corner br" aria-hidden="true"></span>
+      <span class="frame-ticks top" aria-hidden="true"></span>
+      <span class="frame-ticks bottom" aria-hidden="true"></span>
+      <span class="scanline" id="scanline" aria-hidden="true"></span>
+
       <div class="map-shell">
         <svg viewBox="0 64 1000 630" role="img" aria-labelledby="mapTitle mapDesc">
-          <title id="mapTitle">&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</title>
-          <desc id="mapDesc">&#49457;&#45224;&#49884; &#50808;&#44285;&#49440;&#51012; 5&#44060; &#48120;&#47000; &#51032;&#51228; &#50689;&#50669;&#51004;&#47196; &#45208;&#45576; &#51064;&#53552;&#47001;&#54000;&#48652; &#51648;&#46020;</desc>
+          <title id="mapTitle">성남 미래지도</title>
+          <desc id="mapDesc">성남시 외곽선을 5개 미래 의제 영역으로 나눈 인터랙티브 지도</desc>
           <defs>
             <clipPath id="seongnamBoundary"><path d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path></clipPath>
-            <linearGradient id="mapShade" x1="210" y1="70" x2="820" y2="660" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="rgba(255,255,255,.08)"></stop>
-              <stop offset=".55" stop-color="rgba(255,255,255,0)"></stop>
-              <stop offset="1" stop-color="rgba(0,0,0,.2)"></stop>
-            </linearGradient>
+            <filter id="glowSoft" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="6" result="blur"></feGaussianBlur>
+              <feMerge>
+                <feMergeNode in="blur"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+              </feMerge>
+            </filter>
+            <filter id="glowStrong" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="12" result="blur"></feGaussianBlur>
+              <feMerge>
+                <feMergeNode in="blur"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+              </feMerge>
+            </filter>
             <linearGradient id="finalMapGradient" x1="120" y1="120" x2="900" y2="620" gradientUnits="userSpaceOnUse">
               <animate attributeName="x1" values="120;760;260;120" dur="8s" repeatCount="indefinite"></animate>
               <animate attributeName="y1" values="120;90;640;120" dur="8s" repeatCount="indefinite"></animate>
@@ -97,563 +125,121 @@
                 <animate attributeName="stop-color" values="#f5324b;#35d2ff;#b12095;#f5324b" dur="8s" repeatCount="indefinite"></animate>
               </stop>
             </linearGradient>
-            <pattern id="diagonal" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="18" height="18" fill="transparent"></rect><rect width="3" height="18" fill="rgba(255,255,255,.42)"></rect></pattern>
-            <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="2.2" fill="rgba(255,255,255,.58)"></circle><circle cx="19" cy="17" r="1.6" fill="rgba(255,255,255,.36)"></circle></pattern>
-            <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M0 14 H28 M14 0 V28" stroke="rgba(255,255,255,.4)" stroke-width="1.4"></path></pattern>
-            <pattern id="blocks" width="30" height="30" patternUnits="userSpaceOnUse"><rect x="3" y="4" width="9" height="8" fill="rgba(255,255,255,.46)"></rect><rect x="16" y="16" width="11" height="9" fill="rgba(255,255,255,.3)"></rect></pattern>
-            <pattern id="waves" width="42" height="24" patternUnits="userSpaceOnUse"><path d="M0 12 C8 2 14 2 22 12 S36 22 42 12" fill="none" stroke="rgba(255,255,255,.44)" stroke-width="2"></path></pattern>
           </defs>
+
           <path class="outer-border" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
+          <path class="border-trace" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
+
           <g clip-path="url(#seongnamBoundary)">
-            <g class="district" tabindex="0" role="button" data-id="renovation" style="--color: var(--renovation)" aria-label="&#51116;&#44148;&#52629;">
-              <path class="base" d="M520 0 H1000 V280 L820 300 L660 280 L555 300 L555 250 L540 120 Z"></path><path class="texture" fill="url(#blocks)" d="M520 0 H1000 V280 L820 300 L660 280 L555 300 L555 250 L540 120 Z"></path><circle class="pin" cx="660" cy="240" r="7" fill="var(--renovation)"></circle><text class="label" x="660" y="240">&#51116;&#44148;&#52629;</text><text class="caption" x="455" y="284">&#46020;&#49884;&#47484; &#45796;&#49884; &#49464;&#50864;&#45716; &#48731;</text>
+            <g class="district" tabindex="0" role="button" data-id="renovation" style="--color: var(--renovation)" aria-label="재건축">
+              <path class="base" d="M520 0 H1000 V280 L820 300 L660 280 L555 300 L555 250 L540 120 Z"></path>
+              <g class="hud-tag" aria-hidden="true">
+                <text class="tag-code" x="660" y="196">SNM-01</text>
+                <line class="tag-line" x1="630" y1="206" x2="690" y2="206"></line>
+              </g>
+              <circle class="pin" cx="660" cy="240" r="7"></circle>
+              <text class="label" x="660" y="240">재건축</text>
             </g>
-            <g class="district" tabindex="0" role="button" data-id="enterprise" style="--color: var(--enterprise)" aria-label="&#45824;&#44592;&#50629;/IT">
-              <path class="base" d="M0 350 L130 345 L255 365 L385 355 L495 392 L500 485 L420 485 L285 470 L135 485 L0 475 Z"></path><path class="texture" fill="url(#grid)" d="M0 350 L130 345 L255 365 L385 355 L495 392 L500 485 L420 485 L285 470 L135 485 L0 475 Z"></path><circle class="pin" cx="365" cy="425" r="7" fill="var(--enterprise)"></circle><text class="label" x="365" y="425">&#45824;&#44592;&#50629;/IT</text><text class="caption" x="682" y="307">&#54032;&#44368;&#50640;&#49436; &#54869;&#51109;&#46104;&#45716; &#50644;&#51652;</text>
+            <g class="district" tabindex="0" role="button" data-id="enterprise" style="--color: var(--enterprise)" aria-label="대기업/IT">
+              <path class="base" d="M0 350 L130 345 L255 365 L385 355 L495 392 L500 485 L420 485 L285 470 L135 485 L0 475 Z"></path>
+              <g class="hud-tag" aria-hidden="true">
+                <text class="tag-code" x="365" y="381">SNM-02</text>
+                <line class="tag-line" x1="335" y1="391" x2="395" y2="391"></line>
+              </g>
+              <circle class="pin" cx="365" cy="425" r="7"></circle>
+              <text class="label" x="365" y="425">대기업/IT</text>
             </g>
-            <g class="district" tabindex="0" role="button" data-id="market" style="--color: var(--market)" aria-label="&#44264;&#47785;&#49345;&#44428;">
-              <path class="base" d="M555 300 L660 280 L820 300 L1000 280 V470 L840 455 L720 480 L600 455 L500 485 L495 392 L500 345 Z"></path><path class="texture" fill="url(#waves)" d="M555 300 L660 280 L820 300 L1000 280 V470 L840 455 L720 480 L600 455 L500 485 L495 392 L500 345 Z"></path><circle class="pin" cx="627" cy="395" r="7" fill="var(--market)"></circle><text class="label" x="627" y="395">&#44264;&#47785;&#49345;&#44428;</text><text class="caption" x="365" y="459">&#49373;&#54876;&#44428;&#51012; &#51079;&#45716; &#44221;&#51228;</text>
+            <g class="district" tabindex="0" role="button" data-id="market" style="--color: var(--market)" aria-label="골목상권">
+              <path class="base" d="M555 300 L660 280 L820 300 L1000 280 V470 L840 455 L720 480 L600 455 L500 485 L495 392 L500 345 Z"></path>
+              <g class="hud-tag" aria-hidden="true">
+                <text class="tag-code" x="627" y="351">SNM-03</text>
+                <line class="tag-line" x1="597" y1="361" x2="657" y2="361"></line>
+              </g>
+              <circle class="pin" cx="627" cy="395" r="7"></circle>
+              <text class="label" x="627" y="395">골목상권</text>
             </g>
-            <g class="district" tabindex="0" role="button" data-id="youth" style="--color: var(--youth)" aria-label="&#52397;&#45380;">
-              <path class="base" d="M0 0 H520 L540 120 L555 250 L555 300 L500 345 L495 392 L385 355 L255 365 L130 345 L0 350 Z"></path><path class="texture" fill="url(#diagonal)" d="M0 0 H520 L540 120 L555 250 L555 300 L500 345 L495 392 L385 355 L255 365 L130 345 L0 350 Z"></path><circle class="pin" cx="401" cy="303" r="7" fill="var(--youth)"></circle><text class="label" x="401" y="303">&#52397;&#45380;</text><text class="caption" x="635" y="517">&#44592;&#54924;&#44032; &#47672;&#47924;&#45716; &#46020;&#49884;</text>
+            <g class="district" tabindex="0" role="button" data-id="youth" style="--color: var(--youth)" aria-label="청년">
+              <path class="base" d="M0 0 H520 L540 120 L555 250 L555 300 L500 345 L495 392 L385 355 L255 365 L130 345 L0 350 Z"></path>
+              <g class="hud-tag" aria-hidden="true">
+                <text class="tag-code" x="401" y="259">SNM-04</text>
+                <line class="tag-line" x1="371" y1="269" x2="431" y2="269"></line>
+              </g>
+              <circle class="pin" cx="401" cy="303" r="7"></circle>
+              <text class="label" x="401" y="303">청년</text>
             </g>
-            <g class="district" tabindex="0" role="button" data-id="senior" style="--color: var(--senior)" aria-label="&#50612;&#47476;&#49888;">
-              <path class="base" d="M0 475 L135 485 L285 470 L420 485 L500 485 L600 455 L720 480 L840 455 L1000 470 V720 H0 Z"></path><path class="texture" fill="url(#dots)" d="M0 475 L135 485 L285 470 L420 485 L500 485 L600 455 L720 480 L840 455 L1000 470 V720 H0 Z"></path><circle class="pin" cx="513" cy="555" r="7" fill="var(--senior)"></circle><text class="label" x="513" y="555">&#50612;&#47476;&#49888;</text><text class="caption" x="520" y="639">&#46028;&#48388;&#44284; &#54408;&#44201;&#51032; &#44592;&#48152;</text>
+            <g class="district" tabindex="0" role="button" data-id="senior" style="--color: var(--senior)" aria-label="어르신">
+              <path class="base" d="M0 475 L135 485 L285 470 L420 485 L500 485 L600 455 L720 480 L840 455 L1000 470 V720 H0 Z"></path>
+              <g class="hud-tag" aria-hidden="true">
+                <text class="tag-code" x="513" y="511">SNM-05</text>
+                <line class="tag-line" x1="483" y1="521" x2="543" y2="521"></line>
+              </g>
+              <circle class="pin" cx="513" cy="555" r="7"></circle>
+              <text class="label" x="513" y="555">어르신</text>
             </g>
           </g>
+
           <path class="unified-map" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
         </svg>
       </div>
+
+      <p class="coord-readout" id="coordReadout">37.4200N · 127.1265E · GRID E5</p>
+      <p class="attract-cue" aria-hidden="true">터치하여 시작</p>
+      <p class="hint-chip">지도 영역을 터치하면 분야별 미래 영상이 재생됩니다</p>
     </section>
 
-    <nav class="legend" aria-label="&#48120;&#47000; &#51032;&#51228;">
-      <button class="legend-chip" type="button" data-id="renovation" style="--color: var(--renovation)">
-        <i class="legend-dot"></i><span class="legend-num">01</span><span class="legend-name">&#51116;&#44148;&#52629;</span><span class="legend-check" aria-hidden="true"></span>
-      </button>
-      <button class="legend-chip" type="button" data-id="enterprise" style="--color: var(--enterprise)">
-        <i class="legend-dot"></i><span class="legend-num">02</span><span class="legend-name">&#45824;&#44592;&#50629;/IT</span><span class="legend-check" aria-hidden="true"></span>
-      </button>
-      <button class="legend-chip" type="button" data-id="market" style="--color: var(--market)">
-        <i class="legend-dot"></i><span class="legend-num">03</span><span class="legend-name">&#44264;&#47785;&#49345;&#44428;</span><span class="legend-check" aria-hidden="true"></span>
-      </button>
-      <button class="legend-chip" type="button" data-id="youth" style="--color: var(--youth)">
-        <i class="legend-dot"></i><span class="legend-num">04</span><span class="legend-name">&#52397;&#45380;</span><span class="legend-check" aria-hidden="true"></span>
-      </button>
-      <button class="legend-chip" type="button" data-id="senior" style="--color: var(--senior)">
-        <i class="legend-dot"></i><span class="legend-num">05</span><span class="legend-name">&#50612;&#47476;&#49888;</span><span class="legend-check" aria-hidden="true"></span>
-      </button>
-    </nav>
-    <p class="hint">&#51648;&#46020; &#50689;&#50669;&#51012; &#53364;&#47533;&#54616;&#47732; &#54644;&#45817; &#48516;&#50556;&#44032; &#48157;&#50500;&#51648;&#44256; &#51204;&#52404;&#54868;&#47732; &#50689;&#49345; &#50672;&#52636;&#51060; &#51116;&#49373;&#46121;&#45768;&#45796;.</p>
-    <p class="credit">&#51228;&#51089;:AI&#48152;&#46020;&#52404;&#44284; &#49324;&#51652;&#50864;</p>
+    <p class="credit">제작:AI반도체과 사진우</p>
+
     <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
-    <div class="completion" id="completion">
+
+    <div class="completion" id="completion" aria-hidden="true">
       <div class="final-effects" aria-hidden="true">
         <span class="final-ring ring-one"></span>
         <span class="final-ring ring-two"></span>
         <span class="final-sparks"></span>
       </div>
       <div class="completion-text">
-        <span class="completion-eyebrow">Five Agendas &middot; One City</span>
-        <h2>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h2>
-        <p class="completion-sub">&#45796;&#49455; &#44060;&#51032; &#48780;&#51060; &#54616;&#45208;&#51032; &#48120;&#47000;&#47196; &#50756;&#49457;&#46104;&#50632;&#49845;&#45768;&#45796;</p>
+        <span class="completion-eyebrow">Five Agendas · One City</span>
+        <h2>성남 미래지도</h2>
+        <p class="completion-sub">다섯 개의 빛이 하나의 미래로 완성되었습니다</p>
+        <p class="reset-countdown" id="resetCountdown">AUTO RESET T-60S</p>
       </div>
     </div>
+
+    <div class="intro-loader" id="introLoader" aria-hidden="true">
+      <canvas class="intro-canvas" id="introCanvas"></canvas>
+      <div class="intro-meta">
+        <span>SEONGNAM FUTURE MAP</span>
+        <span>AI SEMICONDUCTOR DEPT</span>
+        <span>BOOT <b id="introCount">00</b></span>
+      </div>
+      <div class="intro-word" aria-label="성남 미래지도">
+        <span style="--i:0">성</span>
+        <span style="--i:1">남</span>
+        <span style="--i:2">미</span>
+        <span style="--i:3">래</span>
+        <span style="--i:4">지</span>
+        <span style="--i:5">도</span>
+      </div>
+      <div class="intro-burst" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="intro-percent" id="introPercent">0%</div>
+      <div class="intro-progress" aria-hidden="true"><span id="introProgress"></span></div>
+      <button class="intro-enter" id="introEnter" type="button" disabled>미래지도 열기</button>
+      <div class="intro-status">
+        <span>LOCAL CIVIC DATA</span>
+        <span>FIVE AGENDAS MERGING</span>
+      </div>
+    </div>
+
+    <div class="reset-veil" aria-hidden="true"></div>
   </main>
 
-  <script>
-    const segments = {
-      renovation: { title: "재건축", copy: "노후 주거지의 변화가 생활 인프라와 연결되며 성남의 새 주거 축으로 살아나는 장면.", color: "var(--renovation)", mark: "01" },
-      enterprise: { title: "대기업/IT", copy: "판교와 첨단 산업 기반이 도시 전체로 확산되는 흐름을 데이터 라인과 빛의 속도로 표현.", color: "var(--enterprise)", mark: "02" },
-      market: { title: "골목상권", copy: "전통시장과 생활 상권이 다시 사람을 모으는 활력의 네트워크로 떠오르는 장면.", color: "var(--market)", mark: "03" },
-      youth: { title: "청년", copy: "일자리, 주거, 창업, 문화가 맞물리며 청년의 시도가 도시의 속도가 되는 순간.", color: "var(--youth)", mark: "04" },
-      senior: { title: "어르신", copy: "돌봄, 건강, 이동 편의가 하나의 안전망으로 이어져 품격 있는 일상을 밝히는 장면.", color: "var(--senior)", mark: "05" }
-    };
-    const done = new Set();
-    const districts = [...document.querySelectorAll('.district')];
-    const videoLayer = document.querySelector('#videoLayer');
-    const progressCount = document.querySelector('#progressCount');
-    const progressCells = [...document.querySelectorAll('.progress-cell')];
-    const legendChips = [...document.querySelectorAll('.legend-chip')];
-    const spotlight = document.querySelector('#spotlight');
-    const completion = document.querySelector('#completion');
-    const introLoader = document.querySelector('#introLoader');
-    const introCanvas = document.querySelector('#introCanvas');
-    const introCount = document.querySelector('#introCount');
-    const introPercent = document.querySelector('#introPercent');
-    const introProgress = document.querySelector('#introProgress');
-    const introEnter = document.querySelector('#introEnter');
-    const stage = document.querySelector('.stage');
-    const testRun = document.querySelector('#testRun');
-    const segmentOrder = ['renovation', 'enterprise', 'market', 'youth', 'senior'];
-    const videoDuration = 2000;
-    let activeTimer = null;
-    let completionTimer = null;
-    let completionShown = false;
-    let sequenceRunning = false;
-    let introLoaded = false;
-    let introEntering = false;
-
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
-
-    function easeInOutCubic(t) {
-      return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-
-    function clamp(value, min = 0, max = 1) {
-      return Math.max(min, Math.min(max, value));
-    }
-
-    function resizeIntroCanvas(ctx) {
-      const ratio = 1;
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      introCanvas.width = Math.floor(width * ratio);
-      introCanvas.height = Math.floor(height * ratio);
-      introCanvas.style.width = `${width}px`;
-      introCanvas.style.height = `${height}px`;
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-      return { width, height };
-    }
-
-    function sampleMapTargets(total = 320) {
-      const path = document.querySelector('.outer-border');
-      const svg = document.querySelector('.map-shell svg');
-      if (!path || !svg) return [];
-      const matrix = svg.getScreenCTM();
-      if (!matrix) return [];
-      const length = path.getTotalLength();
-      const targets = [];
-      for (let i = 0; i < total; i += 1) {
-        const point = path.getPointAtLength((length * i) / total);
-        const screenPoint = new DOMPoint(point.x, point.y).matrixTransform(matrix);
-        targets.push({
-          x: screenPoint.x,
-          y: screenPoint.y
-        });
-      }
-      return targets;
-    }
-
-    function createLaunchParticles(width, height) {
-      const targets = sampleMapTargets(96);
-      const centerX = width / 2;
-      const centerY = height / 2;
-      return targets.map((target, index) => {
-        const side = index % 4;
-        const margin = 120;
-        const startX = side === 0 ? -margin : side === 1 ? width + margin : Math.random() * width;
-        const startY = side === 2 ? -margin : side === 3 ? height + margin : Math.random() * height;
-        const depth = Math.random();
-        return {
-          x: startX,
-          y: startY,
-          sx: startX,
-          sy: startY,
-          tx: target.x,
-          ty: target.y,
-          cx: centerX + (Math.random() - .5) * width * .46,
-          cy: centerY + (Math.random() - .5) * height * .42,
-          delay: Math.random() * .18,
-          depth,
-          seq: index,
-          size: 1 + depth * 3.6,
-          lane: (index % 11) / 10,
-          hue: index % 3,
-          phase: Math.random() * Math.PI * 2
-        };
-      });
-    }
-
-    function launchColor(hue) {
-      return hue === 0 ? '53,210,255' : hue === 1 ? '245,50,75' : '255,255,255';
-    }
-
-    function strokeBoundary(ctx, boundary, visible, offsetX = 0, offsetY = 0) {
-      const count = Math.max(0, Math.min(boundary.length, Math.floor(boundary.length * visible)));
-      if (count < 2) return;
-      ctx.beginPath();
-      for (let i = 0; i < count; i += 1) {
-        const point = boundary[i];
-        if (i === 0) ctx.moveTo(point.x + offsetX, point.y + offsetY);
-        else ctx.lineTo(point.x + offsetX, point.y + offsetY);
-      }
-      ctx.stroke();
-    }
-
-    function fillBoundary(ctx, boundary, width, height, alpha) {
-      if (boundary.length < 3 || alpha <= 0) return;
-      const gradient = ctx.createLinearGradient(width * .24, height * .22, width * .78, height * .76);
-      gradient.addColorStop(0, `rgba(53,210,255,${alpha * .54})`);
-      gradient.addColorStop(.44, `rgba(255,255,255,${alpha * .18})`);
-      gradient.addColorStop(.68, `rgba(142,63,252,${alpha * .4})`);
-      gradient.addColorStop(1, `rgba(245,50,75,${alpha * .5})`);
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      boundary.forEach((point, index) => {
-        if (index === 0) ctx.moveTo(point.x, point.y);
-        else ctx.lineTo(point.x, point.y);
-      });
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    function drawLaunchRibbons(ctx, width, height, progress) {
-      const reveal = clamp((progress - .08) / .52);
-      const vanish = 1 - clamp((progress - .74) / .18);
-      const alpha = reveal * vanish;
-      if (alpha <= 0) return;
-
-      for (let i = 0; i < 8; i += 1) {
-        const lane = i / 7;
-        const color = i % 3 === 0 ? '53,210,255' : i % 3 === 1 ? '245,50,75' : '255,255,255';
-        const phase = progress * (1.4 + lane * .8) + lane * Math.PI * 2;
-        const y = height * (.28 + lane * .48) + Math.sin(phase * 2.2) * height * .055;
-        const sweep = easeOutCubic(reveal) * width * 1.45;
-        const x = -width * .22 + sweep - lane * width * .24;
-        ctx.strokeStyle = `rgba(${color},${(.04 + lane * .1) * alpha})`;
-        ctx.lineWidth = 1.1 + lane * 3.6;
-        ctx.beginPath();
-        ctx.moveTo(x - width * .24, y + Math.sin(phase) * 42);
-        ctx.bezierCurveTo(
-          x + width * .08,
-          y - height * (.2 + lane * .06),
-          x + width * .34,
-          y + height * (.18 - lane * .04),
-          x + width * .76,
-          y + Math.cos(phase) * 54
-        );
-        ctx.stroke();
-      }
-    }
-
-    function drawLaunchSheets(ctx, width, height, progress) {
-      const reveal = clamp((progress - .12) / .56);
-      const vanish = 1 - clamp((progress - .76) / .18);
-      const alpha = reveal * vanish;
-      if (alpha <= 0) return;
-
-      const sweep = easeOutCubic(reveal) * width * 1.55;
-      const palette = ['53,210,255', '255,255,255', '245,50,75', '142,63,252'];
-      for (let i = 0; i < 4; i += 1) {
-        const y = height * (.24 + i * .16);
-        const x = -width * .45 + sweep - i * width * .1;
-        const color = palette[i];
-        const gradient = ctx.createLinearGradient(x, y, x + width * .64, y + height * .18);
-        gradient.addColorStop(0, `rgba(${color},0)`);
-        gradient.addColorStop(.5, `rgba(${color},${(.08 + i * .018) * alpha})`);
-        gradient.addColorStop(1, `rgba(${color},0)`);
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + width * .5, y - height * .11);
-        ctx.lineTo(x + width * .76, y + height * .035);
-        ctx.lineTo(x + width * .18, y + height * .18);
-        ctx.closePath();
-        ctx.fill();
-      }
-    }
-
-    function drawLaunchLens(ctx, width, height, progress) {
-      const pulse = Math.sin(progress * Math.PI);
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const radius = Math.max(width, height);
-      const glow = ctx.createRadialGradient(centerX, centerY, 20, centerX, centerY, radius * .56);
-      glow.addColorStop(0, `rgba(255,255,255,${.12 * pulse})`);
-      glow.addColorStop(.22, `rgba(53,210,255,${.2 * pulse})`);
-      glow.addColorStop(.55, `rgba(245,50,75,${.12 * pulse})`);
-      glow.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, 0, width, height);
-
-      const ringAlpha = clamp((progress - .18) / .26) * (1 - clamp((progress - .82) / .16));
-      if (ringAlpha <= 0) return;
-      for (let i = 0; i < 4; i += 1) {
-        const size = radius * (.08 + i * .075 + progress * .24);
-        ctx.strokeStyle = `rgba(${i % 2 ? '245,50,75' : '53,210,255'},${(.12 - i * .018) * ringAlpha})`;
-        ctx.lineWidth = 1 + i * .7;
-        ctx.beginPath();
-        ctx.ellipse(centerX, centerY, size * 1.55, size, progress * .8 + i * .7, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-    }
-
-    function drawLaunchFrame(ctx, width, height, particles, progress) {
-      ctx.clearRect(0, 0, width, height);
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = `rgba(5, 11, 17, ${.24 + .34 * (1 - progress)})`;
-      ctx.fillRect(0, 0, width, height);
-
-      ctx.globalCompositeOperation = 'lighter';
-      drawLaunchLens(ctx, width, height, progress);
-      drawLaunchSheets(ctx, width, height, progress);
-      drawLaunchRibbons(ctx, width, height, progress);
-
-      const boundary = [];
-      for (const p of particles) {
-        const local = clamp((progress - p.delay) / .68);
-        const e = easeInOutCubic(local);
-        const mid = clamp(progress / .42);
-        const depthPush = 1 + p.depth * 2.5;
-        const parallaxX = (p.lane - .5) * width * .08 * (1 - e);
-        const parallaxY = Math.sin(p.phase + progress * 4) * height * .028 * (1 - e);
-        const orbitX = p.cx + parallaxX + Math.cos(p.phase + progress * (8 + p.depth * 6)) * (120 * depthPush * (1 - e));
-        const orbitY = p.cy + parallaxY + Math.sin(p.phase + progress * (6 + p.depth * 4)) * (78 * depthPush * (1 - e));
-        const ix = p.sx + (orbitX - p.sx) * easeOutCubic(mid);
-        const iy = p.sy + (orbitY - p.sy) * easeOutCubic(mid);
-        p.x = ix + (p.tx - ix) * e;
-        p.y = iy + (p.ty - iy) * e;
-
-        const color = launchColor(p.hue);
-        const alpha = clamp(local * 1.8) * (1 - clamp((progress - .94) / .06));
-        const trail = 1 - e;
-        if (trail > .1 && progress > .16 && p.seq % 8 === 0) {
-          ctx.strokeStyle = `rgba(${color},${(.12 + p.depth * .24) * trail})`;
-          ctx.lineWidth = 1.4 + p.depth * 2.8;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(
-            p.x - (p.tx - p.sx) * .045 * depthPush,
-            p.y - (p.ty - p.sy) * .045 * depthPush
-          );
-          ctx.stroke();
-        }
-
-        if (progress > .34 && progress < .84 && p.seq % 12 === 0) {
-          const glint = Math.sin(clamp((progress - .34) / .5) * Math.PI);
-          ctx.fillStyle = `rgba(${color},${(.22 + alpha * .44) * glint})`;
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.phase + progress * 1.8);
-          ctx.fillRect(-8 - p.depth * 8, -1, 16 + p.depth * 16, 2 + p.depth * 2);
-          ctx.restore();
-        }
-
-        if (progress > .26 && progress < .72 && p.seq % 6 === 0 && indexLine(p, progress)) {
-          ctx.strokeStyle = `rgba(${color},${.05 + alpha * .13})`;
-          ctx.lineWidth = .7;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.tx, p.ty);
-          ctx.stroke();
-        }
-        boundary.push({ x: p.tx, y: p.ty });
-      }
-
-      if (progress > .52) {
-        fillBoundary(ctx, boundary, width, height, clamp((progress - .52) / .28) * .58);
-      }
-
-      if (progress > .38) {
-        const draw = clamp((progress - .38) / .42);
-        const colorOffset = 1 - clamp((progress - .78) / .16);
-        ctx.lineWidth = 2.8;
-        if (colorOffset > 0) {
-          ctx.strokeStyle = `rgba(53,210,255,${(.16 + .38 * draw) * colorOffset})`;
-          strokeBoundary(ctx, boundary, draw, -5 * colorOffset, -2 * colorOffset);
-          ctx.strokeStyle = `rgba(245,50,75,${(.14 + .34 * draw) * colorOffset})`;
-          strokeBoundary(ctx, boundary, draw, 5 * colorOffset, 2 * colorOffset);
-        }
-        ctx.strokeStyle = `rgba(255,255,255,${.22 + .58 * clamp((progress - .48) / .22)})`;
-        ctx.lineWidth = 2.1;
-        strokeBoundary(ctx, boundary, draw);
-      }
-
-      if (progress > .9) {
-        const flash = clamp((progress - .9) / .1);
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.fillStyle = `rgba(255,255,255,${Math.sin(flash * Math.PI) * .055})`;
-        ctx.fillRect(0, 0, width, height);
-      }
-
-      ctx.globalCompositeOperation = 'source-over';
-    }
-
-    function indexLine(p, progress) {
-      return ((Math.floor(p.phase * 1000) + Math.floor(progress * 60)) % 7) === 0;
-    }
-
-    function startIntroCanvasLaunch(duration = 3000) {
-      if (!introCanvas) return;
-      const ctx = introCanvas.getContext('2d');
-      if (!ctx) return;
-      let size = resizeIntroCanvas(ctx);
-      let particles = createLaunchParticles(size.width, size.height);
-      const started = performance.now();
-
-      function frame(now) {
-        const progress = clamp((now - started) / duration);
-        if (introCanvas.width !== Math.floor(window.innerWidth)) {
-          size = resizeIntroCanvas(ctx);
-          particles = createLaunchParticles(size.width, size.height);
-        }
-        drawLaunchFrame(ctx, size.width, size.height, particles, progress);
-        if (progress < 1) requestAnimationFrame(frame);
-      }
-
-      requestAnimationFrame(frame);
-    }
-
-    function enterMap() {
-      if (!introLoaded || introEntering || !introLoader) return;
-      introEntering = true;
-      introEnter.disabled = true;
-      introLoader.classList.add('is-launching');
-      startIntroCanvasLaunch(3000);
-      setTimeout(() => {
-        stage.classList.remove('is-intro');
-        stage.classList.add('intro-ready');
-        introLoader.classList.add('is-hiding');
-        setTimeout(() => introLoader.remove(), 1200);
-      }, 3000);
-    }
-
-    function runIntro() {
-      if (!introLoader || !introCount || !introPercent || !introProgress || !introEnter) {
-        stage.classList.remove('is-intro');
-        return;
-      }
-      const duration = 2500;
-      const started = performance.now();
-
-      function tick(now) {
-        const progress = Math.min(100, Math.round(((now - started) / duration) * 100));
-        introCount.textContent = String(progress).padStart(2, '0');
-        introPercent.textContent = `${progress}%`;
-        introProgress.style.width = `${progress}%`;
-        if (progress < 100) {
-          requestAnimationFrame(tick);
-          return;
-        }
-        introLoaded = true;
-        introEnter.disabled = false;
-        introLoader.classList.add('is-loaded');
-      }
-
-      introEnter.addEventListener('click', enterMap, { once: true });
-      introLoader.addEventListener('click', event => {
-        if (introLoaded && event.target !== introEnter) enterMap();
-      });
-      requestAnimationFrame(tick);
-    }
-
-    function playSegment(id) {
-      if (sequenceRunning) return;
-      const item = segments[id];
-      if (!item) return;
-      clearTimeout(activeTimer);
-      districts.forEach(d => d.classList.toggle('active', d.dataset.id === id));
-      legendChips.forEach(chip => chip.classList.toggle('active', chip.dataset.id === id));
-      showVideo(item, () => {
-        done.add(id);
-        districts.forEach(d => { d.classList.remove('active'); d.classList.toggle('done', done.has(d.dataset.id)); });
-        legendChips.forEach(chip => chip.classList.remove('active'));
-        updateProgress();
-      });
-    }
-
-    function kineticChars(text) {
-      return [...text].map((ch, i) => `<span class="vt-char" style="--ci:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('');
-    }
-
-    function showVideo(item, onFinish, duration = videoDuration) {
-      videoLayer.innerHTML = '';
-      const pop = document.createElement('article');
-      pop.className = 'video-pop';
-      pop.style.setProperty('--color', item.color);
-      pop.innerHTML = `
-        <span class="video-num" aria-hidden="true">${item.mark}</span>
-        <span class="video-beam" aria-hidden="true"></span>
-        <div class="video-frame">
-          <p class="video-eyebrow"><i></i>Seongnam Future ${item.mark} &middot; 미래 영상</p>
-          <h3 class="video-title">${kineticChars(item.title)}</h3>
-          <p class="video-copy">${item.copy}</p>
-        </div>
-        <span class="video-mark">${item.mark}</span>
-        <div class="video-progress"><span></span></div>`;
-      videoLayer.appendChild(pop);
-      requestAnimationFrame(() => pop.classList.add('show'));
-      activeTimer = setTimeout(() => {
-        pop.classList.add('exit');
-        onFinish();
-        setTimeout(() => pop.remove(), 680);
-      }, duration);
-    }
-
-    function showCompletion(delay = 650) {
-      if (completionShown) return;
-      completionShown = true;
-      clearTimeout(completionTimer);
-      completionTimer = setTimeout(() => {
-        requestAnimationFrame(() => {
-          stage.classList.add('complete');
-          requestAnimationFrame(() => completion.classList.add('show'));
-        });
-      }, delay);
-    }
-
-    function updateProgress(completionDelay = 650) {
-      const count = done.size;
-      progressCount.textContent = String(count);
-      progressCells.forEach(cell => cell.classList.toggle('on', done.has(cell.dataset.id)));
-      legendChips.forEach(chip => chip.classList.toggle('done', done.has(chip.dataset.id)));
-      if (count === 5) showCompletion(completionDelay);
-    }
-
-    function resetExperience() {
-      clearTimeout(activeTimer);
-      clearTimeout(completionTimer);
-      done.clear();
-      completionShown = false;
-      videoLayer.innerHTML = '';
-      completion.classList.remove('show');
-      stage.classList.remove('complete');
-      districts.forEach(d => d.classList.remove('active', 'done'));
-      updateProgress();
-    }
-
-    function runFullSequence() {
-      if (sequenceRunning) return;
-      sequenceRunning = true;
-      testRun.disabled = true;
-      testRun.textContent = '\uC644\uC131 \uC911';
-      resetExperience();
-      segmentOrder.forEach(id => done.add(id));
-      districts.forEach(d => {
-        d.classList.remove('active');
-        d.classList.toggle('done', done.has(d.dataset.id));
-      });
-      updateProgress(0);
-      setTimeout(() => {
-        sequenceRunning = false;
-        testRun.disabled = false;
-        testRun.textContent = '\uC131\uB0A8 \uBBF8\uB798\uC9C0\uB3C4';
-      }, 1200);
-    }
-
-    districts.forEach(d => {
-      d.addEventListener('click', () => playSegment(d.dataset.id));
-      d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSegment(d.dataset.id); } });
-      d.addEventListener('pointerenter', () => legendChips.forEach(chip => chip.classList.toggle('hover', chip.dataset.id === d.dataset.id)));
-      d.addEventListener('pointerleave', () => legendChips.forEach(chip => chip.classList.remove('hover')));
-    });
-    legendChips.forEach(chip => chip.addEventListener('click', () => playSegment(chip.dataset.id)));
-    testRun.addEventListener('click', runFullSequence);
-
-    if (spotlight && window.matchMedia('(pointer: fine)').matches) {
-      let spotFrame = null;
-      stage.addEventListener('pointermove', event => {
-        if (spotFrame) return;
-        spotFrame = requestAnimationFrame(() => {
-          spotlight.style.setProperty('--mx', `${event.clientX}px`);
-          spotlight.style.setProperty('--my', `${event.clientY}px`);
-          spotFrame = null;
-        });
-      });
-    }
-    runIntro();
-  </script>
+  <script defer src="js/config.js"></script>
+  <script defer src="js/timeline.js"></script>
+  <script defer src="js/machine.js"></script>
+  <script defer src="js/ambient.js"></script>
+  <script defer src="js/launch.js"></script>
+  <script defer src="js/hud.js"></script>
+  <script defer src="js/video.js"></script>
+  <script defer src="js/app.js"></script>
 </body>
 </html>

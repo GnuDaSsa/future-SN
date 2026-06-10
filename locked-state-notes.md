@@ -21,7 +21,8 @@ The internal 5-way boundary is locked at the current state. Do not alter the fiv
 
 ## Current Behavior Notes
 
-- Demo video overlay duration: `2s`
-- Completion state hides progress/legend/district labels and leaves the unified glowing map plus final text.
+- Demo video overlay duration: `1s` (`DEMO_VIDEO_MS` in `js/config.js`; real videos plug into `VIDEO_SOURCES` there)
+- Completion state hides HUD/rail/district labels and leaves the unified glowing map plus final text, then auto-resets to the intro after `AUTO_RESET_MS` (60s).
 - Final text: `성남 미래지도`
 - Font: Paperlogy
+- Design contract & phase structure: see `DESIGN.md` (2026-06-10 "Civic Mission Control" rewrite — geometry untouched)
