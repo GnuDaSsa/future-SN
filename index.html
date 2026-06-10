@@ -63,14 +63,8 @@
       </div>
     </section>
 
-    <nav class="legend" aria-label="&#48516;&#50556; &#49440;&#53469;">
-      <button type="button" data-target="renovation" style="--color: var(--renovation)"><span class="swatch"></span>&#51116;&#44148;&#52629;</button>
-      <button type="button" data-target="enterprise" style="--color: var(--enterprise)"><span class="swatch"></span>&#45824;&#44592;&#50629;/IT</button>
-      <button type="button" data-target="market" style="--color: var(--market)"><span class="swatch"></span>&#44264;&#47785;&#49345;&#44428;</button>
-      <button type="button" data-target="youth" style="--color: var(--youth)"><span class="swatch"></span>&#52397;&#45380;</button>
-      <button type="button" data-target="senior" style="--color: var(--senior)"><span class="swatch"></span>&#50612;&#47476;&#49888;</button>
-    </nav>
     <p class="hint">&#51648;&#46020; &#50689;&#50669;&#51012; &#53364;&#47533;&#54616;&#47732; &#54644;&#45817; &#48516;&#50556;&#44032; &#48157;&#50500;&#51648;&#44256; &#51204;&#52404;&#54868;&#47732; &#50689;&#49345; &#50672;&#52636;&#51060; &#51116;&#49373;&#46121;&#45768;&#45796;.</p>
+    <p class="credit">&#51228;&#51089;:AI&#48152;&#46020;&#52404;&#44284; &#49324;&#51652;&#50864;</p>
     <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
     <div class="completion" id="completion"><h2>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h2></div>
   </main>
@@ -134,7 +128,6 @@
       d.addEventListener('click', () => playSegment(d.dataset.id));
       d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSegment(d.dataset.id); } });
     });
-    document.querySelectorAll('[data-target]').forEach(b => b.addEventListener('click', () => playSegment(b.dataset.target)));
   </script>
 </body>
 </html>
