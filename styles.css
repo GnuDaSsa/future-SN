@@ -73,25 +73,19 @@ h1 {
 
 .city-logo-badge {
   position: absolute;
-  top: 28px;
-  left: 32px;
+  top: 30px;
+  left: 34px;
   z-index: 6;
-  display: grid;
-  place-items: center;
-  width: 124px;
-  min-height: 156px;
-  padding: 14px 12px;
-  border: 1px solid rgba(255,255,255,.26);
-  border-radius: 8px;
-  background: rgba(255,255,255,.94);
-  box-shadow: 0 18px 42px rgba(0,0,0,.24);
+  width: 116px;
+  height: 116px;
   pointer-events: none;
 }
 
 .city-logo-badge img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
 }
 
 .progress {
@@ -125,6 +119,39 @@ h1 {
   transition: width .65s cubic-bezier(.2,.8,.2,1);
 }
 
+.test-run {
+  position: absolute;
+  top: 72px;
+  right: 46px;
+  z-index: 6;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 8px;
+  background: rgba(255,255,255,.09);
+  color: rgba(246,251,255,.92);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: background .22s ease, border-color .22s ease, opacity .22s ease, transform .22s ease;
+}
+
+.test-run:hover,
+.test-run:focus-visible {
+  border-color: rgba(255,255,255,.46);
+  background: rgba(255,255,255,.15);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.test-run:disabled {
+  cursor: default;
+  opacity: .58;
+  transform: none;
+}
+
 .map-wrap {
   position: absolute;
   inset: 82px 46px 54px 46px;
@@ -133,9 +160,44 @@ h1 {
 }
 
 .map-shell {
+  position: relative;
   width: min(1456px, 92vw);
   aspect-ratio: 1.36;
   filter: drop-shadow(0 32px 72px rgba(0,0,0,.44));
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.map-shell::before,
+.map-shell::after {
+  position: absolute;
+  inset: -16%;
+  z-index: -1;
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: translateZ(0);
+  will-change: opacity, transform;
+}
+
+.map-shell::before {
+  background:
+    conic-gradient(from 20deg, transparent 0 18%, rgba(255,255,255,.28) 22%, transparent 28% 48%, rgba(245,50,75,.3) 54%, transparent 62% 78%, rgba(52,63,158,.34) 84%, transparent 92%),
+    radial-gradient(circle at 50% 52%, rgba(178,32,149,.34), rgba(52,63,158,.12) 38%, transparent 67%);
+  filter: blur(8px);
+  mix-blend-mode: screen;
+}
+
+.map-shell::after {
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.88) 0 1.5px, transparent 2.2px),
+    radial-gradient(circle, rgba(245,50,75,.8) 0 1.4px, transparent 2px),
+    radial-gradient(circle, rgba(53,210,255,.76) 0 1.2px, transparent 2px);
+  background-position: 8% 30%, 71% 18%, 48% 78%;
+  background-size: 96px 96px, 132px 132px, 116px 116px;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,.45));
+  mix-blend-mode: screen;
 }
 
 svg { width: 100%; height: 100%; display: block; overflow: visible; }
@@ -259,8 +321,9 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .video-progress span { display: block; width: 0; height: 100%; background: var(--color); box-shadow: 0 0 18px var(--color); }
 .video-pop.show .video-progress span { animation: playhead 2s linear forwards; }
 
-.unified-map { opacity: 0; fill: rgba(255,255,255,.05); stroke: rgba(255,255,255,0); stroke-width: 0; pointer-events: none; transition: opacity .6s ease; stroke-linecap: round; stroke-linejoin: round; transform-box: fill-box; transform-origin: center; }
-.stage.complete .progress {
+.unified-map { opacity: 0; fill: rgba(255,255,255,.05); stroke: rgba(255,255,255,0); stroke-width: 0; pointer-events: none; transition: opacity .6s ease; stroke-linecap: round; stroke-linejoin: round; transform-box: fill-box; transform-origin: center; will-change: opacity; }
+.stage.complete .progress,
+.stage.complete .test-run {
   opacity: 0;
   transform: translateY(10px);
   pointer-events: none;
@@ -278,8 +341,10 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .stage.complete .district .base { stroke: rgba(255,255,255,0); animation: none; }
 .stage.complete .district .texture, .stage.complete .district .label, .stage.complete .district .caption, .stage.complete .pin { opacity: 0; transition: opacity .55s ease; }
 .stage.complete .outer-border { animation: borderVanish .65s ease forwards; }
-.stage.complete .map-shell { animation: finalMapZoom 4s .18s cubic-bezier(.18,1.24,.24,1) forwards; }
-.stage.complete .unified-map { opacity: 1; fill: url(#finalMapGradient); stroke: rgba(255,255,255,0); animation: unifiedIgnite 4s cubic-bezier(.16,1,.3,1) forwards, finalColorBreath 4.4s 4s ease-in-out infinite; }
+.stage.complete .map-shell { filter: none; animation: finalMapZoom 4s .18s cubic-bezier(.18,1.24,.24,1) forwards; }
+.stage.complete .map-shell::before { animation: mapAurora 4.8s .12s ease-out forwards, auroraDrift 6s 4.4s ease-in-out infinite; }
+.stage.complete .map-shell::after { animation: particleBloom 4.2s .28s ease-out forwards, particleFloat 5.6s 4.1s ease-in-out infinite; }
+.stage.complete .unified-map { opacity: 1; fill: url(#finalMapGradient); stroke: rgba(255,255,255,0); filter: drop-shadow(0 0 32px rgba(245,50,75,.42)) drop-shadow(0 0 70px rgba(52,63,158,.24)); animation: unifiedIgnite 3.4s cubic-bezier(.16,1,.3,1) forwards, finalColorBreath 4.4s 3.5s ease-in-out infinite; }
 
 .completion { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity .65s ease; }
 .completion.show { opacity: 1; }
@@ -294,7 +359,49 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   mix-blend-mode: screen;
   animation: finishWash 5.1s ease-out forwards, lightSweep 4.1s ease-in-out infinite;
 }
-.completion h2 { position: relative; z-index: 2; width: min(900px,72vw); margin: 0; text-align: center; font-family: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif; font-size: 72px; font-weight: 900; line-height: 1.08; color: rgba(255,255,255,.98); text-shadow: 0 5px 20px rgba(0,0,0,.95), 0 0 20px rgba(255,255,255,.22); opacity: 0; transform: translateY(26px) scale(.88); animation: finishText 1.08s .58s cubic-bezier(.14,1.28,.22,1) forwards, titleBreath 3.8s 1.9s ease-in-out infinite; }
+.final-effects {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.final-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(72vw, 940px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.24);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.3);
+  box-shadow:
+    0 0 30px rgba(255,255,255,.22),
+    inset 0 0 48px rgba(245,50,75,.14);
+}
+.ring-two {
+  width: min(86vw, 1120px);
+  border-color: rgba(53,210,255,.2);
+  box-shadow:
+    0 0 42px rgba(53,210,255,.2),
+    inset 0 0 58px rgba(178,32,149,.16);
+}
+.completion.show .ring-one { animation: ringPulse 2.6s .12s cubic-bezier(.16,1,.3,1) forwards; }
+.completion.show .ring-two { animation: ringPulse 3.1s .38s cubic-bezier(.16,1,.3,1) forwards; }
+.final-sparks {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.96) 0 1.4px, transparent 2.2px),
+    radial-gradient(circle, rgba(245,50,75,.86) 0 1.6px, transparent 2.4px),
+    radial-gradient(circle, rgba(53,210,255,.88) 0 1.3px, transparent 2px);
+  background-position: 12% 28%, 80% 26%, 48% 82%;
+  background-size: 104px 104px, 148px 148px, 122px 122px;
+  mix-blend-mode: screen;
+}
+.completion.show .final-sparks { animation: sparkField 4.4s .42s ease-out forwards, sparkDrift 5.2s 4s ease-in-out infinite; }
+.completion h2 { position: relative; z-index: 2; width: min(900px,72vw); margin: 0; text-align: center; font-family: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif; font-size: 72px; font-weight: 900; line-height: 1.08; color: rgba(255,255,255,.98); text-shadow: 0 5px 20px rgba(0,0,0,.95), 0 0 20px rgba(255,255,255,.22); opacity: 0; transform: translateY(31px) scale(.88); animation: finishText 1.08s .58s cubic-bezier(.14,1.28,.22,1) forwards, titleBreath 3.8s 1.9s ease-in-out infinite; }
 
 @keyframes districtPulse { 0%,100% { filter: brightness(1.22) drop-shadow(0 0 16px var(--color)); } 50% { filter: brightness(1.55) drop-shadow(0 0 34px var(--color)); } }
 @keyframes cinematicSweep { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
@@ -302,10 +409,17 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes playhead { from { width: 0; } to { width: 100%; } }
 @keyframes mergeFill { 0% { filter: brightness(1.35) drop-shadow(0 0 24px var(--color)); } 55% { filter: brightness(1.55) drop-shadow(0 0 34px rgba(222,92,178,.64)); } 100% { fill: rgba(102,51,88,.24); filter: brightness(1.08) drop-shadow(0 0 16px rgba(222,92,178,.42)); } }
 @keyframes borderVanish { to { opacity: 0; } }
-@keyframes unifiedIgnite { 0% { fill-opacity: .08; filter: drop-shadow(0 0 0 rgba(178,32,149,0)); } 58% { fill-opacity: .72; filter: drop-shadow(0 0 54px rgba(178,32,149,.64)) drop-shadow(0 0 92px rgba(52,63,158,.36)); } 100% { fill-opacity: .76; filter: drop-shadow(0 0 30px rgba(245,50,75,.44)) drop-shadow(0 0 78px rgba(52,63,158,.28)); } }
-@keyframes finalMapZoom { 0% { transform: scale(1); filter: drop-shadow(0 32px 72px rgba(0,0,0,.44)); } 76% { transform: scale(1.12); filter: drop-shadow(0 42px 112px rgba(0,0,0,.44)) drop-shadow(0 0 104px rgba(222,92,178,.42)); } 100% { transform: scale(1.08); filter: drop-shadow(0 40px 106px rgba(0,0,0,.42)) drop-shadow(0 0 92px rgba(222,92,178,.36)); } }
-@keyframes finalColorBreath { 0%,100% { fill-opacity: .72; filter: drop-shadow(0 0 24px rgba(245,50,75,.38)) drop-shadow(0 0 58px rgba(52,63,158,.26)); } 50% { fill-opacity: .84; filter: drop-shadow(0 0 38px rgba(178,32,149,.66)) drop-shadow(0 0 92px rgba(52,63,158,.38)); } }
+@keyframes unifiedIgnite { 0% { fill-opacity: .08; } 58% { fill-opacity: .72; } 100% { fill-opacity: .76; } }
+@keyframes finalMapZoom { 0% { transform: translateZ(0) scale(1); } 76% { transform: translateZ(0) scale(1.115); } 100% { transform: translateZ(0) scale(1.08); } }
+@keyframes finalColorBreath { 0%,100% { fill-opacity: .72; } 50% { fill-opacity: .86; } }
+@keyframes mapAurora { 0% { opacity: 0; transform: scale(.86) rotate(-8deg); } 34% { opacity: .9; } 100% { opacity: .46; transform: scale(1.08) rotate(11deg); } }
+@keyframes auroraDrift { 0%,100% { transform: scale(1.08) rotate(11deg); } 50% { transform: scale(1.13) rotate(-7deg); } }
+@keyframes particleBloom { 0% { opacity: 0; transform: scale(.74); } 42% { opacity: .84; } 100% { opacity: .34; transform: scale(1.16); } }
+@keyframes particleFloat { 0%,100% { background-position: 8% 30%, 71% 18%, 48% 78%; } 50% { background-position: 12% 26%, 67% 22%, 52% 74%; } }
+@keyframes ringPulse { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.3); } 28% { opacity: .72; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.18); } }
+@keyframes sparkField { 0% { opacity: 0; transform: scale(.86); } 35% { opacity: .68; } 100% { opacity: .22; transform: scale(1.1); } }
+@keyframes sparkDrift { 0%,100% { background-position: 12% 28%, 80% 26%, 48% 82%; } 50% { background-position: 16% 24%, 76% 31%, 52% 77%; } }
 @keyframes titleBreath { 0%,100% { text-shadow: 0 5px 20px rgba(0,0,0,.95), 0 0 18px rgba(255,255,255,.18); } 50% { text-shadow: 0 5px 22px rgba(0,0,0,.96), 0 0 28px rgba(255,255,255,.28); } }
 @keyframes finishWash { 0% { transform: scale(.72); opacity: 0; } 28% { opacity: .94; } 100% { transform: scale(1.18); opacity: .35; } }
 @keyframes lightSweep { 0%,100% { background-position: 0 0, -18vw 0, 12vw 0; } 50% { background-position: 0 0, 18vw 0, -12vw 0; } }
-@keyframes finishText { 0% { opacity: 0; transform: translateY(26px) scale(.88); filter: blur(4px); } 62% { opacity: 1; transform: translateY(0) scale(1.06); filter: blur(0); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+@keyframes finishText { 0% { opacity: 0; transform: translateY(31px) scale(.88); } 62% { opacity: 1; transform: translateY(5px) scale(1.06); } 100% { opacity: 1; transform: translateY(5px) scale(1); } }

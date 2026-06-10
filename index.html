@@ -12,13 +12,14 @@
       <h1>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h1>
       <p class="subtitle">&#49457;&#45224;&#49884;&#51032; &#48120;&#47000; &#51032;&#51228;&#47484; 5&#44060;&#51032; &#50689;&#50669;&#51004;&#47196; &#54204;&#52824;&#44256;, &#48516;&#50556;&#48324; &#50689;&#49345;&#51060; &#50756;&#49457;&#46112;&#49688;&#47197; &#54616;&#45208;&#51032; &#48120;&#47000;&#51648;&#46020;&#47196; &#54633;&#52432;&#51648;&#45716; &#51064;&#53552;&#47001;&#54000;&#48652; &#53080;&#49481;&#53944;</p>
     </header>
-    <div class="city-logo-badge" aria-label="&#49457;&#45224;&#49884;">
+    <div class="city-logo-badge" aria-label="&#49457;&#45224;&#49884; &#50656;&#48660;&#47000;">
       <img src="seongnam-logo.png" alt="&#49457;&#45224;&#49884;">
     </div>
     <div class="progress" aria-live="polite">
       <span id="progressText">0 / 5 &#50756;&#49457;</span>
       <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
     </div>
+    <button class="test-run" type="button" id="testRun">&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</button>
 
     <section class="map-wrap">
       <div class="map-shell">
@@ -69,7 +70,14 @@
     <p class="hint">&#51648;&#46020; &#50689;&#50669;&#51012; &#53364;&#47533;&#54616;&#47732; &#54644;&#45817; &#48516;&#50556;&#44032; &#48157;&#50500;&#51648;&#44256; &#51204;&#52404;&#54868;&#47732; &#50689;&#49345; &#50672;&#52636;&#51060; &#51116;&#49373;&#46121;&#45768;&#45796;.</p>
     <p class="credit">&#51228;&#51089;:AI&#48152;&#46020;&#52404;&#44284; &#49324;&#51652;&#50864;</p>
     <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
-    <div class="completion" id="completion"><h2>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h2></div>
+    <div class="completion" id="completion">
+      <div class="final-effects" aria-hidden="true">
+        <span class="final-ring ring-one"></span>
+        <span class="final-ring ring-two"></span>
+        <span class="final-sparks"></span>
+      </div>
+      <h2>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h2>
+    </div>
   </main>
 
   <script>
@@ -87,10 +95,15 @@
     const progressBar = document.querySelector('#progressBar');
     const completion = document.querySelector('#completion');
     const stage = document.querySelector('.stage');
+    const testRun = document.querySelector('#testRun');
+    const segmentOrder = ['renovation', 'enterprise', 'market', 'youth', 'senior'];
+    const videoDuration = 2000;
     let activeTimer = null;
     let completionShown = false;
+    let sequenceRunning = false;
 
     function playSegment(id) {
+      if (sequenceRunning) return;
       const item = segments[id];
       if (!item) return;
       clearTimeout(activeTimer);
@@ -102,7 +115,7 @@
       });
     }
 
-    function showVideo(item, onFinish) {
+    function showVideo(item, onFinish, duration = videoDuration) {
       videoLayer.innerHTML = '';
       const pop = document.createElement('article');
       pop.className = 'video-pop';
@@ -114,7 +127,7 @@
         pop.classList.add('exit');
         onFinish();
         setTimeout(() => pop.remove(), 680);
-      }, 2000);
+      }, duration);
     }
 
     function updateProgress() {
@@ -127,10 +140,52 @@
       }
     }
 
+    function resetExperience() {
+      clearTimeout(activeTimer);
+      done.clear();
+      completionShown = false;
+      videoLayer.innerHTML = '';
+      completion.classList.remove('show');
+      stage.classList.remove('complete');
+      districts.forEach(d => d.classList.remove('active', 'done'));
+      updateProgress();
+    }
+
+    function playSegmentOnce(id) {
+      return new Promise(resolve => {
+        const item = segments[id];
+        districts.forEach(d => d.classList.toggle('active', d.dataset.id === id));
+        showVideo(item, () => {
+          done.add(id);
+          districts.forEach(d => { d.classList.remove('active'); d.classList.toggle('done', done.has(d.dataset.id)); });
+          updateProgress();
+          resolve();
+        });
+      });
+    }
+
+    async function runFullSequence() {
+      if (sequenceRunning) return;
+      sequenceRunning = true;
+      testRun.disabled = true;
+      testRun.textContent = '\uC7AC\uC0DD \uC911';
+      resetExperience();
+      for (const id of segmentOrder) {
+        await playSegmentOnce(id);
+        await new Promise(resolve => setTimeout(resolve, 170));
+      }
+      setTimeout(() => {
+        sequenceRunning = false;
+        testRun.disabled = false;
+        testRun.textContent = '\uC131\uB0A8 \uBBF8\uB798\uC9C0\uB3C4';
+      }, 1450);
+    }
+
     districts.forEach(d => {
       d.addEventListener('click', () => playSegment(d.dataset.id));
       d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSegment(d.dataset.id); } });
     });
+    testRun.addEventListener('click', runFullSequence);
   </script>
 </body>
 </html>
