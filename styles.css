@@ -104,6 +104,10 @@ body {
   cursor: pointer;
 }
 
+.intro-loader.is-launching {
+  cursor: wait;
+}
+
 .intro-loader::before,
 .intro-loader::after {
   position: absolute;
@@ -180,16 +184,32 @@ body {
   animation: introGlyph 1.25s calc(.32s + var(--i) * .09s) cubic-bezier(.16,1,.3,1) forwards;
 }
 
+.intro-percent {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + min(96px, 7.4vw));
+  z-index: 4;
+  min-width: 74px;
+  color: rgba(246,251,255,.94);
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(53,210,255,.26), 0 6px 20px rgba(0,0,0,.72);
+  transform: translateX(-50%);
+}
+
 .intro-progress {
   position: absolute;
   left: 50%;
   top: calc(50% + min(130px, 10vw));
   z-index: 3;
-  width: min(540px, 38vw);
-  height: 3px;
+  width: min(1080px, 76vw);
+  height: 4px;
   overflow: hidden;
   border-radius: 999px;
   background: rgba(255,255,255,.13);
+  transform: translateX(-50%);
 }
 
 .intro-progress span {
@@ -240,6 +260,100 @@ body {
 
 .intro-enter:disabled {
   cursor: default;
+}
+
+.intro-burst {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.intro-burst::before,
+.intro-burst::after,
+.intro-burst span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  content: "";
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(.25);
+}
+
+.intro-burst::before {
+  width: 34vmax;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow:
+    0 0 70px rgba(255,255,255,.34),
+    inset 0 0 80px rgba(53,210,255,.2);
+}
+
+.intro-burst::after {
+  width: 8vmax;
+  aspect-ratio: 1;
+  background: rgba(255,255,255,.92);
+  box-shadow:
+    0 0 120px rgba(255,255,255,.7),
+    0 0 220px rgba(53,210,255,.42),
+    0 0 320px rgba(245,50,75,.32);
+}
+
+.intro-burst span:nth-child(1) {
+  width: 68vmax;
+  aspect-ratio: 1;
+  border: 2px solid rgba(53,210,255,.44);
+}
+
+.intro-burst span:nth-child(2) {
+  width: 88vmax;
+  aspect-ratio: 1;
+  border: 2px solid rgba(245,50,75,.38);
+}
+
+.intro-burst span:nth-child(3) {
+  width: 110vmax;
+  aspect-ratio: 1;
+  background:
+    radial-gradient(circle, transparent 0 38%, rgba(255,255,255,.2) 39%, transparent 45%),
+    conic-gradient(from 22deg, transparent 0 9%, rgba(255,255,255,.68) 10%, transparent 13% 31%, rgba(53,210,255,.48) 33%, transparent 38% 62%, rgba(245,50,75,.44) 66%, transparent 72% 100%);
+  mix-blend-mode: screen;
+}
+
+.intro-loader.is-launching .intro-word,
+.intro-loader.is-launching .intro-progress,
+.intro-loader.is-launching .intro-percent,
+.intro-loader.is-launching .intro-enter,
+.intro-loader.is-launching .intro-meta,
+.intro-loader.is-launching .intro-status {
+  animation: introUiVanish .42s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+.intro-loader.is-launching .intro-burst {
+  opacity: 1;
+}
+
+.intro-loader.is-launching .intro-burst::before {
+  animation: transitionRing 1.24s cubic-bezier(.11,.86,.18,1) forwards;
+}
+
+.intro-loader.is-launching .intro-burst::after {
+  animation: transitionFlash 1.05s .1s cubic-bezier(.11,.86,.18,1) forwards;
+}
+
+.intro-loader.is-launching .intro-burst span:nth-child(1) {
+  animation: transitionRing 1.18s .06s cubic-bezier(.11,.86,.18,1) forwards;
+}
+
+.intro-loader.is-launching .intro-burst span:nth-child(2) {
+  animation: transitionRing 1.28s .12s cubic-bezier(.11,.86,.18,1) forwards reverse;
+}
+
+.intro-loader.is-launching .intro-burst span:nth-child(3) {
+  animation: transitionIris 1.3s .04s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader.is-hiding {
@@ -647,6 +761,10 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes introOrbDrift { 0%,100% { transform: scale(1.1) rotate(0deg); } 50% { transform: scale(1.18) rotate(11deg); } }
 @keyframes introSignals { 0% { opacity: 0; transform: rotate(-9deg) scale(.56); } 40% { opacity: .82; } 100% { opacity: .42; transform: rotate(8deg) scale(1.16); } }
 @keyframes introSignalsDrift { 0%,100% { transform: rotate(8deg) scale(1.16); } 50% { transform: rotate(-4deg) scale(1.28); } }
+@keyframes introUiVanish { 0% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(12px); } }
+@keyframes transitionRing { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.22); } 18% { opacity: .95; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.15); } }
+@keyframes transitionFlash { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.16); } 26% { opacity: 1; } 68% { opacity: .85; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(18); } }
+@keyframes transitionIris { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-18deg); } 24% { opacity: .96; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.72) rotate(28deg); } }
 @keyframes introExit { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.035); visibility: hidden; } }
 @keyframes cinematicSweep { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
 @keyframes videoEnergy { 0%,100% { transform: translate3d(-2%,1%,0) scale(1); opacity: .42; } 50% { transform: translate3d(2%,-1%,0) scale(1.04); opacity: .78; } }
