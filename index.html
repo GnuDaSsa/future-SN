@@ -22,6 +22,8 @@
         <span style="--i:4">&#51648;</span>
         <span style="--i:5">&#46020;</span>
       </div>
+      <div class="intro-progress" aria-hidden="true"><span id="introProgress"></span></div>
+      <button class="intro-enter" id="introEnter" type="button" disabled>&#48120;&#47000;&#51648;&#46020; &#50676;&#44592;</button>
       <div class="intro-status">
         <span>LOCAL CIVIC DATA</span>
         <span>FIVE AGENDAS MERGING</span>
@@ -128,6 +130,8 @@
     const completion = document.querySelector('#completion');
     const introLoader = document.querySelector('#introLoader');
     const introCount = document.querySelector('#introCount');
+    const introProgress = document.querySelector('#introProgress');
+    const introEnter = document.querySelector('#introEnter');
     const stage = document.querySelector('.stage');
     const testRun = document.querySelector('#testRun');
     const segmentOrder = ['renovation', 'enterprise', 'market', 'youth', 'senior'];
@@ -136,29 +140,42 @@
     let completionTimer = null;
     let completionShown = false;
     let sequenceRunning = false;
+    let introLoaded = false;
+
+    function enterMap() {
+      if (!introLoaded || !introLoader) return;
+      stage.classList.remove('is-intro');
+      stage.classList.add('intro-ready');
+      introLoader.classList.add('is-hiding');
+      setTimeout(() => introLoader.remove(), window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 260 : 1100);
+    }
 
     function runIntro() {
-      if (!introLoader || !introCount) {
+      if (!introLoader || !introCount || !introProgress || !introEnter) {
         stage.classList.remove('is-intro');
         return;
       }
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const duration = reduceMotion ? 250 : 1900;
+      const duration = reduceMotion ? 500 : 4800;
       const started = performance.now();
 
       function tick(now) {
         const progress = Math.min(100, Math.round(((now - started) / duration) * 100));
         introCount.textContent = String(progress).padStart(2, '0');
+        introProgress.style.width = `${progress}%`;
         if (progress < 100) {
           requestAnimationFrame(tick);
           return;
         }
-        stage.classList.remove('is-intro');
-        stage.classList.add('intro-ready');
-        introLoader.classList.add('is-hiding');
-        setTimeout(() => introLoader.remove(), reduceMotion ? 260 : 900);
+        introLoaded = true;
+        introEnter.disabled = false;
+        introLoader.classList.add('is-loaded');
       }
 
+      introEnter.addEventListener('click', enterMap, { once: true });
+      introLoader.addEventListener('click', event => {
+        if (introLoaded && event.target !== introEnter) enterMap();
+      });
       requestAnimationFrame(tick);
     }
 
