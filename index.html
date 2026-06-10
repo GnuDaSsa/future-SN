@@ -199,6 +199,7 @@
         const margin = 120;
         const startX = side === 0 ? -margin : side === 1 ? width + margin : Math.random() * width;
         const startY = side === 2 ? -margin : side === 3 ? height + margin : Math.random() * height;
+        const depth = Math.random();
         return {
           x: startX,
           y: startY,
@@ -209,7 +210,8 @@
           cx: centerX + (Math.random() - .5) * width * .46,
           cy: centerY + (Math.random() - .5) * height * .42,
           delay: Math.random() * .18,
-          size: 1.1 + Math.random() * 2.8,
+          depth,
+          size: 1 + depth * 3.6,
           hue: index % 3,
           phase: Math.random() * Math.PI * 2
         };
@@ -237,8 +239,9 @@
         const local = clamp((progress - p.delay) / .74);
         const e = easeInOutCubic(local);
         const mid = clamp(progress / .46);
-        const orbitX = p.cx + Math.cos(p.phase + progress * 7) * (80 * (1 - e));
-        const orbitY = p.cy + Math.sin(p.phase + progress * 6) * (52 * (1 - e));
+        const depthPush = 1 + p.depth * 1.8;
+        const orbitX = p.cx + Math.cos(p.phase + progress * (7 + p.depth * 4)) * (96 * depthPush * (1 - e));
+        const orbitY = p.cy + Math.sin(p.phase + progress * (6 + p.depth * 3)) * (62 * depthPush * (1 - e));
         const ix = p.sx + (orbitX - p.sx) * easeOutCubic(mid);
         const iy = p.sy + (orbitY - p.sy) * easeOutCubic(mid);
         p.x = ix + (p.tx - ix) * e;
@@ -246,9 +249,18 @@
 
         const color = p.hue === 0 ? '53,210,255' : p.hue === 1 ? '245,50,75' : '255,255,255';
         const alpha = clamp(local * 1.8) * (1 - clamp((progress - .88) / .12));
+        const trail = 1 - e;
+        if (trail > .08 && progress > .1) {
+          ctx.strokeStyle = `rgba(${color},${(.08 + p.depth * .22) * trail})`;
+          ctx.lineWidth = .8 + p.depth * 1.4;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - (p.tx - p.sx) * .025 * depthPush, p.y - (p.ty - p.sy) * .025 * depthPush);
+          ctx.stroke();
+        }
         ctx.fillStyle = `rgba(${color},${.28 + alpha * .62})`;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * (1 + pulse * .35), 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size * (1 + pulse * .35 + p.depth * .45 * (1 - e)), 0, Math.PI * 2);
         ctx.fill();
 
         if (progress > .28 && progress < .82 && indexLine(p, progress)) {
@@ -279,9 +291,9 @@
         ctx.shadowBlur = 0;
       }
 
-      if (progress > .76) {
-        const flash = clamp((progress - .76) / .18);
-        ctx.fillStyle = `rgba(255,255,255,${Math.sin(flash * Math.PI) * .5})`;
+      if (progress > .88) {
+        const flash = clamp((progress - .88) / .08);
+        ctx.fillStyle = `rgba(255,255,255,${Math.sin(flash * Math.PI) * .18})`;
         ctx.fillRect(0, 0, width, height);
       }
 
@@ -332,7 +344,7 @@
         stage.classList.remove('is-intro');
         return;
       }
-      const duration = 9000;
+      const duration = 2500;
       const started = performance.now();
 
       function tick(now) {

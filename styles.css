@@ -117,6 +117,7 @@ body {
   opacity: 0;
   pointer-events: none;
   mix-blend-mode: screen;
+  filter: saturate(1.24) contrast(1.08);
   transition: opacity .28s ease;
 }
 
@@ -302,20 +303,21 @@ body {
 .intro-burst::before {
   width: 34vmax;
   aspect-ratio: 1;
-  border: 1px solid rgba(255,255,255,.8);
+  border: 1px solid rgba(234,249,255,.58);
   box-shadow:
-    0 0 70px rgba(255,255,255,.34),
-    inset 0 0 80px rgba(53,210,255,.2);
+    0 0 50px rgba(53,210,255,.26),
+    0 0 120px rgba(245,50,75,.16),
+    inset 0 0 90px rgba(53,210,255,.22);
 }
 
 .intro-burst::after {
-  width: 8vmax;
+  width: 5.8vmax;
   aspect-ratio: 1;
-  background: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.48);
   box-shadow:
-    0 0 120px rgba(255,255,255,.7),
-    0 0 220px rgba(53,210,255,.42),
-    0 0 320px rgba(245,50,75,.32);
+    0 0 58px rgba(255,255,255,.32),
+    0 0 150px rgba(53,210,255,.46),
+    0 0 260px rgba(245,50,75,.28);
 }
 
 .intro-burst span:nth-child(1) {
@@ -334,8 +336,8 @@ body {
   width: 110vmax;
   aspect-ratio: 1;
   background:
-    radial-gradient(circle, transparent 0 38%, rgba(255,255,255,.2) 39%, transparent 45%),
-    conic-gradient(from 22deg, transparent 0 9%, rgba(255,255,255,.68) 10%, transparent 13% 31%, rgba(53,210,255,.48) 33%, transparent 38% 62%, rgba(245,50,75,.44) 66%, transparent 72% 100%);
+    radial-gradient(circle, transparent 0 38%, rgba(255,255,255,.12) 39%, transparent 45%),
+    conic-gradient(from 22deg, transparent 0 9%, rgba(255,255,255,.34) 10%, transparent 13% 28%, rgba(53,210,255,.58) 31%, transparent 37% 58%, rgba(245,50,75,.5) 63%, transparent 70% 100%);
   mix-blend-mode: screen;
 }
 
@@ -349,7 +351,7 @@ body {
 }
 
 .intro-loader.is-launching .intro-burst {
-  opacity: .72;
+  opacity: .58;
 }
 
 .intro-loader.is-launching .intro-burst::before {
@@ -357,7 +359,7 @@ body {
 }
 
 .intro-loader.is-launching .intro-burst::after {
-  animation: transitionFlash 2.62s .14s cubic-bezier(.11,.86,.18,1) forwards;
+  animation: transitionFlash 1.08s .28s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader.is-launching .intro-burst span:nth-child(1) {
@@ -779,8 +781,8 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes introSignalsDrift { 0%,100% { transform: rotate(8deg) scale(1.16); } 50% { transform: rotate(-4deg) scale(1.28); } }
 @keyframes introUiVanish { 0% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(12px); } }
 @keyframes transitionRing { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.22); } 18% { opacity: .95; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.15); } }
-@keyframes transitionFlash { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.16); } 26% { opacity: 1; } 68% { opacity: .85; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(18); } }
-@keyframes transitionIris { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-18deg); } 24% { opacity: .96; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.72) rotate(28deg); } }
+@keyframes transitionFlash { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.14); } 18% { opacity: .72; } 42% { opacity: .24; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(9); } }
+@keyframes transitionIris { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-18deg); filter: blur(2px); } 22% { opacity: .84; filter: blur(0); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.88) rotate(34deg); filter: blur(5px); } }
 @keyframes introExit { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.035); visibility: hidden; } }
 @keyframes cinematicSweep { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
 @keyframes videoEnergy { 0%,100% { transform: translate3d(-2%,1%,0) scale(1); opacity: .42; } 50% { transform: translate3d(2%,-1%,0) scale(1.04); opacity: .78; } }
