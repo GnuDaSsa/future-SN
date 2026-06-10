@@ -151,34 +151,23 @@
       updateProgress();
     }
 
-    function playSegmentOnce(id) {
-      return new Promise(resolve => {
-        const item = segments[id];
-        districts.forEach(d => d.classList.toggle('active', d.dataset.id === id));
-        showVideo(item, () => {
-          done.add(id);
-          districts.forEach(d => { d.classList.remove('active'); d.classList.toggle('done', done.has(d.dataset.id)); });
-          updateProgress();
-          resolve();
-        });
-      });
-    }
-
-    async function runFullSequence() {
+    function runFullSequence() {
       if (sequenceRunning) return;
       sequenceRunning = true;
       testRun.disabled = true;
-      testRun.textContent = '\uC7AC\uC0DD \uC911';
+      testRun.textContent = '\uC644\uC131 \uC911';
       resetExperience();
-      for (const id of segmentOrder) {
-        await playSegmentOnce(id);
-        await new Promise(resolve => setTimeout(resolve, 170));
-      }
+      segmentOrder.forEach(id => done.add(id));
+      districts.forEach(d => {
+        d.classList.remove('active');
+        d.classList.toggle('done', done.has(d.dataset.id));
+      });
+      updateProgress();
       setTimeout(() => {
         sequenceRunning = false;
         testRun.disabled = false;
         testRun.textContent = '\uC131\uB0A8 \uBBF8\uB798\uC9C0\uB3C4';
-      }, 1450);
+      }, 1200);
     }
 
     districts.forEach(d => {
