@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f6fbff;
+      --muted: #a9bac8;
+      --map: rgba(37, 47, 49, .94);
+      --map2: rgba(44, 52, 53, .92);
+      --renovation: #a87963;
+      --enterprise: #586f70;
+      --market: #6f8068;
+      --youth: #8d6677;
+      --senior: #7c738e;
+    }
+
+    @font-face {
+      font-family: "Paperlogy";
+      src: local("Paperlogy-7Bold"), local("Paperlogy 7 Bold"), local("Paperlogy-Bold"), url("Paperlogy-7Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Paperlogy";
+      src: local("Paperlogy-8ExtraBold"), local("Paperlogy 8 ExtraBold"), local("Paperlogy-ExtraBold"), url("Paperlogy-8ExtraBold.woff2") format("woff2");
+      font-weight: 800 900;
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(53, 210, 255, .16), transparent 28%),
+        radial-gradient(circle at 76% 76%, rgba(245, 200, 75, .12), transparent 31%),
+        linear-gradient(135deg, #071019 0%, #0b1621 44%, #101621 100%);
+      color: var(--ink);
+      font-family: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-width: 1080px;
+      isolation: isolate;
+    }
+
+    .stage::before {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      content: "";
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 78%);
+    }
+
+    header { display: none; }
+
+    h1 {
+      margin: 0;
+      font-size: 58px;
+      font-weight: 850;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .subtitle { display: none; }
+
+    .progress {
+      position: absolute;
+      top: 54px;
+      right: 58px;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 800;
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .progress-track {
+      width: 220px;
+      height: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--renovation), var(--enterprise), var(--market), var(--youth), var(--senior));
+      transition: width .65s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .map-wrap {
+      position: absolute;
+      inset: 118px 92px 72px 98px;
+      display: grid;
+      place-items: center;
+    }
+
+    .map-shell {
+      width: min(1040px, 66vw);
+      aspect-ratio: 1.36;
+      filter: drop-shadow(0 32px 72px rgba(0,0,0,.44));
+    }
+
+    svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+    .outer-border {
+      fill: rgba(6, 16, 24, .58);
+      stroke: rgba(255,255,255,.88);
+      stroke-width: 4.8;
+      filter: drop-shadow(0 0 18px rgba(255,255,255,.26));
+    }
+
+    .district { cursor: pointer; outline: none; }
+
+    .district .base {
+      fill: var(--map);
+      stroke: rgba(246,251,255,.78);
+      stroke-width: 2.15;
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: fill .45s ease, filter .45s ease, transform .45s cubic-bezier(.2,.85,.2,1), stroke .45s ease;
+    }
+
+    .district:nth-child(1) .base { fill: rgba(45, 52, 51, .96); }
+    .district:nth-child(2) .base { fill: rgba(40, 50, 51, .94); }
+    .district:nth-child(3) .base { fill: rgba(48, 54, 50, .94); }
+    .district:nth-child(4) .base { fill: rgba(50, 48, 53, .94); }
+    .district:nth-child(5) .base { fill: rgba(45, 45, 54, .95); }
+    .district .texture { display: none; }
+    .district .label {
+      fill: rgba(255,255,255,.98);
+      font-family: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+      font-size: 32px;
+      font-weight: 850;
+      text-anchor: middle;
+      pointer-events: none;
+      paint-order: stroke;
+      stroke: rgba(2,6,9,.92);
+      stroke-width: 8px;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,.72));
+    }
+    .district .caption {
+      display: none;
+      fill: rgba(255,255,255,.92);
+      font-size: 15px;
+      font-weight: 800;
+      text-anchor: middle;
+      pointer-events: none;
+      paint-order: stroke;
+      stroke: rgba(2,6,9,.86);
+      stroke-width: 5px;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.7));
+    }
+    .pin { display: none; opacity: .55; transform-box: fill-box; transform-origin: center; transition: opacity .35s ease, transform .35s ease; }
+
+    .district:hover .base, .district:focus-visible .base { filter: brightness(1.22) drop-shadow(0 0 18px var(--color)); transform: translateY(-5px) scale(1.012); }
+    .district.active .base, .district.done .base { fill: color-mix(in srgb, var(--color) 58%, #293133); filter: brightness(1.2) drop-shadow(0 0 22px var(--color)); }
+    .district.done .base { animation: districtPulse 2.8s ease-in-out infinite; }
+    .district.active .texture, .district.done .texture { opacity: 0; }
+    .district.active .pin, .district.done .pin { opacity: 1; transform: scale(1.2); }
+
+    .legend {
+      position: absolute;
+      left: 54px;
+      bottom: 42px;
+      z-index: 5;
+      display: grid;
+      grid-template-columns: repeat(5, auto);
+      gap: 10px;
+      align-items: center;
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .legend button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px;
+      background: rgba(255,255,255,.07);
+      color: rgba(246,251,255,.88);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background .25s ease, border-color .25s ease, transform .25s ease;
+    }
+    .legend button:hover { border-color: var(--color); background: rgba(255,255,255,.13); transform: translateY(-2px); }
+    .swatch { width: 10px; height: 10px; border-radius: 50%; background: var(--color); box-shadow: 0 0 14px var(--color); }
+
+    .hint { display: none; }
+
+    .video-layer { position: absolute; inset: 0; z-index: 10; pointer-events: none; perspective: 1200px; }
+    .video-pop {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 24% 30%, var(--color), transparent 34%),
+        radial-gradient(circle at 76% 56%, rgba(255,255,255,.15), transparent 34%),
+        linear-gradient(135deg, rgba(12,24,36,.98), rgba(7,11,18,.98));
+      opacity: 0;
+      transform: scale(.92) translateY(38px) rotateX(7deg);
+      transition: opacity .55s ease, transform .9s cubic-bezier(.16,1,.3,1);
+      box-shadow: inset 0 0 120px rgba(0,0,0,.66);
+    }
+    .video-pop.show { opacity: 1; transform: scale(1) translateY(0) rotateX(0deg); }
+    .video-pop.exit { opacity: 0; transform: scale(1.04); transition-duration: .65s; }
+    .video-pop::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 7px);
+      transform: translateX(-120%);
+      animation: cinematicSweep 2.8s linear infinite;
+    }
+    .video-pop::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        radial-gradient(circle at 64% 46%, var(--color), transparent 18%),
+        linear-gradient(112deg, transparent 0 47%, rgba(255,255,255,.18) 50%, transparent 55%),
+        linear-gradient(126deg, transparent 0 58%, rgba(255,255,255,.14) 61%, transparent 68%);
+      opacity: .56;
+      mix-blend-mode: screen;
+      animation: videoEnergy 3.8s ease-in-out infinite;
+    }
+    .video-title { position: absolute; left: 72px; top: 62px; z-index: 2; margin: 0; font-family: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif; font-size: 76px; font-weight: 850; line-height: 1.15; }
+    .video-copy { position: absolute; left: 78px; bottom: 88px; z-index: 2; width: min(620px, 48vw); margin: 0; color: rgba(241,248,255,.84); font-size: 24px; line-height: 1.55; word-break: keep-all; }
+    .video-mark { position: absolute; right: 72px; top: 64px; z-index: 2; display: grid; place-items: center; width: 92px; height: 92px; border: 1px solid rgba(255,255,255,.24); border-radius: 50%; background: rgba(255,255,255,.08); font-size: 18px; font-weight: 900; box-shadow: 0 0 28px var(--color); }
+    .video-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: rgba(255,255,255,.12); }
+    .video-progress span { display: block; width: 0; height: 100%; background: var(--color); box-shadow: 0 0 18px var(--color); }
+    .video-pop.show .video-progress span { animation: playhead 2s linear forwards; }
+
+    .unified-map { opacity: 0; fill: rgba(255,255,255,.05); stroke: rgba(255,255,255,0); stroke-width: 7; pointer-events: none; transition: opacity .6s ease; stroke-linecap: round; stroke-linejoin: round; transform-box: fill-box; transform-origin: center; }
+    .stage.complete .progress,
+    .stage.complete .legend {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+    .stage.complete .district {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .9s cubic-bezier(.16,1,.3,1);
+    }
+    .stage.complete .district .base { stroke: rgba(255,255,255,0); animation: none; }
+    .stage.complete .district .texture, .stage.complete .district .label, .stage.complete .district .caption, .stage.complete .pin { opacity: 0; transition: opacity .55s ease; }
+    .stage.complete .outer-border { animation: borderVanish .65s ease forwards; }
+    .stage.complete .map-shell { animation: finalMapZoom 4s .18s cubic-bezier(.18,1.24,.24,1) forwards; }
+    .stage.complete .unified-map { opacity: 1; fill: url(#finalMapGradient); stroke: url(#finalMapGradient); animation: unifiedIgnite 4s cubic-bezier(.16,1,.3,1) forwards, finalColorBreath 4.4s 4s ease-in-out infinite; }
+
+    .completion { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity .65s ease; }
+    .completion.show { opacity: 1; }
+    .completion::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      background:
+        radial-gradient(circle at 50% 48%, rgba(178,32,149,.26), rgba(245,50,75,.12) 20%, rgba(12,20,24,.18) 44%, rgba(8,16,24,.7) 78%),
+        linear-gradient(106deg, transparent 0 25%, rgba(52,63,158,.34) 35%, rgba(178,32,149,.28) 50%, rgba(245,50,75,.22) 66%, transparent 78%),
+        linear-gradient(74deg, transparent 0 43%, rgba(178,32,149,.18) 50%, transparent 62%);
+      mix-blend-mode: screen;
+      animation: finishWash 5.1s ease-out forwards, lightSweep 4.1s ease-in-out infinite;
+    }
+    .completion h2 { position: relative; z-index: 2; width: min(900px,72vw); margin: 0; text-align: center; font-family: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif; font-size: 72px; font-weight: 900; line-height: 1.08; color: rgba(255,255,255,.98); text-shadow: 0 5px 20px rgba(0,0,0,.95), 0 0 20px rgba(255,255,255,.22); opacity: 0; transform: translateY(26px) scale(.88); animation: finishText 1.08s .58s cubic-bezier(.14,1.28,.22,1) forwards, titleBreath 3.8s 1.9s ease-in-out infinite; }
+
+    @keyframes districtPulse { 0%,100% { filter: brightness(1.22) drop-shadow(0 0 16px var(--color)); } 50% { filter: brightness(1.55) drop-shadow(0 0 34px var(--color)); } }
+    @keyframes cinematicSweep { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
+    @keyframes videoEnergy { 0%,100% { transform: translate3d(-2%,1%,0) scale(1); opacity: .42; } 50% { transform: translate3d(2%,-1%,0) scale(1.04); opacity: .78; } }
+    @keyframes playhead { from { width: 0; } to { width: 100%; } }
+    @keyframes mergeFill { 0% { filter: brightness(1.35) drop-shadow(0 0 24px var(--color)); } 55% { filter: brightness(1.55) drop-shadow(0 0 34px rgba(222,92,178,.64)); } 100% { fill: rgba(102,51,88,.24); filter: brightness(1.08) drop-shadow(0 0 16px rgba(222,92,178,.42)); } }
+    @keyframes borderVanish { to { opacity: 0; } }
+    @keyframes unifiedIgnite { 0% { stroke-dasharray: 1; stroke-dashoffset: 1; fill-opacity: .05; filter: drop-shadow(0 0 0 rgba(178,32,149,0)); } 58% { stroke-dasharray: 1; stroke-dashoffset: 0; fill-opacity: .72; filter: drop-shadow(0 0 54px rgba(178,32,149,.64)) drop-shadow(0 0 92px rgba(52,63,158,.36)); } 100% { stroke-dasharray: 1; stroke-dashoffset: 0; fill-opacity: .74; filter: drop-shadow(0 0 30px rgba(245,50,75,.44)) drop-shadow(0 0 78px rgba(52,63,158,.28)); } }
+    @keyframes finalMapZoom { 0% { transform: scale(1); filter: drop-shadow(0 32px 72px rgba(0,0,0,.44)); } 76% { transform: scale(1.34); filter: drop-shadow(0 42px 112px rgba(0,0,0,.44)) drop-shadow(0 0 104px rgba(222,92,178,.42)); } 100% { transform: scale(1.27); filter: drop-shadow(0 40px 106px rgba(0,0,0,.42)) drop-shadow(0 0 92px rgba(222,92,178,.36)); } }
+    @keyframes finalColorBreath { 0%,100% { fill-opacity: .72; filter: drop-shadow(0 0 24px rgba(245,50,75,.38)) drop-shadow(0 0 58px rgba(52,63,158,.26)); } 50% { fill-opacity: .84; filter: drop-shadow(0 0 38px rgba(178,32,149,.66)) drop-shadow(0 0 92px rgba(52,63,158,.38)); } }
+    @keyframes titleBreath { 0%,100% { text-shadow: 0 5px 20px rgba(0,0,0,.95), 0 0 18px rgba(255,255,255,.18); } 50% { text-shadow: 0 5px 22px rgba(0,0,0,.96), 0 0 28px rgba(255,255,255,.28); } }
+    @keyframes finishWash { 0% { transform: scale(.72); opacity: 0; } 28% { opacity: .94; } 100% { transform: scale(1.18); opacity: .35; } }
+    @keyframes lightSweep { 0%,100% { background-position: 0 0, -18vw 0, 12vw 0; } 50% { background-position: 0 0, 18vw 0, -12vw 0; } }
+    @keyframes finishText { 0% { opacity: 0; transform: translateY(26px) scale(.88); filter: blur(4px); } 62% { opacity: 1; transform: translateY(0) scale(1.06); filter: blur(0); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;">
+    <header>
+      <h1>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h1>
+      <p class="subtitle">&#49457;&#45224;&#49884;&#51032; &#48120;&#47000; &#51032;&#51228;&#47484; 5&#44060;&#51032; &#50689;&#50669;&#51004;&#47196; &#54204;&#52824;&#44256;, &#48516;&#50556;&#48324; &#50689;&#49345;&#51060; &#50756;&#49457;&#46112;&#49688;&#47197; &#54616;&#45208;&#51032; &#48120;&#47000;&#51648;&#46020;&#47196; &#54633;&#52432;&#51648;&#45716; &#51064;&#53552;&#47001;&#54000;&#48652; &#53080;&#49481;&#53944;</p>
+    </header>
+    <div class="progress" aria-live="polite">
+      <span id="progressText">0 / 5 &#50756;&#49457;</span>
+      <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+
+    <section class="map-wrap">
+      <div class="map-shell">
+        <svg viewBox="0 0 1000 720" role="img" aria-labelledby="mapTitle mapDesc">
+          <title id="mapTitle">&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</title>
+          <desc id="mapDesc">&#49457;&#45224;&#49884; &#50808;&#44285;&#49440;&#51012; 5&#44060; &#48120;&#47000; &#51032;&#51228; &#50689;&#50669;&#51004;&#47196; &#45208;&#45576; &#51064;&#53552;&#47001;&#54000;&#48652; &#51648;&#46020;</desc>
+          <defs>
+            <clipPath id="seongnamBoundary"><path d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path></clipPath>
+            <linearGradient id="mapShade" x1="210" y1="70" x2="820" y2="660" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="rgba(255,255,255,.08)"></stop>
+              <stop offset=".55" stop-color="rgba(255,255,255,0)"></stop>
+              <stop offset="1" stop-color="rgba(0,0,0,.2)"></stop>
+            </linearGradient>
+            <linearGradient id="finalMapGradient" x1="210" y1="360" x2="820" y2="360" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#343f9e"></stop>
+              <stop offset=".48" stop-color="#b12095"></stop>
+              <stop offset="1" stop-color="#f5324b"></stop>
+            </linearGradient>
+            <pattern id="diagonal" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="18" height="18" fill="transparent"></rect><rect width="3" height="18" fill="rgba(255,255,255,.42)"></rect></pattern>
+            <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="2.2" fill="rgba(255,255,255,.58)"></circle><circle cx="19" cy="17" r="1.6" fill="rgba(255,255,255,.36)"></circle></pattern>
+            <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M0 14 H28 M14 0 V28" stroke="rgba(255,255,255,.4)" stroke-width="1.4"></path></pattern>
+            <pattern id="blocks" width="30" height="30" patternUnits="userSpaceOnUse"><rect x="3" y="4" width="9" height="8" fill="rgba(255,255,255,.46)"></rect><rect x="16" y="16" width="11" height="9" fill="rgba(255,255,255,.3)"></rect></pattern>
+            <pattern id="waves" width="42" height="24" patternUnits="userSpaceOnUse"><path d="M0 12 C8 2 14 2 22 12 S36 22 42 12" fill="none" stroke="rgba(255,255,255,.44)" stroke-width="2"></path></pattern>
+          </defs>
+          <path class="outer-border" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
+          <g clip-path="url(#seongnamBoundary)">
+            <g class="district" tabindex="0" role="button" data-id="renovation" style="--color: var(--renovation)" aria-label="&#51116;&#44148;&#52629;">
+              <path class="base" d="M520 0 H1000 V280 L820 300 L660 280 L555 300 L555 250 L540 120 Z"></path><path class="texture" fill="url(#blocks)" d="M520 0 H1000 V280 L820 300 L660 280 L555 300 L555 250 L540 120 Z"></path><circle class="pin" cx="660" cy="240" r="7" fill="var(--renovation)"></circle><text class="label" x="660" y="240">&#51116;&#44148;&#52629;</text><text class="caption" x="455" y="284">&#46020;&#49884;&#47484; &#45796;&#49884; &#49464;&#50864;&#45716; &#48731;</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="enterprise" style="--color: var(--enterprise)" aria-label="&#45824;&#44592;&#50629;/IT">
+              <path class="base" d="M0 350 L130 345 L255 365 L385 355 L495 392 L500 485 L420 485 L285 470 L135 485 L0 475 Z"></path><path class="texture" fill="url(#grid)" d="M0 350 L130 345 L255 365 L385 355 L495 392 L500 485 L420 485 L285 470 L135 485 L0 475 Z"></path><circle class="pin" cx="365" cy="425" r="7" fill="var(--enterprise)"></circle><text class="label" x="365" y="425">&#45824;&#44592;&#50629;/IT</text><text class="caption" x="682" y="307">&#54032;&#44368;&#50640;&#49436; &#54869;&#51109;&#46104;&#45716; &#50644;&#51652;</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="market" style="--color: var(--market)" aria-label="&#44264;&#47785;&#49345;&#44428;">
+              <path class="base" d="M555 300 L660 280 L820 300 L1000 280 V470 L840 455 L720 480 L600 455 L500 485 L495 392 L500 345 Z"></path><path class="texture" fill="url(#waves)" d="M555 300 L660 280 L820 300 L1000 280 V470 L840 455 L720 480 L600 455 L500 485 L495 392 L500 345 Z"></path><circle class="pin" cx="627" cy="395" r="7" fill="var(--market)"></circle><text class="label" x="627" y="395">&#44264;&#47785;&#49345;&#44428;</text><text class="caption" x="365" y="459">&#49373;&#54876;&#44428;&#51012; &#51079;&#45716; &#44221;&#51228;</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="youth" style="--color: var(--youth)" aria-label="&#52397;&#45380;">
+              <path class="base" d="M0 0 H520 L540 120 L555 250 L555 300 L500 345 L495 392 L385 355 L255 365 L130 345 L0 350 Z"></path><path class="texture" fill="url(#diagonal)" d="M0 0 H520 L540 120 L555 250 L555 300 L500 345 L495 392 L385 355 L255 365 L130 345 L0 350 Z"></path><circle class="pin" cx="401" cy="303" r="7" fill="var(--youth)"></circle><text class="label" x="401" y="303">&#52397;&#45380;</text><text class="caption" x="635" y="517">&#44592;&#54924;&#44032; &#47672;&#47924;&#45716; &#46020;&#49884;</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="senior" style="--color: var(--senior)" aria-label="&#50612;&#47476;&#49888;">
+              <path class="base" d="M0 475 L135 485 L285 470 L420 485 L500 485 L600 455 L720 480 L840 455 L1000 470 V720 H0 Z"></path><path class="texture" fill="url(#dots)" d="M0 475 L135 485 L285 470 L420 485 L500 485 L600 455 L720 480 L840 455 L1000 470 V720 H0 Z"></path><circle class="pin" cx="513" cy="555" r="7" fill="var(--senior)"></circle><text class="label" x="513" y="555">&#50612;&#47476;&#49888;</text><text class="caption" x="520" y="639">&#46028;&#48388;&#44284; &#54408;&#44201;&#51032; &#44592;&#48152;</text>
+            </g>
+          </g>
+          <path class="unified-map" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
+        </svg>
+      </div>
+    </section>
+
+    <nav class="legend" aria-label="&#48516;&#50556; &#49440;&#53469;">
+      <button type="button" data-target="renovation" style="--color: var(--renovation)"><span class="swatch"></span>&#51116;&#44148;&#52629;</button>
+      <button type="button" data-target="enterprise" style="--color: var(--enterprise)"><span class="swatch"></span>&#45824;&#44592;&#50629;/IT</button>
+      <button type="button" data-target="market" style="--color: var(--market)"><span class="swatch"></span>&#44264;&#47785;&#49345;&#44428;</button>
+      <button type="button" data-target="youth" style="--color: var(--youth)"><span class="swatch"></span>&#52397;&#45380;</button>
+      <button type="button" data-target="senior" style="--color: var(--senior)"><span class="swatch"></span>&#50612;&#47476;&#49888;</button>
+    </nav>
+    <p class="hint">&#51648;&#46020; &#50689;&#50669;&#51012; &#53364;&#47533;&#54616;&#47732; &#54644;&#45817; &#48516;&#50556;&#44032; &#48157;&#50500;&#51648;&#44256; &#51204;&#52404;&#54868;&#47732; &#50689;&#49345; &#50672;&#52636;&#51060; &#51116;&#49373;&#46121;&#45768;&#45796;.</p>
+    <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
+    <div class="completion" id="completion"><h2>&#49457;&#45224; &#48120;&#47000;&#51648;&#46020;</h2></div>
+  </main>
+
+  <script>
+    const segments = {
+      renovation: { title: "&#51116;&#44148;&#52629;", copy: "&#45432;&#54980; &#51452;&#44144;&#51648;&#51032; &#48320;&#54868;&#44032; &#49373;&#54876; &#51064;&#54532;&#46972;&#50752; &#50672;&#44208;&#46104;&#47728; &#49457;&#45224;&#51032; &#49352; &#51452;&#44144; &#52629;&#51004;&#47196; &#49332;&#50500;&#45208;&#45716; &#51109;&#47732;.", color: "var(--renovation)", mark: "01" },
+      enterprise: { title: "&#45824;&#44592;&#50629;/IT", copy: "&#54032;&#44368;&#50752; &#52392;&#45800; &#49328;&#50629; &#44592;&#48152;&#51060; &#46020;&#49884; &#51204;&#52404;&#47196; &#54869;&#49328;&#46104;&#45716; &#55120;&#47492;&#51012; &#45936;&#51060;&#53552; &#46972;&#51064;&#44284; &#48731;&#51032; &#49549;&#46020;&#47196; &#54364;&#54788;.", color: "var(--enterprise)", mark: "02" },
+      market: { title: "&#44264;&#47785;&#49345;&#44428;", copy: "&#51204;&#53685;&#49884;&#51109;&#44284; &#49373;&#54876; &#49345;&#44428;&#51060; &#45796;&#49884; &#49324;&#46988;&#51012; &#47784;&#51004;&#45716; &#54876;&#47141;&#51032; &#45348;&#53944;&#50892;&#53356;&#47196; &#46496;&#50724;&#47476;&#45716; &#51109;&#47732;.", color: "var(--market)", mark: "03" },
+      youth: { title: "&#52397;&#45380;", copy: "&#51068;&#51088;&#47532;, &#51452;&#44144;, &#52285;&#50629;, &#47928;&#54868;&#44032; &#47582;&#47932;&#47532;&#47728; &#52397;&#45380;&#51032; &#49884;&#46020;&#44032; &#46020;&#49884;&#51032; &#49549;&#46020;&#44032; &#46104;&#45716; &#49692;&#44036;.", color: "var(--youth)", mark: "04" },
+      senior: { title: "&#50612;&#47476;&#49888;", copy: "&#46028;&#48388;, &#44148;&#44053;, &#51060;&#46041; &#54200;&#51032;&#44032; &#54616;&#45208;&#51032; &#50504;&#51204;&#47581;&#51004;&#47196; &#51060;&#50612;&#51256; &#54408;&#44201; &#51080;&#45716; &#51068;&#49345;&#51012; &#48157;&#55176;&#45716; &#51109;&#47732;.", color: "var(--senior)", mark: "05" }
+    };
+    const done = new Set();
+    const districts = [...document.querySelectorAll('.district')];
+    const videoLayer = document.querySelector('#videoLayer');
+    const progressText = document.querySelector('#progressText');
+    const progressBar = document.querySelector('#progressBar');
+    const completion = document.querySelector('#completion');
+    const stage = document.querySelector('.stage');
+    let activeTimer = null;
+    let completionShown = false;
+
+    function playSegment(id) {
+      const item = segments[id];
+      if (!item) return;
+      clearTimeout(activeTimer);
+      districts.forEach(d => d.classList.toggle('active', d.dataset.id === id));
+      showVideo(item, () => {
+        done.add(id);
+        districts.forEach(d => { d.classList.remove('active'); d.classList.toggle('done', done.has(d.dataset.id)); });
+        updateProgress();
+      });
+    }
+
+    function showVideo(item, onFinish) {
+      videoLayer.innerHTML = '';
+      const pop = document.createElement('article');
+      pop.className = 'video-pop';
+      pop.style.setProperty('--color', item.color);
+      pop.innerHTML = `<p class="video-title">${item.title}<br>&#48120;&#47000; &#50689;&#49345;</p><span class="video-mark">${item.mark}</span><p class="video-copy">${item.copy}</p><div class="video-progress"><span></span></div>`;
+      videoLayer.appendChild(pop);
+      requestAnimationFrame(() => pop.classList.add('show'));
+      activeTimer = setTimeout(() => {
+        pop.classList.add('exit');
+        onFinish();
+        setTimeout(() => pop.remove(), 680);
+      }, 2000);
+    }
+
+    function updateProgress() {
+      const count = done.size;
+      progressText.textContent = `${count} / 5 \uC644\uC131`;
+      progressBar.style.width = `${count * 20}%`;
+      if (count === 5 && !completionShown) {
+        completionShown = true;
+        setTimeout(() => { stage.classList.add('complete'); completion.classList.add('show'); }, 650);
+      }
+    }
+
+    districts.forEach(d => {
+      d.addEventListener('click', () => playSegment(d.dataset.id));
+      d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSegment(d.dataset.id); } });
+    });
+    document.querySelectorAll('[data-target]').forEach(b => b.addEventListener('click', () => playSegment(b.dataset.target)));
+  </script>
+</body>
+</html>
