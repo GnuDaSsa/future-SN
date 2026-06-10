@@ -343,7 +343,7 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .stage.complete .district .base { stroke: rgba(255,255,255,0); animation: none; filter: none; transition: opacity .42s ease; }
 .stage.complete .district .texture, .stage.complete .district .label, .stage.complete .district .caption, .stage.complete .pin { opacity: 0; filter: none; transition: opacity .42s ease; }
 .stage.complete .outer-border { animation: borderVanish .65s ease forwards; }
-.stage.complete .map-shell { filter: none; animation: finalMapZoom 4s .18s cubic-bezier(.18,1.24,.24,1) forwards; }
+.stage.complete .map-shell { filter: none; animation: finalMapZoom 3.8s .12s ease-in-out forwards; }
 .stage.complete .map-shell::before { animation: mapAurora 4.8s .12s ease-out forwards, auroraDrift 6s 4.4s ease-in-out infinite; }
 .stage.complete .map-shell::after { animation: particleBloom 4.2s .28s ease-out forwards, particleFloat 5.6s 4.1s ease-in-out infinite; }
 .stage.complete .unified-map { opacity: 1; fill: url(#finalMapGradient); stroke: rgba(255,255,255,0); filter: none; animation: unifiedIgnite 3.4s cubic-bezier(.16,1,.3,1) forwards, finalColorBreath 4.4s 3.5s ease-in-out infinite; }
@@ -412,7 +412,7 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes mergeFill { 0% { filter: brightness(1.35) drop-shadow(0 0 24px var(--color)); } 55% { filter: brightness(1.55) drop-shadow(0 0 34px rgba(222,92,178,.64)); } 100% { fill: rgba(102,51,88,.24); filter: brightness(1.08) drop-shadow(0 0 16px rgba(222,92,178,.42)); } }
 @keyframes borderVanish { to { opacity: 0; } }
 @keyframes unifiedIgnite { 0% { fill-opacity: .08; } 58% { fill-opacity: .72; } 100% { fill-opacity: .76; } }
-@keyframes finalMapZoom { 0% { transform: translateZ(0) scale(1); } 76% { transform: translateZ(0) scale(1.115); } 100% { transform: translateZ(0) scale(1.08); } }
+@keyframes finalMapZoom { 0% { transform: translateZ(0) scale(1); } 18% { transform: translateZ(0) scale(.965); } 100% { transform: translateZ(0) scale(1.13); } }
 @keyframes finalColorBreath { 0%,100% { fill-opacity: .72; } 50% { fill-opacity: .86; } }
 @keyframes mapAurora { 0% { opacity: 0; transform: scale(.86) rotate(-8deg); } 34% { opacity: .9; } 100% { opacity: .46; transform: scale(1.08) rotate(11deg); } }
 @keyframes auroraDrift { 0%,100% { transform: scale(1.08) rotate(11deg); } 50% { transform: scale(1.13) rotate(-7deg); } }
