@@ -33,10 +33,23 @@
               <stop offset=".55" stop-color="rgba(255,255,255,0)"></stop>
               <stop offset="1" stop-color="rgba(0,0,0,.2)"></stop>
             </linearGradient>
-            <linearGradient id="finalMapGradient" x1="210" y1="360" x2="820" y2="360" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#343f9e"></stop>
-              <stop offset=".48" stop-color="#b12095"></stop>
-              <stop offset="1" stop-color="#f5324b"></stop>
+            <linearGradient id="finalMapGradient" x1="120" y1="120" x2="900" y2="620" gradientUnits="userSpaceOnUse">
+              <animate attributeName="x1" values="120;760;260;120" dur="8s" repeatCount="indefinite"></animate>
+              <animate attributeName="y1" values="120;90;640;120" dur="8s" repeatCount="indefinite"></animate>
+              <animate attributeName="x2" values="900;250;820;900" dur="8s" repeatCount="indefinite"></animate>
+              <animate attributeName="y2" values="620;690;110;620" dur="8s" repeatCount="indefinite"></animate>
+              <stop offset="0" stop-color="#1f7bd8">
+                <animate attributeName="stop-color" values="#1f7bd8;#8a3ffc;#00a8c8;#1f7bd8" dur="8s" repeatCount="indefinite"></animate>
+              </stop>
+              <stop offset=".34" stop-color="#35d2ff">
+                <animate attributeName="stop-color" values="#35d2ff;#f5324b;#6c5ce7;#35d2ff" dur="8s" repeatCount="indefinite"></animate>
+              </stop>
+              <stop offset=".66" stop-color="#b12095">
+                <animate attributeName="stop-color" values="#b12095;#1f7bd8;#ff9f1c;#b12095" dur="8s" repeatCount="indefinite"></animate>
+              </stop>
+              <stop offset="1" stop-color="#f5324b">
+                <animate attributeName="stop-color" values="#f5324b;#35d2ff;#b12095;#f5324b" dur="8s" repeatCount="indefinite"></animate>
+              </stop>
             </linearGradient>
             <pattern id="diagonal" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="18" height="18" fill="transparent"></rect><rect width="3" height="18" fill="rgba(255,255,255,.42)"></rect></pattern>
             <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="2.2" fill="rgba(255,255,255,.58)"></circle><circle cx="19" cy="17" r="1.6" fill="rgba(255,255,255,.36)"></circle></pattern>
