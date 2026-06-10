@@ -156,7 +156,7 @@
         stage.classList.add('intro-ready');
         introLoader.classList.add('is-hiding');
         setTimeout(() => introLoader.remove(), 1200);
-      }, 4200);
+      }, 3000);
     }
 
     function runIntro() {
@@ -164,7 +164,7 @@
         stage.classList.remove('is-intro');
         return;
       }
-      const duration = 9600;
+      const duration = 9000;
       const started = performance.now();
 
       function tick(now) {

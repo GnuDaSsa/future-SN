@@ -337,23 +337,23 @@ body {
 }
 
 .intro-loader.is-launching .intro-burst::before {
-  animation: transitionRing 3.7s cubic-bezier(.11,.86,.18,1) forwards;
+  animation: transitionRing 2.8s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader.is-launching .intro-burst::after {
-  animation: transitionFlash 3.55s .18s cubic-bezier(.11,.86,.18,1) forwards;
+  animation: transitionFlash 2.62s .14s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader.is-launching .intro-burst span:nth-child(1) {
-  animation: transitionRing 3.8s .08s cubic-bezier(.11,.86,.18,1) forwards;
+  animation: transitionRing 2.86s .06s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader.is-launching .intro-burst span:nth-child(2) {
-  animation: transitionRing 3.9s .16s cubic-bezier(.11,.86,.18,1) forwards reverse;
+  animation: transitionRing 2.94s .12s cubic-bezier(.11,.86,.18,1) forwards reverse;
 }
 
 .intro-loader.is-launching .intro-burst span:nth-child(3) {
-  animation: transitionIris 4s .04s cubic-bezier(.11,.86,.18,1) forwards;
+  animation: transitionIris 3s .04s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader.is-hiding {
