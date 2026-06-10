@@ -175,22 +175,17 @@
     function sampleMapTargets(total = 320) {
       const path = document.querySelector('.outer-border');
       const svg = document.querySelector('.map-shell svg');
-      const shell = document.querySelector('.map-shell');
       if (!path || !svg) return [];
-      const rect = svg.getBoundingClientRect();
-      const shellRect = shell ? shell.getBoundingClientRect() : rect;
-      const finalWidth = svg.clientWidth || rect.width;
-      const finalHeight = svg.clientHeight || rect.height;
-      const finalLeft = shellRect.left + shellRect.width / 2 - finalWidth / 2;
-      const finalTop = shellRect.top + shellRect.height / 2 - finalHeight / 2;
-      const viewBox = svg.viewBox.baseVal;
+      const matrix = svg.getScreenCTM();
+      if (!matrix) return [];
       const length = path.getTotalLength();
       const targets = [];
       for (let i = 0; i < total; i += 1) {
         const point = path.getPointAtLength((length * i) / total);
+        const screenPoint = new DOMPoint(point.x, point.y).matrixTransform(matrix);
         targets.push({
-          x: finalLeft + ((point.x - viewBox.x) / viewBox.width) * finalWidth,
-          y: finalTop + ((point.y - viewBox.y) / viewBox.height) * finalHeight
+          x: screenPoint.x,
+          y: screenPoint.y
         });
       }
       return targets;
