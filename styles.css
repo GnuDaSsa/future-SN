@@ -61,8 +61,8 @@ body {
 
 .stage.is-intro .map-shell {
   opacity: 0;
-  clip-path: inset(46% 48% 46% 48% round 22px);
-  transform: translate3d(0, 24px, 0) scale(.86);
+  clip-path: inset(0 0 0 0 round 0);
+  transform: translateZ(0) scale(1);
 }
 
 .stage.intro-ready .map-shell {
@@ -119,8 +119,7 @@ body {
   height: 100%;
   opacity: 0;
   pointer-events: none;
-  mix-blend-mode: screen;
-  filter: saturate(1.34) contrast(1.12);
+  mix-blend-mode: normal;
   transition: opacity .28s ease;
 }
 
@@ -525,12 +524,11 @@ h1 {
 
 .map-shell::after {
   background:
-    radial-gradient(circle at 18% 31%, rgba(255,255,255,.88) 0 2px, transparent 3px),
-    radial-gradient(circle at 34% 71%, rgba(53,210,255,.72) 0 2.4px, transparent 4px),
-    radial-gradient(circle at 63% 22%, rgba(255,255,255,.72) 0 1.7px, transparent 3px),
-    radial-gradient(circle at 78% 64%, rgba(245,50,75,.7) 0 2.2px, transparent 4px),
-    radial-gradient(ellipse at 42% 46%, rgba(255,255,255,.16), transparent 34%),
-    radial-gradient(ellipse at 68% 38%, rgba(53,210,255,.14), transparent 30%);
+    linear-gradient(108deg, transparent 0 36%, rgba(255,255,255,.16) 43%, transparent 51%),
+    linear-gradient(72deg, transparent 0 42%, rgba(53,210,255,.18) 49%, transparent 57%),
+    radial-gradient(ellipse at 42% 46%, rgba(255,255,255,.12), transparent 34%),
+    radial-gradient(ellipse at 68% 38%, rgba(53,210,255,.16), transparent 30%),
+    radial-gradient(ellipse at 36% 62%, rgba(245,50,75,.12), transparent 32%);
   opacity: 0;
   mix-blend-mode: screen;
   mask-image: radial-gradient(ellipse at center, black 0 54%, transparent 72%);
@@ -679,7 +677,7 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .stage.complete .outer-border { animation: borderVanish .65s ease forwards; }
 .stage.complete .map-shell { filter: none; animation: finalMapZoom 3.8s .12s ease-in-out forwards; }
 .stage.complete .map-shell::before { animation: mapAurora 4.8s .12s ease-out forwards, auroraDrift 6s 4.4s ease-in-out infinite; }
-.stage.complete .map-shell::after { animation: particleBloom 4.2s .28s ease-out forwards, particleFloat 5.6s 4.1s ease-in-out infinite; }
+.stage.complete .map-shell::after { animation: lightSheetBloom 3.7s .24s ease-out forwards, lightSheetDrift 5.6s 3.5s ease-in-out infinite; }
 .stage.complete .unified-map { opacity: 1; fill: url(#finalMapGradient); stroke: rgba(255,255,255,0); filter: none; animation: unifiedIgnite 3.4s cubic-bezier(.16,1,.3,1) forwards, finalColorBreath 4.4s 3.5s ease-in-out infinite; }
 
 .completion { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity .65s ease; contain: layout paint style; isolation: isolate; }
@@ -730,9 +728,9 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   inset: 0;
   opacity: 0;
   background:
-    radial-gradient(ellipse at 21% 35%, rgba(53,210,255,.34), transparent 28%),
-    radial-gradient(ellipse at 76% 42%, rgba(245,50,75,.3), transparent 31%),
-    radial-gradient(ellipse at 52% 76%, rgba(255,159,28,.22), transparent 28%);
+    radial-gradient(ellipse at 24% 36%, rgba(53,210,255,.24), transparent 32%),
+    radial-gradient(ellipse at 75% 44%, rgba(245,50,75,.2), transparent 34%),
+    linear-gradient(118deg, transparent 0 42%, rgba(255,255,255,.1) 48%, transparent 55%);
   mix-blend-mode: screen;
   mask-image: radial-gradient(ellipse at center, black 0 62%, transparent 80%);
   transform: translateZ(0);
@@ -746,43 +744,26 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   mix-blend-mode: screen;
 }
 .final-sparks::before {
-  left: 50%;
-  top: 50%;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  color: rgba(255,255,255,.9);
-  background: currentColor;
-  box-shadow:
-    -420px -126px 0 1px rgba(255,255,255,.72),
-    -332px 82px 0 2px rgba(53,210,255,.58),
-    -247px -232px 0 1px rgba(245,50,75,.56),
-    -188px 168px 0 1px rgba(255,255,255,.76),
-    -92px -84px 0 2px rgba(255,159,28,.56),
-    -34px 244px 0 1px rgba(53,210,255,.52),
-    58px -204px 0 1px rgba(255,255,255,.64),
-    116px 112px 0 2px rgba(245,50,75,.5),
-    196px -48px 0 1px rgba(255,255,255,.7),
-    278px 202px 0 1px rgba(53,210,255,.54),
-    372px -168px 0 2px rgba(245,50,75,.48),
-    436px 42px 0 1px rgba(255,255,255,.58);
-  transform: rotate(-12deg) scale(.76);
+  inset: 18% -12%;
+  background:
+    linear-gradient(104deg, transparent 0 34%, rgba(255,255,255,.24) 39%, rgba(53,210,255,.14) 43%, transparent 50%),
+    linear-gradient(118deg, transparent 0 50%, rgba(245,50,75,.12) 55%, transparent 63%);
+  transform: translateX(-16%) rotate(-5deg);
 }
 .final-sparks::after {
   inset: 8% 5%;
   background:
-    radial-gradient(ellipse at 28% 44%, rgba(255,255,255,.22), transparent 28%),
-    radial-gradient(ellipse at 64% 35%, rgba(53,210,255,.2), transparent 30%),
-    radial-gradient(ellipse at 58% 68%, rgba(245,50,75,.18), transparent 28%);
-  opacity: .72;
+    conic-gradient(from 218deg at 50% 50%, transparent 0 18%, rgba(255,255,255,.16) 24%, transparent 30% 54%, rgba(53,210,255,.14) 62%, transparent 72% 100%),
+    radial-gradient(ellipse at 50% 52%, rgba(255,255,255,.1), transparent 43%);
+  opacity: .64;
   mask-image: radial-gradient(ellipse at center, black 0 58%, transparent 76%);
   transform: translate3d(-2%, 3%, 0) scale(.96);
 }
-.completion.show .final-sparks { animation: sparkField 4.4s .42s ease-out forwards, sparkDrift 5.2s 4s ease-in-out infinite; }
+.completion.show .final-sparks { animation: finishLightField 3.8s .34s ease-out forwards, finishLightDrift 5.2s 3.5s ease-in-out infinite; }
 .completion h2 { position: relative; z-index: 2; width: min(900px,72vw); margin: 0; text-align: center; font-family: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif; font-size: 72px; font-weight: 900; line-height: 1.08; color: rgba(255,255,255,.98); text-shadow: 0 5px 20px rgba(0,0,0,.95), 0 0 20px rgba(255,255,255,.22); opacity: 0; transform: translateY(24px) scale(.96); animation: finishText 1.55s .32s cubic-bezier(.16,1,.3,1) forwards, titleBreath 3.8s 2.05s ease-in-out infinite; }
 
 @keyframes districtPulse { 0%,100% { filter: brightness(1.22) drop-shadow(0 0 16px var(--color)); } 50% { filter: brightness(1.55) drop-shadow(0 0 34px var(--color)); } }
-@keyframes mapUnfold { 0% { opacity: 0; clip-path: inset(46% 48% 46% 48% round 22px); transform: translate3d(0, 24px, 0) scale(.86); } 46% { opacity: 1; clip-path: inset(8% 18% 8% 18% round 18px); transform: translate3d(0, -4px, 0) scale(1.045); } 100% { opacity: 1; clip-path: inset(0 0 0 0 round 0); transform: translateZ(0) scale(1); } }
+@keyframes mapUnfold { 0% { opacity: 0; clip-path: inset(0 0 0 0 round 0); transform: translateZ(0) scale(.998); } 44% { opacity: 1; transform: translateZ(0) scale(1.018); } 100% { opacity: 1; clip-path: inset(0 0 0 0 round 0); transform: translateZ(0) scale(1); } }
 @keyframes districtIntro { 0% { opacity: .18; transform: scale(.94); } 62% { opacity: 1; transform: scale(1.018); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes labelIntro { 0% { opacity: 0; transform: translateY(12px) scale(.94); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes introGlyph { 0% { opacity: 0; transform: translate3d(0, 46px, 0) scale(.9); } 62% { opacity: 1; transform: translate3d(0, -4px, 0) scale(1.025); } 100% { opacity: 1; transform: translateZ(0) scale(1); } }
@@ -791,12 +772,12 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes introSignals { 0% { opacity: 0; transform: rotate(-9deg) scale(.56); } 40% { opacity: .82; } 100% { opacity: .42; transform: rotate(8deg) scale(1.16); } }
 @keyframes introSignalsDrift { 0%,100% { transform: rotate(8deg) scale(1.16); } 50% { transform: rotate(-4deg) scale(1.28); } }
 @keyframes introUiVanish { 0% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(12px); } }
-@keyframes launchBackplate { 0% { background-position: 50% 44%, 72% 58%, 0 0; filter: brightness(1); } 54% { background-position: 46% 40%, 78% 62%, 0 0; filter: brightness(1.18) saturate(1.14); } 100% { background-position: 50% 44%, 72% 58%, 0 0; filter: brightness(1.05); } }
+@keyframes launchBackplate { 0% { background-position: 50% 44%, 72% 58%, 0 0; } 54% { background-position: 46% 40%, 78% 62%, 0 0; } 100% { background-position: 50% 44%, 72% 58%, 0 0; } }
 @keyframes launchOrb { 0% { opacity: .34; transform: rotateX(0) scale(1.1); } 38% { opacity: .58; transform: rotateX(58deg) scale(1.34); } 100% { opacity: 0; transform: rotateX(72deg) scale(2.15); } }
 @keyframes launchSignals { 0% { opacity: .42; transform: rotate(8deg) scale(1.16); } 48% { opacity: .64; transform: rotate(-16deg) scale(1.42); } 100% { opacity: 0; transform: rotate(22deg) scale(2.2); } }
-@keyframes transitionRing { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.22) rotateX(58deg); filter: blur(8px); } 18% { opacity: .82; filter: blur(0); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.28) rotateX(70deg); filter: blur(8px); } }
+@keyframes transitionRing { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.22) rotateX(58deg); } 18% { opacity: .82; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.28) rotateX(70deg); } }
 @keyframes transitionFlash { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.14); } 22% { opacity: .48; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(7); } }
-@keyframes transitionIris { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-18deg); filter: blur(3px); } 22% { opacity: .74; filter: blur(0); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.96) rotate(34deg); filter: blur(7px); } }
+@keyframes transitionIris { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-18deg); } 22% { opacity: .74; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.96) rotate(34deg); } }
 @keyframes introExit { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.035); visibility: hidden; } }
 @keyframes cinematicSweep { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
 @keyframes videoEnergy { 0%,100% { transform: translate3d(-2%,1%,0) scale(1); opacity: .42; } 50% { transform: translate3d(2%,-1%,0) scale(1.04); opacity: .78; } }
@@ -810,9 +791,13 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes auroraDrift { 0%,100% { transform: scale(1.08) rotate(11deg); } 50% { transform: scale(1.13) rotate(-7deg); } }
 @keyframes particleBloom { 0% { opacity: 0; transform: scale(.74); } 42% { opacity: .84; } 100% { opacity: .34; transform: scale(1.16); } }
 @keyframes particleFloat { 0%,100% { transform: translate3d(-1.5%, 1%, 0) scale(1.02) rotate(-4deg); } 50% { transform: translate3d(1.5%, -1%, 0) scale(1.08) rotate(5deg); } }
+@keyframes lightSheetBloom { 0% { opacity: 0; transform: translate3d(-2%, 2%, 0) scale(.92) rotate(-7deg); } 42% { opacity: .74; } 100% { opacity: .32; transform: translate3d(0, 0, 0) scale(1.08) rotate(4deg); } }
+@keyframes lightSheetDrift { 0%,100% { transform: translate3d(-1%, .8%, 0) scale(1.08) rotate(4deg); } 50% { transform: translate3d(1.2%, -1%, 0) scale(1.11) rotate(-3deg); } }
 @keyframes ringPulse { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.3); } 28% { opacity: .72; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.18); } }
 @keyframes sparkField { 0% { opacity: 0; transform: scale(.9) rotate(-4deg); } 34% { opacity: .72; } 100% { opacity: .3; transform: scale(1.08) rotate(3deg); } }
 @keyframes sparkDrift { 0%,100% { transform: translate3d(-1%, .8%, 0) scale(1.08) rotate(3deg); } 50% { transform: translate3d(1.4%, -1%, 0) scale(1.12) rotate(-2deg); } }
+@keyframes finishLightField { 0% { opacity: 0; transform: translateX(-2%) scale(.96); } 36% { opacity: .62; } 100% { opacity: .28; transform: translateX(0) scale(1.04); } }
+@keyframes finishLightDrift { 0%,100% { transform: translate3d(-1%, .6%, 0) scale(1.04); } 50% { transform: translate3d(1%, -.8%, 0) scale(1.07); } }
 @keyframes titleBreath { 0%,100% { text-shadow: 0 5px 20px rgba(0,0,0,.95), 0 0 18px rgba(255,255,255,.18); } 50% { text-shadow: 0 5px 22px rgba(0,0,0,.96), 0 0 28px rgba(255,255,255,.28); } }
 @keyframes finishWash { 0% { transform: scale(.72); opacity: 0; } 28% { opacity: .94; } 100% { transform: scale(1.18); opacity: .35; } }
 @keyframes lightSweep { 0%,100% { background-position: 0 0, -18vw 0, 12vw 0; } 50% { background-position: 0 0, 18vw 0, -12vw 0; } }

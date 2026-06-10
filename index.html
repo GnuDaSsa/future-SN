@@ -161,7 +161,7 @@
     }
 
     function resizeIntroCanvas(ctx) {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      const ratio = 1;
       const width = window.innerWidth;
       const height = window.innerHeight;
       introCanvas.width = Math.floor(width * ratio);
@@ -175,23 +175,29 @@
     function sampleMapTargets(total = 320) {
       const path = document.querySelector('.outer-border');
       const svg = document.querySelector('.map-shell svg');
+      const shell = document.querySelector('.map-shell');
       if (!path || !svg) return [];
       const rect = svg.getBoundingClientRect();
+      const shellRect = shell ? shell.getBoundingClientRect() : rect;
+      const finalWidth = svg.clientWidth || rect.width;
+      const finalHeight = svg.clientHeight || rect.height;
+      const finalLeft = shellRect.left + shellRect.width / 2 - finalWidth / 2;
+      const finalTop = shellRect.top + shellRect.height / 2 - finalHeight / 2;
       const viewBox = svg.viewBox.baseVal;
       const length = path.getTotalLength();
       const targets = [];
       for (let i = 0; i < total; i += 1) {
         const point = path.getPointAtLength((length * i) / total);
         targets.push({
-          x: rect.left + ((point.x - viewBox.x) / viewBox.width) * rect.width,
-          y: rect.top + ((point.y - viewBox.y) / viewBox.height) * rect.height
+          x: finalLeft + ((point.x - viewBox.x) / viewBox.width) * finalWidth,
+          y: finalTop + ((point.y - viewBox.y) / viewBox.height) * finalHeight
         });
       }
       return targets;
     }
 
     function createLaunchParticles(width, height) {
-      const targets = sampleMapTargets(340);
+      const targets = sampleMapTargets(96);
       const centerX = width / 2;
       const centerY = height / 2;
       return targets.map((target, index) => {
@@ -211,6 +217,7 @@
           cy: centerY + (Math.random() - .5) * height * .42,
           delay: Math.random() * .18,
           depth,
+          seq: index,
           size: 1 + depth * 3.6,
           lane: (index % 11) / 10,
           hue: index % 3,
@@ -258,17 +265,15 @@
       const alpha = reveal * vanish;
       if (alpha <= 0) return;
 
-      for (let i = 0; i < 14; i += 1) {
-        const lane = i / 13;
+      for (let i = 0; i < 8; i += 1) {
+        const lane = i / 7;
         const color = i % 3 === 0 ? '53,210,255' : i % 3 === 1 ? '245,50,75' : '255,255,255';
         const phase = progress * (1.4 + lane * .8) + lane * Math.PI * 2;
         const y = height * (.28 + lane * .48) + Math.sin(phase * 2.2) * height * .055;
         const sweep = easeOutCubic(reveal) * width * 1.45;
         const x = -width * .22 + sweep - lane * width * .24;
-        ctx.strokeStyle = `rgba(${color},${(.05 + lane * .11) * alpha})`;
-        ctx.lineWidth = 1.2 + lane * 4.8;
-        ctx.shadowColor = `rgba(${color},${.26 * alpha})`;
-        ctx.shadowBlur = 18 + lane * 16;
+        ctx.strokeStyle = `rgba(${color},${(.04 + lane * .1) * alpha})`;
+        ctx.lineWidth = 1.1 + lane * 3.6;
         ctx.beginPath();
         ctx.moveTo(x - width * .24, y + Math.sin(phase) * 42);
         ctx.bezierCurveTo(
@@ -281,7 +286,33 @@
         );
         ctx.stroke();
       }
-      ctx.shadowBlur = 0;
+    }
+
+    function drawLaunchSheets(ctx, width, height, progress) {
+      const reveal = clamp((progress - .12) / .56);
+      const vanish = 1 - clamp((progress - .76) / .18);
+      const alpha = reveal * vanish;
+      if (alpha <= 0) return;
+
+      const sweep = easeOutCubic(reveal) * width * 1.55;
+      const palette = ['53,210,255', '255,255,255', '245,50,75', '142,63,252'];
+      for (let i = 0; i < 4; i += 1) {
+        const y = height * (.24 + i * .16);
+        const x = -width * .45 + sweep - i * width * .1;
+        const color = palette[i];
+        const gradient = ctx.createLinearGradient(x, y, x + width * .64, y + height * .18);
+        gradient.addColorStop(0, `rgba(${color},0)`);
+        gradient.addColorStop(.5, `rgba(${color},${(.08 + i * .018) * alpha})`);
+        gradient.addColorStop(1, `rgba(${color},0)`);
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + width * .5, y - height * .11);
+        ctx.lineTo(x + width * .76, y + height * .035);
+        ctx.lineTo(x + width * .18, y + height * .18);
+        ctx.closePath();
+        ctx.fill();
+      }
     }
 
     function drawLaunchLens(ctx, width, height, progress) {
@@ -316,11 +347,11 @@
       ctx.fillRect(0, 0, width, height);
 
       ctx.globalCompositeOperation = 'lighter';
-      const pulse = Math.sin(progress * Math.PI);
       drawLaunchLens(ctx, width, height, progress);
+      drawLaunchSheets(ctx, width, height, progress);
       drawLaunchRibbons(ctx, width, height, progress);
 
-      const camera = .93 + easeInOutCubic(progress) * .13 + Math.sin(progress * Math.PI) * .025;
+      const camera = .96 + easeOutCubic(progress) * .04 + Math.sin(progress * Math.PI) * .032;
       ctx.save();
       ctx.translate(width / 2, height / 2);
       ctx.scale(camera, camera);
@@ -344,28 +375,31 @@
         const color = launchColor(p.hue);
         const alpha = clamp(local * 1.8) * (1 - clamp((progress - .94) / .06));
         const trail = 1 - e;
-        if (trail > .08 && progress > .1) {
-          ctx.strokeStyle = `rgba(${color},${(.08 + p.depth * .28) * trail})`;
-          ctx.lineWidth = .8 + p.depth * 2.2;
-          ctx.shadowColor = `rgba(${color},${.18 * trail})`;
-          ctx.shadowBlur = 10 + p.depth * 18;
+        if (trail > .1 && progress > .16 && p.seq % 8 === 0) {
+          ctx.strokeStyle = `rgba(${color},${(.12 + p.depth * .24) * trail})`;
+          ctx.lineWidth = 1.4 + p.depth * 2.8;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(
-            p.x - (p.tx - p.sx) * .032 * depthPush,
-            p.y - (p.ty - p.sy) * .032 * depthPush
+            p.x - (p.tx - p.sx) * .045 * depthPush,
+            p.y - (p.ty - p.sy) * .045 * depthPush
           );
           ctx.stroke();
         }
-        ctx.fillStyle = `rgba(${color},${.28 + alpha * .62})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * (1 + pulse * .32 + p.depth * .72 * (1 - e)), 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
 
-        if (progress > .24 && progress < .78 && indexLine(p, progress)) {
-          ctx.strokeStyle = `rgba(${color},${.08 + alpha * .18})`;
-          ctx.lineWidth = .8;
+        if (progress > .34 && progress < .84 && p.seq % 12 === 0) {
+          const glint = Math.sin(clamp((progress - .34) / .5) * Math.PI);
+          ctx.fillStyle = `rgba(${color},${(.22 + alpha * .44) * glint})`;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.phase + progress * 1.8);
+          ctx.fillRect(-8 - p.depth * 8, -1, 16 + p.depth * 16, 2 + p.depth * 2);
+          ctx.restore();
+        }
+
+        if (progress > .26 && progress < .72 && p.seq % 6 === 0 && indexLine(p, progress)) {
+          ctx.strokeStyle = `rgba(${color},${.05 + alpha * .13})`;
+          ctx.lineWidth = .7;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p.tx, p.ty);
@@ -381,18 +415,13 @@
       if (progress > .38) {
         const draw = clamp((progress - .38) / .42);
         ctx.lineWidth = 2.8;
-        ctx.shadowColor = 'rgba(53,210,255,.72)';
-        ctx.shadowBlur = 22;
         ctx.strokeStyle = `rgba(53,210,255,${.16 + .38 * draw})`;
         strokeBoundary(ctx, boundary, draw, -5, -2);
         ctx.strokeStyle = `rgba(245,50,75,${.14 + .34 * draw})`;
         strokeBoundary(ctx, boundary, draw, 5, 2);
         ctx.strokeStyle = `rgba(255,255,255,${.22 + .58 * clamp((progress - .48) / .22)})`;
         ctx.lineWidth = 2.1;
-        ctx.shadowColor = 'rgba(53,210,255,.64)';
-        ctx.shadowBlur = 16;
         strokeBoundary(ctx, boundary, draw);
-        ctx.shadowBlur = 0;
       }
       ctx.restore();
 
@@ -420,7 +449,7 @@
 
       function frame(now) {
         const progress = clamp((now - started) / duration);
-        if (introCanvas.width !== Math.floor(window.innerWidth * Math.min(window.devicePixelRatio || 1, 2))) {
+        if (introCanvas.width !== Math.floor(window.innerWidth)) {
           size = resizeIntroCanvas(ctx);
           particles = createLaunchParticles(size.width, size.height);
         }
