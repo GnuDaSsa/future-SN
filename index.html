@@ -99,6 +99,7 @@
     const segmentOrder = ['renovation', 'enterprise', 'market', 'youth', 'senior'];
     const videoDuration = 2000;
     let activeTimer = null;
+    let completionTimer = null;
     let completionShown = false;
     let sequenceRunning = false;
 
@@ -130,18 +131,28 @@
       }, duration);
     }
 
-    function updateProgress() {
+    function showCompletion(delay = 650) {
+      if (completionShown) return;
+      completionShown = true;
+      clearTimeout(completionTimer);
+      completionTimer = setTimeout(() => {
+        requestAnimationFrame(() => {
+          stage.classList.add('complete');
+          requestAnimationFrame(() => completion.classList.add('show'));
+        });
+      }, delay);
+    }
+
+    function updateProgress(completionDelay = 650) {
       const count = done.size;
       progressText.textContent = `${count} / 5 \uC644\uC131`;
       progressBar.style.width = `${count * 20}%`;
-      if (count === 5 && !completionShown) {
-        completionShown = true;
-        setTimeout(() => { stage.classList.add('complete'); completion.classList.add('show'); }, 650);
-      }
+      if (count === 5) showCompletion(completionDelay);
     }
 
     function resetExperience() {
       clearTimeout(activeTimer);
+      clearTimeout(completionTimer);
       done.clear();
       completionShown = false;
       videoLayer.innerHTML = '';
@@ -162,7 +173,7 @@
         d.classList.remove('active');
         d.classList.toggle('done', done.has(d.dataset.id));
       });
-      updateProgress();
+      updateProgress(0);
       setTimeout(() => {
         sequenceRunning = false;
         testRun.disabled = false;

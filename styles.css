@@ -167,6 +167,8 @@ h1 {
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform;
+  contain: layout style;
+  isolation: isolate;
 }
 
 .map-shell::before,
@@ -185,7 +187,7 @@ h1 {
   background:
     conic-gradient(from 20deg, transparent 0 18%, rgba(255,255,255,.28) 22%, transparent 28% 48%, rgba(245,50,75,.3) 54%, transparent 62% 78%, rgba(52,63,158,.34) 84%, transparent 92%),
     radial-gradient(circle at 50% 52%, rgba(178,32,149,.34), rgba(52,63,158,.12) 38%, transparent 67%);
-  filter: blur(8px);
+  opacity: 0;
   mix-blend-mode: screen;
 }
 
@@ -196,7 +198,7 @@ h1 {
     radial-gradient(circle, rgba(53,210,255,.76) 0 1.2px, transparent 2px);
   background-position: 8% 30%, 71% 18%, 48% 78%;
   background-size: 96px 96px, 132px 132px, 116px 116px;
-  filter: drop-shadow(0 0 8px rgba(255,255,255,.45));
+  opacity: 0;
   mix-blend-mode: screen;
 }
 
@@ -338,15 +340,15 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   pointer-events: none;
   transition: opacity .9s cubic-bezier(.16,1,.3,1);
 }
-.stage.complete .district .base { stroke: rgba(255,255,255,0); animation: none; }
-.stage.complete .district .texture, .stage.complete .district .label, .stage.complete .district .caption, .stage.complete .pin { opacity: 0; transition: opacity .55s ease; }
+.stage.complete .district .base { stroke: rgba(255,255,255,0); animation: none; filter: none; transition: opacity .42s ease; }
+.stage.complete .district .texture, .stage.complete .district .label, .stage.complete .district .caption, .stage.complete .pin { opacity: 0; filter: none; transition: opacity .42s ease; }
 .stage.complete .outer-border { animation: borderVanish .65s ease forwards; }
 .stage.complete .map-shell { filter: none; animation: finalMapZoom 4s .18s cubic-bezier(.18,1.24,.24,1) forwards; }
 .stage.complete .map-shell::before { animation: mapAurora 4.8s .12s ease-out forwards, auroraDrift 6s 4.4s ease-in-out infinite; }
 .stage.complete .map-shell::after { animation: particleBloom 4.2s .28s ease-out forwards, particleFloat 5.6s 4.1s ease-in-out infinite; }
-.stage.complete .unified-map { opacity: 1; fill: url(#finalMapGradient); stroke: rgba(255,255,255,0); filter: drop-shadow(0 0 32px rgba(245,50,75,.42)) drop-shadow(0 0 70px rgba(52,63,158,.24)); animation: unifiedIgnite 3.4s cubic-bezier(.16,1,.3,1) forwards, finalColorBreath 4.4s 3.5s ease-in-out infinite; }
+.stage.complete .unified-map { opacity: 1; fill: url(#finalMapGradient); stroke: rgba(255,255,255,0); filter: none; animation: unifiedIgnite 3.4s cubic-bezier(.16,1,.3,1) forwards, finalColorBreath 4.4s 3.5s ease-in-out infinite; }
 
-.completion { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity .65s ease; }
+.completion { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; pointer-events: none; opacity: 0; transition: opacity .65s ease; contain: layout paint style; isolation: isolate; }
 .completion.show { opacity: 1; }
 .completion::before {
   position: absolute;
