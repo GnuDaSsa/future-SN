@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=1280">
   <title>성남 미래지도</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -14,79 +14,13 @@
       <span class="bg-wash"></span>
       <span class="bg-grid"></span>
       <span class="bg-vignette"></span>
-      <span class="spotlight"></span>
     </div>
 
-    <header class="hud-bar">
-      <div class="hud-bar-left">
-        <img class="hud-logo" src="seongnam-logo.png" alt="성남시">
-        <div class="hud-ops">
-          <span class="ops-code">SNFM-2026</span>
-          <span class="ops-label">Civic Future Ops</span>
-        </div>
-      </div>
-      <div class="hud-bar-center">
-        <span class="bar-eyebrow">Seongnam Future Map</span>
-        <h1>성남 미래지도</h1>
-      </div>
-      <div class="hud-bar-right">
-        <div class="mission-clock"><span class="clock-label">KST</span><b id="missionClock">00:00:00</b></div>
-        <div class="status-lamp" id="statusLamp" data-tone="ok"><i></i><span id="statusLampText">SYSTEMS NOMINAL</span></div>
-      </div>
-    </header>
-
-    <aside class="agenda-rail" aria-label="미래 의제">
-      <p class="rail-heading"><i></i>Agenda Systems</p>
-      <button class="rail-row" type="button" data-id="renovation" style="--color: var(--renovation)">
-        <span class="row-num">01</span>
-        <span class="row-text"><b>재건축</b><i>도시를 다시 세우는 빛</i></span>
-        <span class="row-state" data-state="standby">STANDBY</span>
-      </button>
-      <button class="rail-row" type="button" data-id="enterprise" style="--color: var(--enterprise)">
-        <span class="row-num">02</span>
-        <span class="row-text"><b>대기업/IT</b><i>판교에서 확장되는 엔진</i></span>
-        <span class="row-state" data-state="standby">STANDBY</span>
-      </button>
-      <button class="rail-row" type="button" data-id="market" style="--color: var(--market)">
-        <span class="row-num">03</span>
-        <span class="row-text"><b>골목상권</b><i>생활권을 잇는 경제</i></span>
-        <span class="row-state" data-state="standby">STANDBY</span>
-      </button>
-      <button class="rail-row" type="button" data-id="youth" style="--color: var(--youth)">
-        <span class="row-num">04</span>
-        <span class="row-text"><b>청년</b><i>기회가 머무는 도시</i></span>
-        <span class="row-state" data-state="standby">STANDBY</span>
-      </button>
-      <button class="rail-row" type="button" data-id="senior" style="--color: var(--senior)">
-        <span class="row-num">05</span>
-        <span class="row-text"><b>어르신</b><i>돌봄과 품격의 기반</i></span>
-        <span class="row-state" data-state="standby">STANDBY</span>
-      </button>
-      <div class="rail-footer">
-        <div class="rail-progress">
-          <span class="rail-progress-label">완성도</span>
-          <span class="rail-progress-count"><b id="progressCount">0</b><i>/ 5</i></span>
-        </div>
-        <div class="progress-track" aria-hidden="true">
-          <span class="progress-cell" data-id="renovation" style="--color: var(--renovation)"></span>
-          <span class="progress-cell" data-id="enterprise" style="--color: var(--enterprise)"></span>
-          <span class="progress-cell" data-id="market" style="--color: var(--market)"></span>
-          <span class="progress-cell" data-id="youth" style="--color: var(--youth)"></span>
-          <span class="progress-cell" data-id="senior" style="--color: var(--senior)"></span>
-        </div>
-        <button class="test-run" type="button" id="testRun"><span class="test-run-dot"></span>RUN ALL · 일괄 완성</button>
-      </div>
-    </aside>
+    <div class="city-logo-badge" aria-label="성남시 엠블렘">
+      <img src="seongnam-logo.png" alt="성남시">
+    </div>
 
     <section class="map-frame">
-      <span class="frame-corner tl" aria-hidden="true"></span>
-      <span class="frame-corner tr" aria-hidden="true"></span>
-      <span class="frame-corner bl" aria-hidden="true"></span>
-      <span class="frame-corner br" aria-hidden="true"></span>
-      <span class="frame-ticks top" aria-hidden="true"></span>
-      <span class="frame-ticks bottom" aria-hidden="true"></span>
-      <span class="scanline" id="scanline" aria-hidden="true"></span>
-
       <div class="map-shell">
         <svg viewBox="0 64 1000 630" role="img" aria-labelledby="mapTitle mapDesc">
           <title id="mapTitle">성남 미래지도</title>
@@ -133,46 +67,26 @@
           <g clip-path="url(#seongnamBoundary)">
             <g class="district" tabindex="0" role="button" data-id="renovation" style="--color: var(--renovation)" aria-label="재건축">
               <path class="base" d="M520 0 H1000 V280 L820 300 L660 280 L555 300 L555 250 L540 120 Z"></path>
-              <g class="hud-tag" aria-hidden="true">
-                <text class="tag-code" x="660" y="196">SNM-01</text>
-                <line class="tag-line" x1="630" y1="206" x2="690" y2="206"></line>
-              </g>
               <circle class="pin" cx="660" cy="240" r="7"></circle>
               <text class="label" x="660" y="240">재건축</text>
             </g>
             <g class="district" tabindex="0" role="button" data-id="enterprise" style="--color: var(--enterprise)" aria-label="대기업/IT">
               <path class="base" d="M0 350 L130 345 L255 365 L385 355 L495 392 L500 485 L420 485 L285 470 L135 485 L0 475 Z"></path>
-              <g class="hud-tag" aria-hidden="true">
-                <text class="tag-code" x="365" y="381">SNM-02</text>
-                <line class="tag-line" x1="335" y1="391" x2="395" y2="391"></line>
-              </g>
               <circle class="pin" cx="365" cy="425" r="7"></circle>
               <text class="label" x="365" y="425">대기업/IT</text>
             </g>
             <g class="district" tabindex="0" role="button" data-id="market" style="--color: var(--market)" aria-label="골목상권">
               <path class="base" d="M555 300 L660 280 L820 300 L1000 280 V470 L840 455 L720 480 L600 455 L500 485 L495 392 L500 345 Z"></path>
-              <g class="hud-tag" aria-hidden="true">
-                <text class="tag-code" x="627" y="351">SNM-03</text>
-                <line class="tag-line" x1="597" y1="361" x2="657" y2="361"></line>
-              </g>
               <circle class="pin" cx="627" cy="395" r="7"></circle>
               <text class="label" x="627" y="395">골목상권</text>
             </g>
             <g class="district" tabindex="0" role="button" data-id="youth" style="--color: var(--youth)" aria-label="청년">
               <path class="base" d="M0 0 H520 L540 120 L555 250 L555 300 L500 345 L495 392 L385 355 L255 365 L130 345 L0 350 Z"></path>
-              <g class="hud-tag" aria-hidden="true">
-                <text class="tag-code" x="401" y="259">SNM-04</text>
-                <line class="tag-line" x1="371" y1="269" x2="431" y2="269"></line>
-              </g>
               <circle class="pin" cx="401" cy="303" r="7"></circle>
               <text class="label" x="401" y="303">청년</text>
             </g>
             <g class="district" tabindex="0" role="button" data-id="senior" style="--color: var(--senior)" aria-label="어르신">
               <path class="base" d="M0 475 L135 485 L285 470 L420 485 L500 485 L600 455 L720 480 L840 455 L1000 470 V720 H0 Z"></path>
-              <g class="hud-tag" aria-hidden="true">
-                <text class="tag-code" x="513" y="511">SNM-05</text>
-                <line class="tag-line" x1="483" y1="521" x2="543" y2="521"></line>
-              </g>
               <circle class="pin" cx="513" cy="555" r="7"></circle>
               <text class="label" x="513" y="555">어르신</text>
             </g>
@@ -182,14 +96,19 @@
         </svg>
       </div>
 
-      <p class="coord-readout" id="coordReadout">37.4200N · 127.1265E · GRID E5</p>
-      <p class="attract-cue" aria-hidden="true">터치하여 시작</p>
-      <p class="hint-chip">지도 영역을 터치하면 분야별 미래 영상이 재생됩니다</p>
     </section>
 
     <p class="credit">제작:AI반도체과 사진우</p>
 
     <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
+
+    <div class="finale-layer" aria-hidden="true">
+      <canvas class="finale-canvas" id="finaleCanvas"></canvas>
+      <span class="finale-flash"></span>
+      <span class="shockwave sw-1"></span>
+      <span class="shockwave sw-2"></span>
+      <span class="shockwave sw-3"></span>
+    </div>
 
     <div class="completion" id="completion" aria-hidden="true">
       <div class="final-effects" aria-hidden="true">
@@ -199,9 +118,8 @@
       </div>
       <div class="completion-text">
         <span class="completion-eyebrow">Five Agendas · One City</span>
-        <h2>성남 미래지도</h2>
+        <h2 aria-label="성남 미래지도"><span style="--ci:0">성</span><span style="--ci:1">남</span><span class="sp" style="--ci:2">&nbsp;</span><span style="--ci:3">미</span><span style="--ci:4">래</span><span style="--ci:5">지</span><span style="--ci:6">도</span></h2>
         <p class="completion-sub">다섯 개의 빛이 하나의 미래로 완성되었습니다</p>
-        <p class="reset-countdown" id="resetCountdown">AUTO RESET T-60S</p>
       </div>
     </div>
 
@@ -238,7 +156,7 @@
   <script defer src="js/machine.js"></script>
   <script defer src="js/ambient.js"></script>
   <script defer src="js/launch.js"></script>
-  <script defer src="js/hud.js"></script>
+  <script defer src="js/finale.js"></script>
   <script defer src="js/video.js"></script>
   <script defer src="js/app.js"></script>
 </body>

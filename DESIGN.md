@@ -43,14 +43,25 @@ mission-control / hud 시스템에서 가져왔다.)
 - 위계는 그림자 대신 글로우로 표현
 - `prefers-reduced-motion`: 무한 애니메이션 제거, 등장은 즉시 정착
 
+## 인터페이스 원칙 (2026-06-10 미니멀 개편)
+
+화면에 남는 UI는 5분할 지도, 좌상단 성남시 엠블렘, 우하단 제작 표기뿐이다.
+패널·상태표시·버튼·안내문 등 어떤 크롬도 추가하지 않는다 — 모든 표현은
+모션(등장 안무, 호버 글로우, 피날레)으로 한다. 진행도는 점등된 구역
+자체가 보여준다.
+
 ## 페이즈 구조 (js/machine.js가 `main[data-phase]`의 유일한 작성자)
 
 ```
-boot → ready → launch → map ⇄ attract
-map/attract → playing(id) → map | fusing
-map/attract → fusing (RUN ALL)
-fusing → complete → resetting → boot   (전시용 자동 리셋 루프)
+boot → ready → launch → map → playing(id) → map | fusing
+fusing → complete → resetting → boot   (완성 90초 후 무음 자동 리셋)
 ```
+
+피날레 타임라인(fusing, 5.4s): 차지(0–0.95s, 5구역 동기 펄스) →
+임플로전(0.95s, 중심으로 붕괴) → 폭발(1.45s, 화이트 플래시 + 3중
+쇼크웨이브 + 캔버스 파티클 버스트) → 점화(1.6s, 경계 트레이스 +
+그라데이션 충전) → 상승(2.6s, 줌 + 오로라) → complete에서 타이틀이
+글자 단위 블러 리빌로 등장.
 
 CSS 안무 계약: 모든 원샷 애니메이션은 `[data-phase=…]` 선택자에 게이트하고
 (등장은 추가로 `:not([data-arrived])`), 정착 상태는 일반 선언으로 명시한다.
@@ -85,7 +96,7 @@ VIDEO_SOURCES: {
 | `js/machine.js` | 페이즈 상태 기계 |
 | `js/ambient.js` | 배경 별 필드 캔버스 (프레임당 할당 0, 가시성 일시정지) |
 | `js/launch.js` | 인트로 파티클 발사 캔버스 |
-| `js/hud.js` | 클록·스캔라인·좌표 리드아웃·상태 램프 |
+| `js/finale.js` | 피날레 파티클 버스트/엠버 캔버스 |
 | `js/video.js` | 영상 오버레이 슬롯 |
 | `js/app.js` | 부트스트랩·이벤트 배선 (마지막 로드) |
 

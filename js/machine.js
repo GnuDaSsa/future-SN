@@ -3,9 +3,7 @@
    choreography is gated on that attribute, so an invalid transition
    can never leave the UI in a mixed state.
 
-   boot → ready → launch → map ⇄ attract
-   map/attract → playing(id) → map | fusing
-   map/attract → fusing (testRun)
+   boot → ready → launch → map → playing(id) → map | fusing
    fusing → complete → resetting → boot                     */
 (function () {
   'use strict';
@@ -15,8 +13,7 @@
     boot: ['ready'],
     ready: ['launch'],
     launch: ['map'],
-    map: ['attract', 'playing', 'fusing'],
-    attract: ['map', 'playing', 'fusing'],
+    map: ['playing', 'fusing'],
     playing: ['map', 'fusing'],
     fusing: ['complete'],
     complete: ['resetting'],

@@ -1,9 +1,12 @@
 /* ================================================================
-   SNFM — Seongnam Future Map · "Civic Mission Control"
-   1) tokens  2) base  3) backdrop  4) intro loader  5) HUD bar
-   6) agenda rail  7) map frame & SVG  8) video overlay
-   9) fusing / completion  10) reset veil  11) keyframes
-   12) reduced motion
+   SNFM — Seongnam Future Map
+   Minimal interface, maximal motion: the five-split map, the city
+   emblem (top-left) and the credit (bottom-right) are the only UI.
+   Everything else is choreography.
+
+   1) tokens  2) base  3) backdrop  4) intro loader  5) emblem/credit
+   6) map  7) video overlay  8) grand finale  9) reset veil
+   10) keyframes  11) reduced motion
 
    Choreography contract: the JS state machine owns
    main[data-phase=…]; every one-shot animation is gated on a phase
@@ -15,43 +18,25 @@
 :root {
   color-scheme: dark;
 
-  /* mission-control surface & text */
   --bg: #0B1120;
   --bg-deep: #060b16;
-  --surface: #111827;
-  --surface-hi: #1A2535;
-  --border: #1E3A5F;
-  --border-soft: #162035;
   --text-hi: #E8F0FE;
   --text-mid: #8BA3C7;
   --text-lo: #4A6080;
 
-  /* telemetry */
   --data: #FFB800;
   --accent: #00D4FF;
-  --ok: #26DE81;
-  --alert: #FF4757;
 
-  /* agenda palette */
   --renovation: #ffa94d;
   --enterprise: #4cc3ff;
   --market: #ff7d9c;
   --youth: #b69bff;
   --senior: #3fe0b5;
 
-  /* type */
   --font-display: "Paperlogy", "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
   --font-mono: ui-monospace, "JetBrains Mono", "Cascadia Mono", "D2Coding", "SF Mono", Consolas, monospace;
 
-  /* motion */
-  --t-fast: 100ms;
-  --t-med: 200ms;
-  --t-slow: 300ms;
   --ease-out: cubic-bezier(.16, 1, .3, 1);
-  --pulse: 2s;
-
-  /* glass */
-  --glass: rgba(13, 22, 38, .62);
 }
 
 @font-face {
@@ -89,15 +74,6 @@ body {
   isolation: isolate;
 }
 
-.micro {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-}
-
 /* ---------------------------------------------------------------- 3) backdrop */
 
 .backdrop {
@@ -117,7 +93,6 @@ body {
   opacity: .8;
 }
 
-/* single static aurora wash — no per-frame compositing cost */
 .bg-wash {
   position: absolute;
   inset: -6%;
@@ -132,22 +107,15 @@ body {
   position: absolute;
   inset: -2%;
   background:
-    linear-gradient(rgba(110, 156, 212, .055) 1px, transparent 1px) 0 0 / 100% 56px,
-    linear-gradient(90deg, rgba(110, 156, 212, .055) 1px, transparent 1px) 0 0 / 56px 100%;
-  mask-image: radial-gradient(ellipse 78% 70% at 55% 48%, black 24%, transparent 82%);
+    linear-gradient(rgba(110, 156, 212, .09) 1px, transparent 1px) 0 0 / 100% 56px,
+    linear-gradient(90deg, rgba(110, 156, 212, .09) 1px, transparent 1px) 0 0 / 56px 100%;
+  mask-image: radial-gradient(ellipse 92% 86% at 50% 50%, black 32%, transparent 94%);
 }
 
 .bg-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 112% 98% at 50% 44%, transparent 50%, rgba(2, 5, 10, .7) 100%);
-}
-
-.spotlight {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(440px circle at var(--mx, 56%) var(--my, 42%), rgba(0, 162, 255, .08), transparent 62%);
-  mix-blend-mode: screen;
+  background: radial-gradient(ellipse 112% 98% at 50% 46%, transparent 52%, rgba(2, 5, 10, .68) 100%);
 }
 
 /* ---------------------------------------------------------------- 4) intro loader */
@@ -169,7 +137,7 @@ body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity .9s ease, visibility 0s .9s;
+  transition: opacity 1.2s ease, visibility 0s 1.2s;
 }
 
 [data-phase="boot"] .intro-loader,
@@ -184,8 +152,12 @@ body {
 [data-phase="ready"] .intro-loader { cursor: pointer; }
 [data-phase="launch"] .intro-loader {
   cursor: wait;
-  animation: launchBackplate 3s cubic-bezier(.11, .86, .18, 1) both;
+  animation: launchBackplate 3.8s cubic-bezier(.11, .86, .18, 1) both;
 }
+
+/* once the map phase begins the loader only blocks; let clicks through
+   while its long fade plays out */
+[data-phase="map"] .intro-loader { pointer-events: none; }
 
 .intro-canvas {
   position: absolute;
@@ -199,6 +171,22 @@ body {
 }
 
 [data-phase="launch"] .intro-canvas { opacity: 1; }
+
+/* keep the particle field alive through the handoff: the map rises
+   while the loader (and this canvas with it) fades out over 1.2s */
+[data-phase="map"] .intro-canvas { opacity: 1; }
+
+/* settled state after the launch vanish — without this the fill of
+   introUiVanish is stripped on phase change and the title re-appears
+   through the loader's long fade */
+[data-phase="map"] .intro-word,
+[data-phase="map"] .intro-progress,
+[data-phase="map"] .intro-percent,
+[data-phase="map"] .intro-enter,
+[data-phase="map"] .intro-meta,
+[data-phase="map"] .intro-status {
+  opacity: 0;
+}
 
 .intro-loader::before,
 .intro-loader::after {
@@ -246,8 +234,8 @@ body {
   animation: introSignals 4.8s ease-out both, introSignalsDrift 4.4s 1.1s ease-in-out infinite;
 }
 
-[data-phase="launch"] .intro-loader::before { animation: launchOrb 3s cubic-bezier(.11, .86, .18, 1) forwards; }
-[data-phase="launch"] .intro-loader::after { animation: launchSignals 3s cubic-bezier(.11, .86, .18, 1) forwards; }
+[data-phase="launch"] .intro-loader::before { animation: launchOrb 3.8s cubic-bezier(.11, .86, .18, 1) forwards; }
+[data-phase="launch"] .intro-loader::after { animation: launchSignals 3.8s cubic-bezier(.11, .86, .18, 1) forwards; }
 
 .intro-meta,
 .intro-status {
@@ -334,9 +322,9 @@ body {
   min-width: 196px;
   height: 46px;
   padding: 0 22px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: rgba(17, 24, 39, .72);
+  border: 1px solid rgba(110, 156, 212, .4);
+  border-radius: 999px;
+  background: rgba(13, 22, 38, .72);
   color: var(--text-hi);
   font: inherit;
   font-size: 14px;
@@ -345,7 +333,7 @@ body {
   opacity: 0;
   cursor: pointer;
   transform: translate3d(-50%, 12px, 0) scale(.96);
-  transition: opacity .55s ease, transform .55s var(--ease-out), border-color var(--t-med) ease, box-shadow var(--t-med) ease;
+  transition: opacity .55s ease, transform .55s var(--ease-out), border-color .2s ease, box-shadow .2s ease;
   pointer-events: none;
 }
 
@@ -428,433 +416,86 @@ body {
 }
 
 [data-phase="launch"] .intro-burst { opacity: .46; }
-[data-phase="launch"] .intro-burst::before { animation: transitionRing 2.8s cubic-bezier(.11, .86, .18, 1) forwards; }
-[data-phase="launch"] .intro-burst::after { animation: transitionFlash .78s .52s cubic-bezier(.11, .86, .18, 1) forwards; }
-[data-phase="launch"] .intro-burst span:nth-child(1) { animation: transitionRing 2.86s .06s cubic-bezier(.11, .86, .18, 1) forwards; }
-[data-phase="launch"] .intro-burst span:nth-child(2) { animation: transitionRing 2.94s .12s cubic-bezier(.11, .86, .18, 1) forwards reverse; }
-[data-phase="launch"] .intro-burst span:nth-child(3) { animation: transitionIris 3s .04s cubic-bezier(.11, .86, .18, 1) forwards; }
+[data-phase="launch"] .intro-burst::before { animation: transitionRing 3.5s cubic-bezier(.11, .86, .18, 1) forwards; }
+[data-phase="launch"] .intro-burst::after { animation: transitionFlash .9s .6s cubic-bezier(.11, .86, .18, 1) forwards; }
+[data-phase="launch"] .intro-burst span:nth-child(1) { animation: transitionRing 3.6s .08s cubic-bezier(.11, .86, .18, 1) forwards; }
+[data-phase="launch"] .intro-burst span:nth-child(2) { animation: transitionRing 3.7s .16s cubic-bezier(.11, .86, .18, 1) forwards reverse; }
+[data-phase="launch"] .intro-burst span:nth-child(3) { animation: transitionIris 3.8s .05s cubic-bezier(.11, .86, .18, 1) forwards; }
 
-/* ---------------------------------------------------------------- 5) HUD bar */
+/* ---------------------------------------------------------------- 5) emblem & credit */
 
-.hud-bar {
+.city-logo-badge {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 30px;
+  left: 34px;
   z-index: 6;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  height: 76px;
-  padding: 0 28px;
-  border-bottom: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, rgba(13, 22, 38, .85), rgba(13, 22, 38, .55));
-  backdrop-filter: blur(14px);
+  width: 112px;
+  height: 112px;
+  pointer-events: none;
   opacity: 0;
-  visibility: hidden;
-  transition: opacity .5s ease, visibility 0s .5s;
+  transition: opacity .8s ease;
 }
 
-[data-phase="map"] .hud-bar,
-[data-phase="attract"] .hud-bar,
-[data-phase="playing"] .hud-bar {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity .5s ease, visibility 0s;
-}
-
-[data-phase="map"]:not([data-arrived]) .hud-bar {
-  animation: hudDrop .8s .5s var(--ease-out) backwards;
-}
-
-.hud-bar-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.hud-logo {
-  width: 44px;
-  height: 44px;
+.city-logo-badge img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, .55));
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, .55));
 }
 
-.hud-ops { display: grid; gap: 3px; }
-
-.ops-code {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  color: var(--accent);
-}
-
-.ops-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--text-lo);
-}
-
-.hud-bar-center {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  text-align: center;
-}
-
-.bar-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .34em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-}
-
-h1 {
-  margin: 0;
-  font-size: 27px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -.01em;
-  background: linear-gradient(96deg, #ffffff 22%, #bcd9f8 64%, #8fb7e6 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.hud-bar-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 22px;
-}
-
-.mission-clock {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.clock-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .22em;
-  color: var(--text-lo);
-}
-
-.mission-clock b {
-  font-family: var(--font-mono);
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: .06em;
-  color: var(--data);
-  text-shadow: 0 0 14px rgba(255, 184, 0, .28);
-  font-variant-numeric: tabular-nums;
-}
-
-.status-lamp {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  height: 30px;
-  padding: 0 13px;
-  border: 1px solid var(--border-soft);
-  border-radius: 3px;
-  background: rgba(17, 24, 39, .6);
-}
-
-.status-lamp i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--ok);
-  box-shadow: 0 0 10px var(--ok);
-  animation: lampPulse var(--pulse) ease-in-out infinite;
-}
-
-.status-lamp[data-tone="live"] i { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-.status-lamp[data-tone="data"] i { background: var(--data); box-shadow: 0 0 10px var(--data); }
-
-.status-lamp span {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  color: var(--text-mid);
-}
-
-.status-lamp[data-tone="live"] span { color: var(--accent); }
-.status-lamp[data-tone="data"] span { color: var(--data); }
-
-/* ---------------------------------------------------------------- 6) agenda rail */
-
-.agenda-rail {
-  position: absolute;
-  top: 104px;
-  left: 28px;
-  z-index: 6;
-  display: grid;
-  gap: 7px;
-  width: 312px;
-  padding: 18px 16px 16px;
-  border: 1px solid var(--border-soft);
-  border-radius: 6px;
-  background: linear-gradient(165deg, rgba(17, 24, 39, .82), var(--glass));
-  backdrop-filter: blur(14px);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, .35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity .5s ease, visibility 0s .5s;
-}
-
-[data-phase="map"] .agenda-rail,
-[data-phase="attract"] .agenda-rail,
-[data-phase="playing"] .agenda-rail {
+[data-phase="map"] .city-logo-badge,
+[data-phase="playing"] .city-logo-badge,
+[data-phase="fusing"] .city-logo-badge,
+[data-phase="complete"] .city-logo-badge {
   opacity: 1;
-  visibility: visible;
-  transition: opacity .5s ease, visibility 0s;
 }
 
-[data-phase="map"]:not([data-arrived]) .agenda-rail {
-  animation: railIn .8s .62s var(--ease-out) backwards;
+[data-phase="map"]:not([data-arrived]) .city-logo-badge {
+  animation: emblemIn 1s 1.5s var(--ease-out) backwards;
 }
 
-[data-phase="map"]:not([data-arrived]) .rail-row { animation: rowIn .55s var(--ease-out) backwards; }
-[data-phase="map"]:not([data-arrived]) .rail-row:nth-of-type(1) { animation-delay: .78s; }
-[data-phase="map"]:not([data-arrived]) .rail-row:nth-of-type(2) { animation-delay: .86s; }
-[data-phase="map"]:not([data-arrived]) .rail-row:nth-of-type(3) { animation-delay: .94s; }
-[data-phase="map"]:not([data-arrived]) .rail-row:nth-of-type(4) { animation-delay: 1.02s; }
-[data-phase="map"]:not([data-arrived]) .rail-row:nth-of-type(5) { animation-delay: 1.1s; }
-
-.rail-heading {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0 0 5px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-}
-
-.rail-heading i {
-  width: 18px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-.rail-row {
-  display: grid;
-  grid-template-columns: 34px 1fr auto;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid transparent;
-  border-left: 3px solid color-mix(in srgb, var(--color) 55%, transparent);
-  border-radius: 4px;
-  background: rgba(17, 24, 39, .42);
-  color: var(--text-hi);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: background var(--t-med) ease, border-color var(--t-med) ease, transform var(--t-med) var(--ease-out), box-shadow var(--t-med) ease;
-}
-
-.rail-row .row-num {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  color: var(--text-lo);
-  transition: color var(--t-med) ease;
-}
-
-.rail-row .row-text { display: grid; gap: 2px; }
-
-.rail-row .row-text b {
-  font-size: 17px;
-  font-weight: 850;
-  letter-spacing: .01em;
-}
-
-.rail-row .row-text i {
-  font-size: 11.5px;
-  font-style: normal;
-  font-weight: 700;
-  color: var(--text-mid);
-}
-
-.row-state {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  padding: 4px 8px;
-  border-radius: 2px;
-  border: 1px solid var(--border-soft);
-  color: var(--text-lo);
-  background: rgba(11, 17, 32, .6);
-  transition: color var(--t-med) ease, border-color var(--t-med) ease, background var(--t-med) ease;
-}
-
-.row-state[data-state="live"] {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  animation: liveBlink 1.1s ease-in-out infinite;
-}
-
-.row-state[data-state="online"] {
-  color: var(--ok);
-  border-color: color-mix(in srgb, var(--ok) 40%, transparent);
-  background: color-mix(in srgb, var(--ok) 10%, transparent);
-}
-
-.rail-row:hover,
-.rail-row:focus-visible,
-.rail-row.hover {
-  border-color: color-mix(in srgb, var(--color) 40%, transparent);
-  background: color-mix(in srgb, var(--color) 12%, rgba(17, 24, 39, .5));
-  transform: translateX(3px);
-  outline: none;
-}
-
-.rail-row:hover .row-num,
-.rail-row.hover .row-num { color: color-mix(in srgb, var(--color) 85%, white); }
-
-.rail-row.live {
-  border-color: color-mix(in srgb, var(--color) 60%, transparent);
-  box-shadow: 0 0 22px color-mix(in srgb, var(--color) 22%, transparent);
-}
-
-.rail-footer {
-  display: grid;
-  gap: 9px;
-  margin-top: 7px;
-  padding-top: 13px;
-  border-top: 1px solid var(--border-soft);
-}
-
-.rail-progress {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-}
-
-.rail-progress-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: var(--text-mid);
-}
-
-.rail-progress-count b {
-  font-family: var(--font-mono);
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--data);
-  font-variant-numeric: tabular-nums;
-}
-
-.rail-progress-count i {
-  margin-left: 4px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  color: var(--text-lo);
-}
-
-.progress-track {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
-}
-
-.progress-cell {
-  position: relative;
-  height: 7px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: rgba(232, 240, 254, .08);
-}
-
-.progress-cell::after {
+.credit {
   position: absolute;
-  inset: 0;
-  content: "";
-  background: linear-gradient(90deg, color-mix(in srgb, var(--color) 75%, white), var(--color));
+  right: 38px;
+  bottom: 26px;
+  z-index: 22;
+  margin: 0;
+  color: rgba(190, 208, 226, .72);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, .82);
+  pointer-events: none;
   opacity: 0;
-  transform: scaleX(.2);
-  transform-origin: left;
-  transition: opacity var(--t-slow) ease, transform .5s var(--ease-out);
+  transition: opacity .8s ease;
 }
 
-.progress-cell.on::after { opacity: 1; transform: scaleX(1); }
-.progress-cell.on { box-shadow: 0 0 12px color-mix(in srgb, var(--color) 50%, transparent); }
-
-.test-run {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  height: 36px;
-  border: 1px solid var(--border-soft);
-  border-radius: 3px;
-  background: rgba(11, 17, 32, .55);
-  color: var(--text-mid);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  cursor: pointer;
-  transition: border-color var(--t-med) ease, color var(--t-med) ease, box-shadow var(--t-med) ease;
+[data-phase="map"] .credit,
+[data-phase="playing"] .credit,
+[data-phase="fusing"] .credit,
+[data-phase="complete"] .credit {
+  opacity: 1;
 }
 
-.test-run-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
-  animation: lampPulse 2.4s ease-in-out infinite;
-}
-
-.test-run:hover,
-.test-run:focus-visible {
-  border-color: var(--accent);
-  color: var(--text-hi);
-  box-shadow: 0 0 18px rgba(0, 212, 255, .18);
-  outline: none;
-}
-
-/* ---------------------------------------------------------------- 7) map frame & SVG */
+/* ---------------------------------------------------------------- 6) map */
 
 .map-frame {
   position: absolute;
-  inset: 104px 36px 44px 368px;
+  inset: 0;
   z-index: 2;
   display: grid;
   place-items: center;
+  padding: 48px 56px;
+  perspective: 1500px;
   /* opacity only — visibility/display would break getScreenCTM
      sampling during the intro launch */
   opacity: 0;
   pointer-events: none;
-  transition: opacity .7s ease;
+  transition: opacity .9s ease;
 }
 
 [data-phase="map"] .map-frame,
-[data-phase="attract"] .map-frame,
 [data-phase="playing"] .map-frame,
 [data-phase="fusing"] .map-frame,
 [data-phase="complete"] .map-frame {
@@ -862,69 +503,30 @@ h1 {
   pointer-events: auto;
 }
 
-.frame-corner {
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  border: 0 solid var(--border);
-  opacity: .9;
-}
-
-.frame-corner.tl { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
-.frame-corner.tr { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
-.frame-corner.bl { bottom: 0; left: 0; border-bottom-width: 2px; border-left-width: 2px; }
-.frame-corner.br { bottom: 0; right: 0; border-bottom-width: 2px; border-right-width: 2px; }
-
-[data-phase="map"]:not([data-arrived]) .frame-corner {
-  animation: cornerDraw .5s .25s var(--ease-out) backwards;
-}
-
-.frame-ticks {
-  position: absolute;
-  left: 40px;
-  right: 40px;
-  height: 6px;
-  background: repeating-linear-gradient(90deg, rgba(110, 156, 212, .28) 0 1px, transparent 1px 48px);
-  opacity: .5;
-}
-
-.frame-ticks.top { top: 0; }
-.frame-ticks.bottom { bottom: 0; }
-
-.scanline {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 0, rgba(0, 212, 255, .4) 1px, rgba(0, 212, 255, .08) 3px, transparent 5px) no-repeat 0 -8px / 100% 5px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.scanline.on { animation: scanSweep 2.6s linear; }
-
 .map-shell {
   position: relative;
-  width: min(1480px, 100%);
-  max-height: 100%;
+  width: min(1560px, 94vw);
+  max-height: 90vh;
   aspect-ratio: 1.36;
-  filter: drop-shadow(0 36px 80px rgba(0, 0, 0, .5));
   transform: translateZ(0);
   backface-visibility: hidden;
-  will-change: transform;
+  will-change: transform, filter;
   contain: layout style;
   isolation: isolate;
 }
 
 [data-phase="map"] .map-shell,
-[data-phase="attract"] .map-shell,
 [data-phase="playing"] .map-shell {
-  animation: mapBreath 8s 1.8s ease-in-out infinite;
+  animation: mapBreath 8s 2.2s ease-in-out infinite;
 }
 
+/* the cinematic 3D arrival: the city rises out of the particle field,
+   tilted toward the camera, and settles with a slight overshoot */
 [data-phase="map"]:not([data-arrived]) .map-shell {
-  animation: mapReveal 1.05s var(--ease-out) backwards, mapBreath 8s 1.8s ease-in-out infinite;
+  animation: mapArrive 2.1s var(--ease-out) backwards, mapBreath 8s 2.2s ease-in-out infinite;
 }
 
-/* light bloom layers used by the fuse finale */
+/* light bloom layers used by the finale */
 .map-shell::before,
 .map-shell::after {
   position: absolute;
@@ -939,20 +541,20 @@ h1 {
 
 .map-shell::before {
   background:
-    radial-gradient(ellipse at 28% 34%, rgba(0, 212, 255, .32), transparent 34%),
-    radial-gradient(ellipse at 76% 52%, rgba(255, 71, 87, .28), transparent 36%),
-    conic-gradient(from 132deg at 50% 50%, transparent 0 12%, rgba(232, 240, 254, .22) 18%, transparent 24% 48%, rgba(178, 32, 149, .26) 58%, transparent 69% 100%);
+    radial-gradient(ellipse at 28% 34%, rgba(0, 212, 255, .34), transparent 34%),
+    radial-gradient(ellipse at 76% 52%, rgba(255, 71, 87, .3), transparent 36%),
+    conic-gradient(from 132deg at 50% 50%, transparent 0 12%, rgba(232, 240, 254, .24) 18%, transparent 24% 48%, rgba(178, 32, 149, .28) 58%, transparent 69% 100%);
   mix-blend-mode: screen;
   mask-image: radial-gradient(ellipse at center, black 0 58%, transparent 76%);
 }
 
 .map-shell::after {
   background:
-    linear-gradient(108deg, transparent 0 36%, rgba(232, 240, 254, .15) 43%, transparent 51%),
-    linear-gradient(72deg, transparent 0 42%, rgba(0, 212, 255, .17) 49%, transparent 57%),
-    radial-gradient(ellipse at 42% 46%, rgba(232, 240, 254, .11), transparent 34%),
-    radial-gradient(ellipse at 68% 38%, rgba(0, 212, 255, .15), transparent 30%),
-    radial-gradient(ellipse at 36% 62%, rgba(255, 71, 87, .11), transparent 32%);
+    linear-gradient(108deg, transparent 0 36%, rgba(232, 240, 254, .17) 43%, transparent 51%),
+    linear-gradient(72deg, transparent 0 42%, rgba(0, 212, 255, .19) 49%, transparent 57%),
+    radial-gradient(ellipse at 42% 46%, rgba(232, 240, 254, .13), transparent 34%),
+    radial-gradient(ellipse at 68% 38%, rgba(0, 212, 255, .17), transparent 30%),
+    radial-gradient(ellipse at 36% 62%, rgba(255, 71, 87, .13), transparent 32%);
   mix-blend-mode: screen;
   mask-image: radial-gradient(ellipse at center, black 0 54%, transparent 72%);
 }
@@ -977,8 +579,7 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   transition: opacity .6s ease;
 }
 
-[data-phase="map"] .border-trace,
-[data-phase="attract"] .border-trace {
+[data-phase="map"] .border-trace {
   opacity: .55;
   animation: traceLoop 12s linear infinite;
 }
@@ -994,12 +595,12 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   transition: fill .45s ease, filter .45s ease, transform .45s var(--ease-out), stroke .45s ease;
 }
 
-[data-phase="map"]:not([data-arrived]) .district .base { animation: districtIntro .8s var(--ease-out) backwards; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(1) .base { animation-delay: .3s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(2) .base { animation-delay: .38s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(3) .base { animation-delay: .46s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(4) .base { animation-delay: .54s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(5) .base { animation-delay: .62s; }
+[data-phase="map"]:not([data-arrived]) .district .base { animation: districtIntro .85s var(--ease-out) backwards; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(1) .base { animation-delay: .95s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(2) .base { animation-delay: 1.05s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(3) .base { animation-delay: 1.15s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(4) .base { animation-delay: 1.25s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(5) .base { animation-delay: 1.35s; }
 
 .district .label {
   fill: rgba(255, 255, 255, .98);
@@ -1017,43 +618,11 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 }
 
 [data-phase="map"]:not([data-arrived]) .district .label { animation: labelIntro .9s var(--ease-out) backwards; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(1) .label { animation-delay: .82s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(2) .label { animation-delay: .9s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(3) .label { animation-delay: .98s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(4) .label { animation-delay: 1.06s; }
-[data-phase="map"]:not([data-arrived]) .district:nth-of-type(5) .label { animation-delay: 1.14s; }
-
-.hud-tag {
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity var(--t-slow) ease, transform var(--t-slow) var(--ease-out);
-  pointer-events: none;
-}
-
-.hud-tag .tag-code {
-  fill: color-mix(in srgb, var(--color) 80%, white);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-anchor: middle;
-  paint-order: stroke;
-  stroke: rgba(2, 6, 12, .85);
-  stroke-width: 4px;
-}
-
-.hud-tag .tag-line {
-  stroke: color-mix(in srgb, var(--color) 60%, transparent);
-  stroke-width: 1.4;
-}
-
-.district:hover .hud-tag,
-.district:focus-visible .hud-tag,
-.district.peek .hud-tag,
-.district.done .hud-tag {
-  opacity: 1;
-  transform: translateY(0);
-}
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(1) .label { animation-delay: 1.5s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(2) .label { animation-delay: 1.58s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(3) .label { animation-delay: 1.66s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(4) .label { animation-delay: 1.74s; }
+[data-phase="map"]:not([data-arrived]) .district:nth-of-type(5) .label { animation-delay: 1.82s; }
 
 .pin {
   fill: var(--color);
@@ -1069,8 +638,7 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 }
 
 .district:hover .base,
-.district:focus-visible .base,
-.district.peek .base {
+.district:focus-visible .base {
   fill: color-mix(in srgb, var(--color) 34%, #0c1626);
   stroke: color-mix(in srgb, var(--color) 60%, rgba(255, 255, 255, .5));
   filter: brightness(1.16) drop-shadow(0 0 22px color-mix(in srgb, var(--color) 70%, transparent));
@@ -1091,98 +659,7 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
 .district.done .base { animation: donePulse 3.2s ease-in-out infinite; }
 
-.district.shimmer .base { animation: shimmerPulse 1.8s ease; }
-
-.coord-readout {
-  position: absolute;
-  right: 18px;
-  bottom: 14px;
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  color: var(--text-lo);
-  font-variant-numeric: tabular-nums;
-  transition: opacity .4s ease;
-}
-
-[data-phase="map"]:not([data-arrived]) .coord-readout {
-  animation: typeOn 1s 1.35s steps(18) backwards;
-}
-
-.attract-cue {
-  position: absolute;
-  left: 50%;
-  bottom: 52px;
-  margin: 0;
-  padding: 10px 22px;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  background: rgba(11, 17, 32, .72);
-  font-size: 17px;
-  font-weight: 850;
-  letter-spacing: .14em;
-  color: var(--text-hi);
-  opacity: 0;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-[data-phase="attract"] .attract-cue { animation: cuePulse 2s ease-in-out infinite; }
-
-.hint-chip {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  color: var(--text-lo);
-  transform: translateX(-50%);
-  transition: opacity .4s ease;
-}
-
-[data-phase="fusing"] .frame-corner,
-[data-phase="complete"] .frame-corner,
-[data-phase="fusing"] .frame-ticks,
-[data-phase="complete"] .frame-ticks,
-[data-phase="fusing"] .coord-readout,
-[data-phase="complete"] .coord-readout,
-[data-phase="fusing"] .hint-chip,
-[data-phase="complete"] .hint-chip,
-[data-phase="fusing"] .scanline,
-[data-phase="complete"] .scanline {
-  opacity: 0;
-}
-
-.credit {
-  position: absolute;
-  right: 38px;
-  bottom: 12px;
-  z-index: 22;
-  margin: 0;
-  color: rgba(170, 192, 214, .58);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: .04em;
-  text-shadow: 0 3px 12px rgba(0, 0, 0, .82);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity .8s ease;
-}
-
-[data-phase="map"] .credit,
-[data-phase="attract"] .credit,
-[data-phase="playing"] .credit,
-[data-phase="fusing"] .credit,
-[data-phase="complete"] .credit {
-  opacity: 1;
-}
-
-/* ---------------------------------------------------------------- 8) video overlay */
+/* ---------------------------------------------------------------- 7) video overlay */
 
 .video-layer {
   position: absolute;
@@ -1366,7 +843,58 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
 .video-pop.show .video-progress span { animation: playhead var(--dur, 1000ms) linear forwards; }
 
-/* ---------------------------------------------------------------- 9) fusing / completion */
+/* ---------------------------------------------------------------- 8) grand finale
+   timeline inside [data-phase="fusing"] (FUSE_MS = 5400ms):
+   0.00s  charge      — the five districts pulse twice, in sync
+   0.95s  implosion   — districts collapse toward the city's heart
+   1.45s  detonation  — white flash, triple shockwave, canvas burst
+   1.60s  ignition    — boundary trace + animated gradient floods in
+   2.60s  ascension   — the unified map zooms, aurora & light sheets
+   5.40s  → complete  — title materializes letter by letter           */
+
+.finale-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.finale-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.finale-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .95), rgba(160, 220, 255, .4) 28%, transparent 64%);
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+[data-phase="fusing"] .finale-flash { animation: flashPop .85s 1.42s ease-out forwards; }
+
+.shockwave {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14vmax;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .85);
+  box-shadow: 0 0 44px rgba(0, 212, 255, .5), inset 0 0 30px rgba(255, 255, 255, .25);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.08);
+}
+
+.shockwave.sw-2 { border-color: rgba(0, 212, 255, .7); box-shadow: 0 0 44px rgba(0, 212, 255, .45); }
+.shockwave.sw-3 { border-color: rgba(255, 184, 0, .6); box-shadow: 0 0 44px rgba(255, 184, 0, .4); }
+
+[data-phase="fusing"] .sw-1 { animation: shockwave 1.5s 1.45s cubic-bezier(.1, .8, .2, 1) forwards; }
+[data-phase="fusing"] .sw-2 { animation: shockwave 1.7s 1.62s cubic-bezier(.1, .8, .2, 1) forwards; }
+[data-phase="fusing"] .sw-3 { animation: shockwave 1.9s 1.8s cubic-bezier(.1, .8, .2, 1) forwards; }
 
 .unified-map {
   opacity: 0;
@@ -1384,67 +912,63 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   will-change: opacity, fill-opacity, stroke-dashoffset;
 }
 
+/* charge: two synchronized heartbeats before the collapse */
+[data-phase="fusing"] .district .base {
+  animation: districtCharge .95s ease-in-out;
+}
+
 [data-phase="fusing"] .district,
 [data-phase="complete"] .district {
   pointer-events: none;
   transform-box: fill-box;
   transform-origin: center;
-  animation: districtFuse 1.05s var(--ease-out) forwards;
+  animation: districtFuse 1.1s .95s var(--ease-out) forwards;
 }
 
-[data-phase="fusing"] .district:nth-of-type(1), [data-phase="complete"] .district:nth-of-type(1) { --fuse-x: -24px; --fuse-y: 34px; --fuse-r: -2deg; }
-[data-phase="fusing"] .district:nth-of-type(2), [data-phase="complete"] .district:nth-of-type(2) { --fuse-x: 42px; --fuse-y: -4px; --fuse-r: 1.8deg; }
-[data-phase="fusing"] .district:nth-of-type(3), [data-phase="complete"] .district:nth-of-type(3) { --fuse-x: -38px; --fuse-y: -2px; --fuse-r: -1.4deg; }
-[data-phase="fusing"] .district:nth-of-type(4), [data-phase="complete"] .district:nth-of-type(4) { --fuse-x: 18px; --fuse-y: 36px; --fuse-r: 1deg; }
-[data-phase="fusing"] .district:nth-of-type(5), [data-phase="complete"] .district:nth-of-type(5) { --fuse-x: 0; --fuse-y: -42px; --fuse-r: -1deg; }
+/* implosion vectors: each district falls toward the city's heart */
+[data-phase="fusing"] .district:nth-of-type(1), [data-phase="complete"] .district:nth-of-type(1) { --fuse-x: -19px; --fuse-y: 17px; --fuse-r: -2deg; }
+[data-phase="fusing"] .district:nth-of-type(2), [data-phase="complete"] .district:nth-of-type(2) { --fuse-x: 16px; --fuse-y: -5px; --fuse-r: 1.8deg; }
+[data-phase="fusing"] .district:nth-of-type(3), [data-phase="complete"] .district:nth-of-type(3) { --fuse-x: -15px; --fuse-y: -2px; --fuse-r: -1.4deg; }
+[data-phase="fusing"] .district:nth-of-type(4), [data-phase="complete"] .district:nth-of-type(4) { --fuse-x: 12px; --fuse-y: 9px; --fuse-r: 1deg; }
+[data-phase="fusing"] .district:nth-of-type(5), [data-phase="complete"] .district:nth-of-type(5) { --fuse-x: -2px; --fuse-y: -21px; --fuse-r: -1deg; }
 
-[data-phase="fusing"] .district .base,
-[data-phase="complete"] .district .base {
-  stroke: rgba(255, 255, 255, .44);
-  animation: none;
-  filter: none;
-  transition: opacity .42s ease, stroke .42s ease;
-}
-
+[data-phase="complete"] .district .base,
 [data-phase="fusing"] .district .label,
 [data-phase="complete"] .district .label,
-[data-phase="fusing"] .district .hud-tag,
-[data-phase="complete"] .district .hud-tag,
 [data-phase="fusing"] .pin,
 [data-phase="complete"] .pin {
   opacity: 0;
   filter: none;
   animation: none;
-  transition: opacity .26s ease;
+  transition: opacity .3s ease;
 }
 
 [data-phase="fusing"] .border-trace,
 [data-phase="complete"] .border-trace { opacity: 0; animation: none; }
 
 [data-phase="fusing"] .outer-border,
-[data-phase="complete"] .outer-border { animation: borderVanish .9s .12s ease forwards; }
+[data-phase="complete"] .outer-border { animation: borderFlare 1.7s .85s ease forwards; }
 
 [data-phase="fusing"] .map-shell,
 [data-phase="complete"] .map-shell {
-  filter: none;
-  animation: finalMapZoom 3.8s .9s ease-in-out forwards;
+  animation: finalMapZoom 3.6s 2.6s ease-in-out forwards;
 }
 
 [data-phase="fusing"] .map-shell::before,
-[data-phase="complete"] .map-shell::before { animation: mapAurora 4.8s .12s ease-out forwards, auroraDrift 6s 4.4s ease-in-out infinite; }
+[data-phase="complete"] .map-shell::before { animation: mapAurora 4.6s 1.5s ease-out forwards, auroraDrift 6s 6s ease-in-out infinite; }
 
 [data-phase="fusing"] .map-shell::after,
-[data-phase="complete"] .map-shell::after { animation: lightSheetBloom 3.7s .24s ease-out forwards, lightSheetDrift 5.6s 3.5s ease-in-out infinite; }
+[data-phase="complete"] .map-shell::after { animation: lightSheetBloom 3.6s 1.7s ease-out forwards, lightSheetDrift 5.6s 5.2s ease-in-out infinite; }
 
 [data-phase="fusing"] .unified-map,
 [data-phase="complete"] .unified-map {
   opacity: 1;
-  stroke: rgba(255, 255, 255, .86);
+  stroke: rgba(255, 255, 255, .9);
   filter: url(#glowStrong);
   animation:
-    unifiedTrace 1.15s .52s var(--ease-out) forwards,
-    unifiedIgnite 2.5s 1.02s var(--ease-out) forwards,
-    finalColorBreath 4.4s 3.5s ease-in-out infinite;
+    unifiedTrace .95s 1.55s var(--ease-out) forwards,
+    unifiedIgnite 1.9s 2.15s var(--ease-out) forwards,
+    finalColorBreath 4.4s 4.2s ease-in-out infinite;
 }
 
 .completion {
@@ -1504,8 +1028,8 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
     conic-gradient(from 190deg, transparent 0 14%, rgba(255, 71, 87, .22) 18%, transparent 26% 48%, rgba(232, 240, 254, .2) 56%, transparent 68% 100%);
 }
 
-[data-phase="fusing"] .ring-one { animation: ringPulse 2.6s 1.1s var(--ease-out) forwards; }
-[data-phase="fusing"] .ring-two { animation: ringPulse 3.1s 1.4s var(--ease-out) forwards; }
+[data-phase="fusing"] .ring-one { animation: ringPulse 2.6s 1.8s var(--ease-out) forwards; }
+[data-phase="fusing"] .ring-two { animation: ringPulse 3.1s 2.1s var(--ease-out) forwards; }
 
 .final-sparks {
   position: absolute;
@@ -1528,8 +1052,8 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   z-index: 2;
   display: grid;
   justify-items: center;
-  gap: 15px;
-  width: min(960px, 76vw);
+  gap: 16px;
+  width: min(1100px, 84vw);
   text-align: center;
   opacity: 0;
   transition: opacity .6s ease;
@@ -1546,45 +1070,36 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   color: rgba(160, 208, 252, .85);
 }
 
-[data-phase="complete"] .completion-eyebrow { animation: finishMetaRise 1.2s .22s var(--ease-out) backwards; }
+[data-phase="complete"] .completion-eyebrow { animation: finishMetaRise 1.2s .3s var(--ease-out) backwards; }
 
 .completion h2 {
   margin: 0;
-  font-size: clamp(58px, 6.4vw, 84px);
+  font-size: clamp(64px, 7.4vw, 104px);
   font-weight: 900;
-  line-height: 1.08;
+  line-height: 1.05;
   color: rgba(255, 255, 255, .98);
-  text-shadow: 0 5px 20px rgba(0, 0, 0, .95), 0 0 20px rgba(255, 255, 255, .22);
-  transform: translateY(5px);
+  text-shadow: 0 5px 20px rgba(0, 0, 0, .95), 0 0 24px rgba(255, 255, 255, .22);
 }
 
-[data-phase="complete"] .completion h2 {
-  animation: finishText 1.55s .32s var(--ease-out) backwards, titleBreath 3.8s 2.05s ease-in-out infinite;
+[data-phase="complete"] .completion h2 { animation: titleBreath 3.8s 2.2s ease-in-out infinite; }
+
+.completion h2 span { display: inline-block; }
+
+[data-phase="complete"] .completion h2 span {
+  animation: finaleChar .95s calc(.25s + var(--ci) * .07s) var(--ease-out) backwards;
 }
 
 .completion-sub {
   margin: 0;
-  color: rgba(212, 228, 244, .78);
-  font-size: 19px;
+  color: rgba(212, 228, 244, .8);
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: .02em;
 }
 
-[data-phase="complete"] .completion-sub { animation: finishMetaRise 1.2s .85s var(--ease-out) backwards; }
+[data-phase="complete"] .completion-sub { animation: finishMetaRise 1.2s 1.1s var(--ease-out) backwards; }
 
-.reset-countdown {
-  margin: 14px 0 0;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .26em;
-  color: var(--text-lo);
-  font-variant-numeric: tabular-nums;
-}
-
-[data-phase="complete"] .reset-countdown { animation: finishMetaRise 1.2s 1.4s var(--ease-out) backwards; }
-
-/* ---------------------------------------------------------------- 10) reset veil */
+/* ---------------------------------------------------------------- 9) reset veil */
 
 .reset-veil {
   position: fixed;
@@ -1603,40 +1118,26 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 
 [data-phase="boot"] .reset-veil { transition: opacity .8s .15s ease; }
 
-/* ---------------------------------------------------------------- 11) keyframes */
+/* ---------------------------------------------------------------- 10) keyframes */
 
-@keyframes lampPulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
-@keyframes liveBlink { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+@keyframes emblemIn { 0% { opacity: 0; transform: translateY(-14px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes enterGlow { 0%, 100% { box-shadow: 0 0 0 rgba(0, 212, 255, 0); } 50% { box-shadow: 0 0 28px rgba(0, 212, 255, .3); } }
 
-@keyframes hudDrop { 0% { opacity: 0; transform: translateY(-18px); } 100% { opacity: 1; transform: translateY(0); } }
-@keyframes railIn { 0% { opacity: 0; transform: translateX(-22px); } 100% { opacity: 1; transform: translateX(0); } }
-@keyframes rowIn { 0% { opacity: 0; transform: translateX(-14px); } 100% { opacity: 1; transform: translateX(0); } }
-@keyframes cornerDraw { 0% { opacity: 0; transform: scale(.4); } 100% { opacity: .9; transform: scale(1); } }
-@keyframes typeOn { 0% { opacity: 0; clip-path: inset(0 100% 0 0); } 100% { opacity: 1; clip-path: inset(0 0 0 0); } }
-
-@keyframes mapReveal { 0% { opacity: 0; transform: translateY(26px) scale(.965); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes mapArrive {
+  0% { opacity: 0; transform: rotateX(44deg) translateY(11%) scale(.72); filter: blur(18px) brightness(1.9); }
+  45% { opacity: 1; }
+  70% { transform: rotateX(-4deg) translateY(-1.4%) scale(1.022); filter: blur(1px) brightness(1.12); }
+  100% { transform: rotateX(0deg) translateY(0) scale(1); filter: blur(0) brightness(1); }
+}
 @keyframes mapBreath { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-@keyframes districtIntro { 0% { opacity: 0; transform: translateY(14px) scale(.985); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes districtIntro { 0% { opacity: 0; transform: translateY(18px) scale(.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes labelIntro { 0% { opacity: 0; transform: translateY(12px) scale(.94); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes traceLoop { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1; } }
-/* fill interpolation is smooth where filter-list animation is not */
 @keyframes donePulse {
   0%, 100% { fill: color-mix(in srgb, var(--color) 50%, #131c28); }
   50% { fill: color-mix(in srgb, var(--color) 68%, #131c28); }
 }
-@keyframes shimmerPulse {
-  0%, 100% { filter: brightness(1) drop-shadow(0 0 0 rgba(0, 212, 255, 0)); }
-  45% { filter: brightness(1.55) drop-shadow(0 0 26px var(--color)); }
-}
 @keyframes pinPulse { 0%, 100% { opacity: .9; } 50% { opacity: .4; } }
-@keyframes scanSweep {
-  0% { opacity: 0; background-position-y: -6px; }
-  8% { opacity: 1; }
-  92% { opacity: 1; }
-  100% { opacity: 0; background-position-y: calc(100% + 6px); }
-}
-@keyframes cuePulse { 0%, 100% { opacity: .9; transform: translateX(-50%) translateY(0); } 50% { opacity: .45; transform: translateX(-50%) translateY(-4px); } }
-@keyframes enterGlow { 0%, 100% { box-shadow: 0 0 0 rgba(0, 212, 255, 0); } 50% { box-shadow: 0 0 28px rgba(0, 212, 255, .3); } }
 
 @keyframes introGlyph { 0% { opacity: 0; transform: translate3d(0, 46px, 0) scale(.9); } 62% { opacity: 1; transform: translate3d(0, -4px, 0) scale(1.025); } 100% { opacity: 1; transform: translateZ(0) scale(1); } }
 @keyframes introOrb { 0% { opacity: 0; transform: scale(.62); } 42% { opacity: .76; } 100% { opacity: .34; transform: scale(1.1); } }
@@ -1658,26 +1159,53 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes numRise { 0% { opacity: 0; transform: translateY(8vh); } 100% { opacity: .2; transform: translateY(0); } }
 @keyframes playhead { from { width: 0; } to { width: 100%; } }
 
-@keyframes borderVanish { to { opacity: 0; } }
-@keyframes districtFuse { 0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); } 46% { opacity: .86; transform: translate(var(--fuse-x), var(--fuse-y)) scale(.985) rotate(var(--fuse-r)); } 100% { opacity: 0; transform: translate(0, 0) scale(1.012) rotate(0deg); } }
+@keyframes districtCharge {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 0 rgba(0, 212, 255, 0)); }
+  28% { filter: brightness(1.7) drop-shadow(0 0 26px var(--color)); }
+  52% { filter: brightness(1.08) drop-shadow(0 0 6px var(--color)); }
+  82% { filter: brightness(2.1) drop-shadow(0 0 40px var(--color)); }
+}
+@keyframes districtFuse {
+  0% { opacity: 1; transform: translate(0, 0) scale(1) rotate(0deg); }
+  62% { opacity: .9; transform: translate(var(--fuse-x), var(--fuse-y)) scale(.95) rotate(var(--fuse-r)); }
+  100% { opacity: 0; transform: translate(calc(var(--fuse-x) * 1.5), calc(var(--fuse-y) * 1.5)) scale(.9) rotate(var(--fuse-r)); }
+}
+@keyframes borderFlare {
+  0% { opacity: 1; stroke: rgba(214, 234, 255, .8); }
+  32% { opacity: 1; stroke: rgba(255, 255, 255, 1); filter: drop-shadow(0 0 36px rgba(160, 220, 255, .9)); }
+  100% { opacity: 0; }
+}
+@keyframes flashPop {
+  0% { opacity: 0; transform: scale(.6); }
+  16% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.7); }
+}
+@keyframes shockwave {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.08); }
+  10% { opacity: .95; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(9); }
+}
 @keyframes unifiedTrace { 0% { stroke-dashoffset: 1; stroke-opacity: .9; } 100% { stroke-dashoffset: 0; stroke-opacity: .92; } }
-@keyframes unifiedIgnite { 0% { fill-opacity: 0; stroke-opacity: .92; } 58% { fill-opacity: .72; stroke-opacity: .52; } 100% { fill-opacity: .78; stroke-opacity: 0; } }
-@keyframes finalMapZoom { 0% { transform: translateZ(0) scale(1); } 100% { transform: translateZ(0) scale(1.16); } }
-@keyframes finalColorBreath { 0%, 100% { fill-opacity: .72; } 50% { fill-opacity: .86; } }
-@keyframes mapAurora { 0% { opacity: 0; transform: scale(.86) rotate(-8deg); } 34% { opacity: .9; } 100% { opacity: .46; transform: scale(1.08) rotate(11deg); } }
+@keyframes unifiedIgnite { 0% { fill-opacity: 0; stroke-opacity: .92; } 58% { fill-opacity: .74; stroke-opacity: .52; } 100% { fill-opacity: .8; stroke-opacity: 0; } }
+@keyframes finalMapZoom { 0% { transform: translateZ(0) scale(1); } 100% { transform: translateZ(0) scale(1.17); } }
+@keyframes finalColorBreath { 0%, 100% { fill-opacity: .74; } 50% { fill-opacity: .88; } }
+@keyframes mapAurora { 0% { opacity: 0; transform: scale(.86) rotate(-8deg); } 34% { opacity: .92; } 100% { opacity: .48; transform: scale(1.08) rotate(11deg); } }
 @keyframes auroraDrift { 0%, 100% { transform: scale(1.08) rotate(11deg); } 50% { transform: scale(1.13) rotate(-7deg); } }
-@keyframes lightSheetBloom { 0% { opacity: 0; transform: translate3d(-2%, 2%, 0) scale(.92) rotate(-7deg); } 42% { opacity: .74; } 100% { opacity: .32; transform: translate3d(0, 0, 0) scale(1.08) rotate(4deg); } }
+@keyframes lightSheetBloom { 0% { opacity: 0; transform: translate3d(-2%, 2%, 0) scale(.92) rotate(-7deg); } 42% { opacity: .76; } 100% { opacity: .34; transform: translate3d(0, 0, 0) scale(1.08) rotate(4deg); } }
 @keyframes lightSheetDrift { 0%, 100% { transform: translate3d(-1%, .8%, 0) scale(1.08) rotate(4deg); } 50% { transform: translate3d(1.2%, -1%, 0) scale(1.11) rotate(-3deg); } }
 @keyframes ringPulse { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.64) rotate(-18deg); } 32% { opacity: .72; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.22) rotate(22deg); } }
 @keyframes finishLightField { 0% { opacity: 0; transform: translateX(-2%) scale(.96); } 36% { opacity: .62; } 100% { opacity: .28; transform: translateX(0) scale(1.04); } }
 @keyframes finishLightDrift { 0%, 100% { transform: translate3d(-1%, .6%, 0) scale(1.04); } 50% { transform: translate3d(1%, -.8%, 0) scale(1.07); } }
-@keyframes titleBreath { 0%, 100% { text-shadow: 0 5px 20px rgba(0, 0, 0, .95), 0 0 18px rgba(255, 255, 255, .16); } 50% { text-shadow: 0 5px 22px rgba(0, 0, 0, .96), 0 0 30px rgba(0, 212, 255, .22); } }
+@keyframes titleBreath { 0%, 100% { text-shadow: 0 5px 20px rgba(0, 0, 0, .95), 0 0 18px rgba(255, 255, 255, .16); } 50% { text-shadow: 0 5px 22px rgba(0, 0, 0, .96), 0 0 32px rgba(0, 212, 255, .24); } }
 @keyframes finishBackdrop { 0% { transform: translateX(-5%) scale(.96); opacity: 0; } 34% { opacity: .82; } 100% { transform: translateX(0) scale(1.04); opacity: .42; } }
 @keyframes finishBackdropDrift { 0%, 100% { transform: translate3d(-1%, .6%, 0) scale(1.04) rotate(0deg); } 50% { transform: translate3d(1%, -.8%, 0) scale(1.07) rotate(3deg); } }
-@keyframes finishText { 0% { opacity: 0; transform: translateY(24px) scale(.96); } 52% { opacity: 1; transform: translateY(5px) scale(1.025); } 100% { opacity: 1; transform: translateY(5px) scale(1); } }
+@keyframes finaleChar {
+  0% { opacity: 0; transform: translateY(.45em) scale(1.4); filter: blur(20px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
 @keyframes finishMetaRise { 0% { opacity: 0; transform: translateY(16px); } 100% { opacity: 1; transform: translateY(0); } }
 
-/* ---------------------------------------------------------------- 12) reduced motion */
+/* ---------------------------------------------------------------- 11) reduced motion */
 
 @media (prefers-reduced-motion: reduce) {
   [data-phase="boot"] .intro-word span,
@@ -1685,28 +1213,26 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
   [data-phase="boot"] .intro-loader::after,
   [data-phase="ready"] .intro-loader::before,
   [data-phase="ready"] .intro-loader::after,
-  [data-phase="map"]:not([data-arrived]) .hud-bar,
-  [data-phase="map"]:not([data-arrived]) .agenda-rail,
-  [data-phase="map"]:not([data-arrived]) .rail-row,
-  [data-phase="map"]:not([data-arrived]) .frame-corner,
   [data-phase="map"]:not([data-arrived]) .map-shell,
+  [data-phase="map"]:not([data-arrived]) .city-logo-badge,
   [data-phase="map"]:not([data-arrived]) .district .base,
   [data-phase="map"]:not([data-arrived]) .district .label,
-  [data-phase="map"]:not([data-arrived]) .coord-readout {
+  [data-phase="fusing"] .district,
+  [data-phase="complete"] .district,
+  [data-phase="complete"] .completion h2 span {
     animation-duration: .01ms;
     animation-delay: 0s;
   }
 
   .border-trace,
-  .scanline,
   .video-beam,
-  .status-lamp i,
-  .test-run-dot,
   [data-phase="map"] .map-shell,
-  [data-phase="attract"] .map-shell,
   [data-phase="playing"] .map-shell,
   .district.done .base,
-  .district.done .pin {
+  .district.done .pin,
+  [data-phase="fusing"] .district .base,
+  [data-phase="fusing"] .finale-flash,
+  [data-phase="fusing"] .shockwave {
     animation: none;
   }
 }
