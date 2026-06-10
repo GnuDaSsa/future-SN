@@ -98,6 +98,8 @@ body {
   pointer-events: auto;
   cursor: default;
   isolation: isolate;
+  perspective: 1200px;
+  background-size: 130% 130%, 140% 140%, 100% 100%;
 }
 
 .intro-loader.is-loaded {
@@ -106,6 +108,7 @@ body {
 
 .intro-loader.is-launching {
   cursor: wait;
+  animation: launchBackplate 3s cubic-bezier(.11,.86,.18,1) both;
 }
 
 .intro-canvas {
@@ -117,12 +120,20 @@ body {
   opacity: 0;
   pointer-events: none;
   mix-blend-mode: screen;
-  filter: saturate(1.24) contrast(1.08);
+  filter: saturate(1.34) contrast(1.12);
   transition: opacity .28s ease;
 }
 
 .intro-loader.is-launching .intro-canvas {
   opacity: 1;
+}
+
+.intro-loader.is-launching::before {
+  animation: launchOrb 3s cubic-bezier(.11,.86,.18,1) forwards;
+}
+
+.intro-loader.is-launching::after {
+  animation: launchSignals 3s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader::before,
@@ -351,7 +362,7 @@ body {
 }
 
 .intro-loader.is-launching .intro-burst {
-  opacity: .58;
+  opacity: .46;
 }
 
 .intro-loader.is-launching .intro-burst::before {
@@ -359,7 +370,7 @@ body {
 }
 
 .intro-loader.is-launching .intro-burst::after {
-  animation: transitionFlash 1.08s .28s cubic-bezier(.11,.86,.18,1) forwards;
+  animation: transitionFlash .78s .52s cubic-bezier(.11,.86,.18,1) forwards;
 }
 
 .intro-loader.is-launching .intro-burst span:nth-child(1) {
@@ -780,9 +791,12 @@ svg { width: 100%; height: 100%; display: block; overflow: visible; }
 @keyframes introSignals { 0% { opacity: 0; transform: rotate(-9deg) scale(.56); } 40% { opacity: .82; } 100% { opacity: .42; transform: rotate(8deg) scale(1.16); } }
 @keyframes introSignalsDrift { 0%,100% { transform: rotate(8deg) scale(1.16); } 50% { transform: rotate(-4deg) scale(1.28); } }
 @keyframes introUiVanish { 0% { opacity: 1; filter: blur(0); } 100% { opacity: 0; filter: blur(12px); } }
-@keyframes transitionRing { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.22); } 18% { opacity: .95; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.15); } }
-@keyframes transitionFlash { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.14); } 18% { opacity: .72; } 42% { opacity: .24; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(9); } }
-@keyframes transitionIris { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-18deg); filter: blur(2px); } 22% { opacity: .84; filter: blur(0); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.88) rotate(34deg); filter: blur(5px); } }
+@keyframes launchBackplate { 0% { background-position: 50% 44%, 72% 58%, 0 0; filter: brightness(1); } 54% { background-position: 46% 40%, 78% 62%, 0 0; filter: brightness(1.18) saturate(1.14); } 100% { background-position: 50% 44%, 72% 58%, 0 0; filter: brightness(1.05); } }
+@keyframes launchOrb { 0% { opacity: .34; transform: rotateX(0) scale(1.1); } 38% { opacity: .58; transform: rotateX(58deg) scale(1.34); } 100% { opacity: 0; transform: rotateX(72deg) scale(2.15); } }
+@keyframes launchSignals { 0% { opacity: .42; transform: rotate(8deg) scale(1.16); } 48% { opacity: .64; transform: rotate(-16deg) scale(1.42); } 100% { opacity: 0; transform: rotate(22deg) scale(2.2); } }
+@keyframes transitionRing { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.22) rotateX(58deg); filter: blur(8px); } 18% { opacity: .82; filter: blur(0); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2.28) rotateX(70deg); filter: blur(8px); } }
+@keyframes transitionFlash { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.14); } 22% { opacity: .48; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(7); } }
+@keyframes transitionIris { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(-18deg); filter: blur(3px); } 22% { opacity: .74; filter: blur(0); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.96) rotate(34deg); filter: blur(7px); } }
 @keyframes introExit { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.035); visibility: hidden; } }
 @keyframes cinematicSweep { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
 @keyframes videoEnergy { 0%,100% { transform: translate3d(-2%,1%,0) scale(1); opacity: .42; } 50% { transform: translate3d(2%,-1%,0) scale(1.04); opacity: .78; } }
