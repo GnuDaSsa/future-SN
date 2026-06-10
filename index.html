@@ -150,14 +150,13 @@
       if (!introLoaded || introEntering || !introLoader) return;
       introEntering = true;
       introEnter.disabled = true;
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       introLoader.classList.add('is-launching');
       setTimeout(() => {
         stage.classList.remove('is-intro');
         stage.classList.add('intro-ready');
         introLoader.classList.add('is-hiding');
-        setTimeout(() => introLoader.remove(), reduceMotion ? 260 : 1100);
-      }, reduceMotion ? 120 : 1320);
+        setTimeout(() => introLoader.remove(), 1200);
+      }, 4200);
     }
 
     function runIntro() {
@@ -165,8 +164,7 @@
         stage.classList.remove('is-intro');
         return;
       }
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const duration = reduceMotion ? 500 : 4800;
+      const duration = 9600;
       const started = performance.now();
 
       function tick(now) {
