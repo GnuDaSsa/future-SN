@@ -1,11 +1,23 @@
 /* SNFM — bootstrap: wires DOM, drives the state machine. Loaded last. */
 (function () {
   'use strict';
-  var SNFM = window.SNFM;
-  var cfg = SNFM.config;
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SNFM = window.SNFM || {};
+  var REQUIRED = ['config', 'createTimeline', 'createMachine', 'ambient', 'launch', 'finale', 'video'];
 
   document.addEventListener('DOMContentLoaded', function () {
+    /* Stale-cache guard: CDN-style hosts can serve a mix of old and new
+       files right after a push. If any module or new markup is missing,
+       force one cache-busting reload instead of dying on a black screen. */
+    var missing = REQUIRED.filter(function (k) { return !SNFM[k]; });
+    if (missing.length || !document.querySelector('#finaleCanvas')) {
+      if (location.protocol !== 'file:' && !/snfmv=/.test(location.search)) {
+        location.replace(location.pathname + '?snfmv=' + Date.now());
+      }
+      return;
+    }
+
+    var cfg = SNFM.config;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var stage = document.querySelector('#stage');
     var els = {
       introLoader: document.querySelector('#introLoader'),
