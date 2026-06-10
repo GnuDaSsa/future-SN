@@ -351,12 +351,6 @@
       drawLaunchSheets(ctx, width, height, progress);
       drawLaunchRibbons(ctx, width, height, progress);
 
-      const camera = .96 + easeOutCubic(progress) * .04 + Math.sin(progress * Math.PI) * .032;
-      ctx.save();
-      ctx.translate(width / 2, height / 2);
-      ctx.scale(camera, camera);
-      ctx.translate(-width / 2, -height / 2);
-
       const boundary = [];
       for (const p of particles) {
         const local = clamp((progress - p.delay) / .68);
@@ -414,16 +408,18 @@
 
       if (progress > .38) {
         const draw = clamp((progress - .38) / .42);
+        const colorOffset = 1 - clamp((progress - .78) / .16);
         ctx.lineWidth = 2.8;
-        ctx.strokeStyle = `rgba(53,210,255,${.16 + .38 * draw})`;
-        strokeBoundary(ctx, boundary, draw, -5, -2);
-        ctx.strokeStyle = `rgba(245,50,75,${.14 + .34 * draw})`;
-        strokeBoundary(ctx, boundary, draw, 5, 2);
+        if (colorOffset > 0) {
+          ctx.strokeStyle = `rgba(53,210,255,${(.16 + .38 * draw) * colorOffset})`;
+          strokeBoundary(ctx, boundary, draw, -5 * colorOffset, -2 * colorOffset);
+          ctx.strokeStyle = `rgba(245,50,75,${(.14 + .34 * draw) * colorOffset})`;
+          strokeBoundary(ctx, boundary, draw, 5 * colorOffset, 2 * colorOffset);
+        }
         ctx.strokeStyle = `rgba(255,255,255,${.22 + .58 * clamp((progress - .48) / .22)})`;
         ctx.lineWidth = 2.1;
         strokeBoundary(ctx, boundary, draw);
       }
-      ctx.restore();
 
       if (progress > .9) {
         const flash = clamp((progress - .9) / .1);
