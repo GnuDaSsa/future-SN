@@ -16,6 +16,8 @@
       <span class="bg-vignette"></span>
     </div>
 
+    <canvas class="gl-canvas" id="glCanvas" aria-hidden="true"></canvas>
+
     <div class="city-logo-badge" aria-label="성남시 엠블렘">
       <img src="seongnam-logo.png" alt="성남시">
     </div>
@@ -151,12 +153,22 @@
     <div class="reset-veil" aria-hidden="true"></div>
   </main>
 
+  <!-- EffectComposer defines THREE.Pass; it must load before the pass files -->
+  <script defer src="vendor/three.min.js"></script>
+  <script defer src="vendor/CopyShader.js"></script>
+  <script defer src="vendor/LuminosityHighPassShader.js"></script>
+  <script defer src="vendor/EffectComposer.js"></script>
+  <script defer src="vendor/RenderPass.js"></script>
+  <script defer src="vendor/ShaderPass.js"></script>
+  <script defer src="vendor/MaskPass.js"></script>
+  <script defer src="vendor/UnrealBloomPass.js"></script>
   <script defer src="js/config.js"></script>
   <script defer src="js/timeline.js"></script>
   <script defer src="js/machine.js"></script>
   <script defer src="js/ambient.js"></script>
   <script defer src="js/launch.js"></script>
   <script defer src="js/finale.js"></script>
+  <script defer src="js/gl.js"></script>
   <script defer src="js/video.js"></script>
   <script defer src="js/app.js"></script>
 </body>

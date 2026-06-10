@@ -85,18 +85,34 @@ VIDEO_SOURCES: {
 소스가 null이면 `DEMO_VIDEO_MS`(1초) 데모 카드가 같은 프레임 크롬으로 재생된다.
 실영상은 `ended` 이벤트로 종료되며 `VIDEO_SAFETY_MS` 안전 타임아웃이 있다.
 
+## WebGL 레이어 (three.js r147 + UnrealBloom, `vendor/` 로컬 번들)
+
+`js/gl.js`가 풀스크린 캔버스 하나로 별필드(지도 뒤)·런치 수렴(로더 위)·
+피날레 폭발(지도 위)을 페이즈별 z-index 재배치로 운용한다. 카메라는
+z=0 평면이 CSS 픽셀과 1:1이 되도록 고정해 SVG 좌표(getScreenCTM)를
+그대로 파티클 타깃으로 쓴다. EffectComposer 출력은 불투명이므로
+캔버스에 `mix-blend-mode: screen`을 걸어 합성한다(가산 광원이라 등가).
+WebGL 컨텍스트 생성 실패 시 `gl.available=false`로 남고 2D 캔버스
+모듈(ambient/launch/finale)이 자동 폴백된다.
+
+로드 순서 주의: r147의 `THREE.Pass`는 EffectComposer.js 안에 정의되므로
+**EffectComposer가 RenderPass/ShaderPass/MaskPass/UnrealBloomPass보다
+먼저** 로드되어야 한다.
+
 ## 파일 구조
 
 | 파일 | 책임 |
 |---|---|
 | `index.html` | 마크업 + SVG (지오메트리 잠금) |
 | `styles.css` | 토큰 시트 + data-phase 안무 |
+| `vendor/` | three.min.js r147 + 블룸 포스트프로세싱 (오프라인 번들) |
 | `js/config.js` | 콘텐츠·타이밍·영상 매니페스트 (`window.__SNFM_OVERRIDES`로 테스트 오버라이드) |
 | `js/timeline.js` | 취소 가능 스케줄러 + 단일 rAF 루프 소유자 |
 | `js/machine.js` | 페이즈 상태 기계 |
-| `js/ambient.js` | 배경 별 필드 캔버스 (프레임당 할당 0, 가시성 일시정지) |
-| `js/launch.js` | 인트로 파티클 발사 캔버스 |
-| `js/finale.js` | 피날레 파티클 버스트/엠버 캔버스 |
+| `js/gl.js` | WebGL 효과 엔진 (별필드/런치/폭발/엠버 + 블룸) |
+| `js/ambient.js` | 2D 폴백: 배경 별 필드 |
+| `js/launch.js` | 2D 폴백: 인트로 파티클 발사 |
+| `js/finale.js` | 2D 폴백: 피날레 버스트/엠버 |
 | `js/video.js` | 영상 오버레이 슬롯 |
 | `js/app.js` | 부트스트랩·이벤트 배선 (마지막 로드) |
 

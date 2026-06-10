@@ -19,6 +19,9 @@
     var cfg = SNFM.config;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var stage = document.querySelector('#stage');
+    var glCanvas = document.querySelector('#glCanvas');
+    var useGL = !!(SNFM.gl && glCanvas && SNFM.gl.init(glCanvas));
+    if (useGL) stage.classList.add('gl-on');
     var els = {
       introLoader: document.querySelector('#introLoader'),
       introCanvas: document.querySelector('#introCanvas'),
@@ -62,6 +65,7 @@
         done.clear();
         stage.removeAttribute('data-arrived');
         els.videoLayer.innerHTML = '';
+        if (useGL) SNFM.gl.stop();
         SNFM.ambient.stop();
         SNFM.finale.clear(els.finaleCanvas);
         els.districts.forEach(function (d) { d.classList.remove('active', 'done'); });
@@ -79,7 +83,8 @@
       launch: function () {
         els.introEnter.disabled = true;
         var duration = reduced ? 200 : cfg.LAUNCH_MS;
-        SNFM.launch.start(els.introCanvas, duration, null);
+        if (useGL) SNFM.gl.launch(duration, null);
+        else SNFM.launch.start(els.introCanvas, duration, null);
         /* hand off slightly before the canvas flash so the 3D map
            arrival rises through the fading particle field */
         tl.after(Math.max(0, duration - cfg.HANDOFF_OVERLAP_MS), function () {
@@ -89,18 +94,19 @@
 
       map: function (prev) {
         if (prev === 'launch') {
-          SNFM.ambient.start(els.ambientCanvas);
+          if (useGL) SNFM.gl.stars();
+          else SNFM.ambient.start(els.ambientCanvas);
           tl.after(cfg.ARRIVE_MS, function () {
             stage.setAttribute('data-arrived', '');
           });
-        } else {
+        } else if (!useGL) {
           SNFM.ambient.setActive(true);
         }
       },
 
       playing: function (prev, id) {
         stage.setAttribute('data-arrived', '');
-        SNFM.ambient.setActive(false);
+        if (!useGL) SNFM.ambient.setActive(false);
         els.districts.forEach(function (d) {
           d.classList.toggle('active', d.dataset.id === id);
         });
@@ -117,10 +123,11 @@
       },
 
       fusing: function () {
-        SNFM.ambient.setActive(true);
+        if (!useGL) SNFM.ambient.setActive(true);
         if (!reduced) {
           tl.after(cfg.BURST_AT_MS, function () {
-            SNFM.finale.fire(els.finaleCanvas, 'burst');
+            if (useGL) SNFM.gl.burst();
+            else SNFM.finale.fire(els.finaleCanvas, 'burst');
           });
         }
         tl.after(reduced ? 400 : cfg.FUSE_MS, function () { machine.go('complete'); });
@@ -129,13 +136,15 @@
       complete: function () {
         if (!reduced) {
           tl.after(600, function () {
-            SNFM.finale.fire(els.finaleCanvas, 'embers');
+            if (useGL) SNFM.gl.embers();
+            else SNFM.finale.fire(els.finaleCanvas, 'embers');
           });
         }
         tl.after(cfg.AUTO_RESET_MS, function () { machine.go('resetting'); });
       },
 
       resetting: function () {
+        if (useGL) SNFM.gl.stop();
         SNFM.ambient.stop();
         tl.after(cfg.RESET_FADE_MS, function () { machine.go('boot'); });
       }

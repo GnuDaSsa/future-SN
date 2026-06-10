@@ -118,6 +118,52 @@ body {
   background: radial-gradient(ellipse 112% 98% at 50% 46%, transparent 52%, rgba(2, 5, 10, .68) 100%);
 }
 
+/* ----- WebGL layer: one canvas, restacked per phase --------------- */
+
+.gl-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .9s ease;
+  /* the composer writes an opaque black frame; everything we draw is
+     additive light, so screen-blending it over the DOM is equivalent
+     to true transparency */
+  mix-blend-mode: screen;
+}
+
+/* above the intro loader while the particle flight assembles the city */
+[data-phase="launch"] .gl-canvas {
+  z-index: 110;
+  opacity: 1;
+  transition: opacity .3s ease;
+}
+
+/* behind the map as a parallax starfield */
+[data-phase="map"] .gl-canvas,
+[data-phase="playing"] .gl-canvas {
+  z-index: 1;
+  opacity: 1;
+}
+
+/* above the map for the finale detonation */
+[data-phase="fusing"] .gl-canvas,
+[data-phase="complete"] .gl-canvas {
+  z-index: 18;
+  opacity: 1;
+}
+
+/* when WebGL drives the effects, the 2D fallbacks stay dark */
+.gl-on .ambient-canvas,
+.gl-on .intro-canvas,
+.gl-on .finale-canvas,
+.gl-on .shockwave {
+  display: none;
+}
+
 /* ---------------------------------------------------------------- 4) intro loader */
 
 .intro-loader {
