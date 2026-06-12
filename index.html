@@ -2,130 +2,31 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1280">
-  <title>성남 미래지도</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>성남 미래지도 — 취임식 디지털 퍼포먼스</title>
+  <style>html, body { background: #02040a; }</style>
+  <link rel="preload" href="Paperlogy-8ExtraBold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="Paperlogy-7Bold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="font-candidates.css">
+  <link rel="stylesheet" href="v2.css">
+  <script>
+    // 시퀀스 타임 스케일 — Tweaks에서 조절한 값이 이 블록에 저장됨
+    window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "speed": 1,
+      "typoHold": 1
+    }/*EDITMODE-END*/;
+    (function () {
+      const t = window.TWEAK_DEFAULTS;
+      const r = document.documentElement.style;
+      r.setProperty('--tscale', String(1 / (t.speed || 1)));
+      r.setProperty('--ttypo', String(t.typoHold || 1));
+    })();
+  </script>
 </head>
 <body>
-  <main class="stage" id="stage" data-phase="boot" aria-label="성남 미래지도">
-
-    <div class="backdrop" aria-hidden="true">
-      <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
-      <span class="bg-wash"></span>
-      <span class="bg-grid"></span>
-      <span class="bg-vignette"></span>
-    </div>
-
-    <canvas class="gl-canvas" id="glCanvas" aria-hidden="true"></canvas>
-
-    <div class="city-logo-badge" aria-label="성남시 엠블렘">
-      <img src="seongnam-logo.png" alt="성남시">
-    </div>
-
-    <section class="map-frame">
-      <div class="map-shell">
-        <svg viewBox="0 64 1000 630" role="img" aria-labelledby="mapTitle mapDesc">
-          <title id="mapTitle">성남 미래지도</title>
-          <desc id="mapDesc">성남시 외곽선을 5개 미래 의제 영역으로 나눈 인터랙티브 지도</desc>
-          <defs>
-            <clipPath id="seongnamBoundary"><path d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path></clipPath>
-            <filter id="glowSoft" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="6" result="blur"></feGaussianBlur>
-              <feMerge>
-                <feMergeNode in="blur"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-              </feMerge>
-            </filter>
-            <filter id="glowStrong" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="12" result="blur"></feGaussianBlur>
-              <feMerge>
-                <feMergeNode in="blur"></feMergeNode>
-                <feMergeNode in="SourceGraphic"></feMergeNode>
-              </feMerge>
-            </filter>
-            <linearGradient id="finalMapGradient" x1="120" y1="120" x2="900" y2="620" gradientUnits="userSpaceOnUse">
-              <animate attributeName="x1" values="120;760;260;120" dur="8s" repeatCount="indefinite"></animate>
-              <animate attributeName="y1" values="120;90;640;120" dur="8s" repeatCount="indefinite"></animate>
-              <animate attributeName="x2" values="900;250;820;900" dur="8s" repeatCount="indefinite"></animate>
-              <animate attributeName="y2" values="620;690;110;620" dur="8s" repeatCount="indefinite"></animate>
-              <stop offset="0" stop-color="#1f7bd8">
-                <animate attributeName="stop-color" values="#1f7bd8;#8a3ffc;#00a8c8;#1f7bd8" dur="8s" repeatCount="indefinite"></animate>
-              </stop>
-              <stop offset=".34" stop-color="#35d2ff">
-                <animate attributeName="stop-color" values="#35d2ff;#f5324b;#6c5ce7;#35d2ff" dur="8s" repeatCount="indefinite"></animate>
-              </stop>
-              <stop offset=".66" stop-color="#b12095">
-                <animate attributeName="stop-color" values="#b12095;#1f7bd8;#ff9f1c;#b12095" dur="8s" repeatCount="indefinite"></animate>
-              </stop>
-              <stop offset="1" stop-color="#f5324b">
-                <animate attributeName="stop-color" values="#f5324b;#35d2ff;#b12095;#f5324b" dur="8s" repeatCount="indefinite"></animate>
-              </stop>
-            </linearGradient>
-          </defs>
-
-          <path class="outer-border" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
-          <path class="border-trace" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
-
-          <g clip-path="url(#seongnamBoundary)">
-            <g class="district" tabindex="0" role="button" data-id="renovation" style="--color: var(--renovation)" aria-label="재건축">
-              <path class="base" d="M520 0 H1000 V280 L820 300 L660 280 L555 300 L555 250 L540 120 Z"></path>
-              <circle class="pin" cx="660" cy="240" r="7"></circle>
-              <text class="label" x="660" y="240">재건축</text>
-            </g>
-            <g class="district" tabindex="0" role="button" data-id="enterprise" style="--color: var(--enterprise)" aria-label="대기업/IT">
-              <path class="base" d="M0 350 L130 345 L255 365 L385 355 L495 392 L500 485 L420 485 L285 470 L135 485 L0 475 Z"></path>
-              <circle class="pin" cx="365" cy="425" r="7"></circle>
-              <text class="label" x="365" y="425">대기업/IT</text>
-            </g>
-            <g class="district" tabindex="0" role="button" data-id="market" style="--color: var(--market)" aria-label="골목상권">
-              <path class="base" d="M555 300 L660 280 L820 300 L1000 280 V470 L840 455 L720 480 L600 455 L500 485 L495 392 L500 345 Z"></path>
-              <circle class="pin" cx="627" cy="395" r="7"></circle>
-              <text class="label" x="627" y="395">골목상권</text>
-            </g>
-            <g class="district" tabindex="0" role="button" data-id="youth" style="--color: var(--youth)" aria-label="청년">
-              <path class="base" d="M0 0 H520 L540 120 L555 250 L555 300 L500 345 L495 392 L385 355 L255 365 L130 345 L0 350 Z"></path>
-              <circle class="pin" cx="401" cy="303" r="7"></circle>
-              <text class="label" x="401" y="303">청년</text>
-            </g>
-            <g class="district" tabindex="0" role="button" data-id="senior" style="--color: var(--senior)" aria-label="어르신">
-              <path class="base" d="M0 475 L135 485 L285 470 L420 485 L500 485 L600 455 L720 480 L840 455 L1000 470 V720 H0 Z"></path>
-              <circle class="pin" cx="513" cy="555" r="7"></circle>
-              <text class="label" x="513" y="555">어르신</text>
-            </g>
-          </g>
-
-          <path class="unified-map" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
-        </svg>
-      </div>
-
-    </section>
-
-    <p class="credit">제작:AI반도체과 사진우</p>
-
-    <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
-
-    <div class="finale-layer" aria-hidden="true">
-      <canvas class="finale-canvas" id="finaleCanvas"></canvas>
-      <span class="finale-flash"></span>
-      <span class="shockwave sw-1"></span>
-      <span class="shockwave sw-2"></span>
-      <span class="shockwave sw-3"></span>
-    </div>
-
-    <div class="completion" id="completion" aria-hidden="true">
-      <div class="final-effects" aria-hidden="true">
-        <span class="final-ring ring-one"></span>
-        <span class="final-ring ring-two"></span>
-        <span class="final-sparks"></span>
-      </div>
-      <div class="completion-text">
-        <span class="completion-eyebrow">Five Agendas · One City</span>
-        <h2 aria-label="성남 미래지도"><span style="--ci:0">성</span><span style="--ci:1">남</span><span class="sp" style="--ci:2">&nbsp;</span><span style="--ci:3">미</span><span style="--ci:4">래</span><span style="--ci:5">지</span><span style="--ci:6">도</span></h2>
-        <p class="completion-sub">다섯 개의 빛이 하나의 미래로 완성되었습니다</p>
-      </div>
-    </div>
-
-    <div class="intro-loader" id="introLoader" aria-hidden="true">
+  <div class="intro-loader" id="introLoader" aria-hidden="true">
+      <div class="intro-bg" aria-hidden="true"></div>
       <canvas class="intro-canvas" id="introCanvas"></canvas>
       <div class="intro-word" aria-label="성남 미래지도">
         <span style="--i:0">성</span>
@@ -139,28 +40,146 @@
       <div class="intro-percent" id="introPercent">0%</div>
       <div class="intro-progress" aria-hidden="true"><span id="introProgress"></span></div>
       <button class="intro-enter" id="introEnter" type="button" disabled>미래지도 열기</button>
-    </div>
+      <div class="launch-flash" aria-hidden="true"></div>
+  </div>
 
-    <div class="reset-veil" aria-hidden="true"></div>
+  <!-- 풀스크린 미디어 (오프닝 영상 / 통합 마무리 영상) -->
+  <div class="media-layer" id="mediaLayer" aria-hidden="true"></div>
+
+  <main class="stage is-intro" aria-label="성남 미래지도" data-screen-label="메인 무대">
+    <div class="city-logo-badge" aria-label="성남시 엠블레">
+      <img src="seongnam-logo.png" alt="성남시">
+    </div>
+    <button class="test-run" type="button" id="wordmark">성남 미래지도</button>
+
+    <section class="map-wrap">
+      <div class="map-shell">
+        <svg viewBox="0 64 1000 630" role="img" aria-label="성남 미래지도">
+          <defs>
+            <clipPath id="seongnamBoundary"><path d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path></clipPath>
+            <linearGradient id="mapShade" x1="210" y1="70" x2="820" y2="660" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="rgba(255,255,255,.08)"></stop>
+              <stop offset=".55" stop-color="rgba(255,255,255,0)"></stop>
+              <stop offset="1" stop-color="rgba(0,0,0,.2)"></stop>
+            </linearGradient>
+            <linearGradient id="finalMapGradient" x1="120" y1="120" x2="900" y2="620" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#1f7bd8"></stop>
+              <stop offset=".34" stop-color="#35d2ff"></stop>
+              <stop offset=".66" stop-color="#b12095"></stop>
+              <stop offset="1" stop-color="#f5324b"></stop>
+            </linearGradient>
+            <linearGradient id="sheenGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#ffffff" stop-opacity="0"></stop>
+              <stop offset=".5" stop-color="#ebfaff" stop-opacity=".55"></stop>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <path class="outer-border" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
+          <path class="border-comet" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
+          <g clip-path="url(#seongnamBoundary)">
+            <g class="district" tabindex="0" role="button" data-id="market" style="--color: var(--market)" aria-label="소상공인">
+              <path class="base" d="M0 0 H540 L531 160 L545 307 L506 302 L360 296 L180 308 L0 300 Z"></path><text class="label" x="425" y="301">소상공인</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="baby" style="--color: var(--baby)" aria-label="영유아·엄마">
+              <path class="base" d="M540 0 H1000 V306 L760 302 L560 310 L545 307 L531 160 Z"></path><text class="label" x="625" y="283">영유아·엄마</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="senior" style="--color: var(--senior)" aria-label="어르신·복지">
+              <path class="base" d="M0 300 L180 308 L360 296 L506 302 L458 372 L470 432 L400 425 L200 434 L0 426 Z"></path><text class="label" x="315" y="394">어르신·복지</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="redev" style="--color: var(--redev)" aria-label="재개발·재건축">
+              <path class="base" d="M506 302 L560 310 L760 302 L1000 306 V432 L800 428 L600 436 L470 432 L458 372 Z"></path><text class="label" x="590" y="396">재개발·재건축</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="youth" style="--color: var(--youth)" aria-label="청년">
+              <path class="base" d="M0 426 L200 434 L400 425 L470 432 L448 520 L460 720 H0 Z"></path><text class="label" x="350" y="531">청년</text>
+            </g>
+            <g class="district" tabindex="0" role="button" data-id="enterprise" style="--color: var(--enterprise)" aria-label="기업">
+              <path class="base" d="M470 432 L600 436 L800 428 L1000 432 V720 H460 L448 520 Z"></path><text class="label" x="560" y="526">기업</text>
+            </g>
+          </g>
+          <g clip-path="url(#seongnamBoundary)" class="sheen-layer"><path class="sheen" d="M-160 64 L160 64 L40 694 L-280 694 Z" fill="url(#sheenGrad)"></path></g>
+          <path class="unified-map" pathLength="1" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z"></path>
+        </svg>
+        <span class="ignite-ring" aria-hidden="true"></span>
+        <span class="ignite-ring two" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <p class="credit">제작:AI반도체과 사진우</p>
+    <div class="hud-meta" aria-hidden="true"><span>37.4200°N &middot; 127.1265°E</span><span>SEONGNAM FUTURE MAP</span></div>
+    <div class="video-layer" id="videoLayer" aria-hidden="true"></div>
+    <div class="completion" id="completion">
+      <div class="final-effects" aria-hidden="true">
+        <span class="final-ring ring-one"></span>
+        <span class="final-ring ring-two"></span>
+        <span class="final-sparks"></span>
+      </div>
+      <h2>성남 미래지도</h2>
+    </div>
   </main>
 
-  <!-- EffectComposer defines THREE.Pass; it must load before the pass files -->
-  <script defer src="vendor/three.min.js"></script>
-  <script defer src="vendor/CopyShader.js"></script>
-  <script defer src="vendor/LuminosityHighPassShader.js"></script>
-  <script defer src="vendor/EffectComposer.js"></script>
-  <script defer src="vendor/RenderPass.js"></script>
-  <script defer src="vendor/ShaderPass.js"></script>
-  <script defer src="vendor/MaskPass.js"></script>
-  <script defer src="vendor/UnrealBloomPass.js"></script>
-  <script defer src="js/config.js"></script>
-  <script defer src="js/timeline.js"></script>
-  <script defer src="js/machine.js"></script>
-  <script defer src="js/ambient.js"></script>
-  <script defer src="js/launch.js"></script>
-  <script defer src="js/finale.js"></script>
-  <script defer src="js/gl.js"></script>
-  <script defer src="js/video.js"></script>
-  <script defer src="js/app.js"></script>
+  <!-- 시민 선언 타이포 레이어 (수렴형) -->
+  <div class="typo-layer" id="typoLayer" aria-hidden="true"></div>
+
+  <!-- 분야 진행 카운터 -->
+  <div class="field-counter" id="fieldCounter" aria-hidden="true">0 / 6</div>
+
+  <!-- 라스트: 세계지도 속 성남 -->
+  <section class="world-finale" id="worldFinale" aria-hidden="true" data-screen-label="글로벌 피날레">
+    <svg viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid slice" aria-label="세계지도 속 성남">
+      <defs>
+        <radialGradient id="snAuraGrad">
+          <stop offset="0" stop-color="#7fe3ff" stop-opacity=".62"></stop>
+          <stop offset=".45" stop-color="#35d2ff" stop-opacity=".3"></stop>
+          <stop offset="1" stop-color="#35d2ff" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      <g id="worldG">
+        <path id="worldLand" fill="none"></path>
+        <g id="snMarker">
+          <circle class="sn-aura" r="26"></circle>
+          <path class="sn-shape" d="M 739.6 326.0 L 739.2 335.7 L 737.4 342.3 L 729.6 353.7 L 726.9 355.3 L 717.3 371.3 L 714.5 382.5 L 705.6 393.3 L 705.7 402.1 L 736.1 421.0 L 737.5 423.6 L 735.1 429.6 L 724.0 437.6 L 704.0 446.0 L 681.4 448.3 L 678.9 454.7 L 679.4 462.6 L 677.2 473.3 L 668.4 483.1 L 661.6 488.4 L 649.5 506.8 L 639.9 514.7 L 619.0 521.8 L 610.0 521.7 L 601.1 519.7 L 581.1 525.1 L 573.1 551.4 L 577.2 553.8 L 575.8 559.0 L 577.8 561.6 L 595.3 576.0 L 596.0 583.9 L 594.8 591.6 L 568.8 600.5 L 542.6 602.8 L 535.5 610.7 L 529.6 613.4 L 519.8 615.8 L 511.4 609.0 L 505.6 607.5 L 495.6 611.3 L 490.7 606.4 L 472.7 596.9 L 468.1 592.1 L 466.5 583.2 L 462.5 580.7 L 447.4 580.3 L 431.0 566.1 L 415.5 560.0 L 412.4 557.2 L 411.3 552.3 L 406.7 549.5 L 402.0 548.3 L 396.2 549.2 L 386.1 556.0 L 377.4 559.1 L 368.7 550.6 L 362.4 536.2 L 351.7 527.2 L 340.6 522.7 L 317.9 517.0 L 306.4 516.7 L 297.1 519.7 L 292.5 519.0 L 288.1 515.5 L 287.7 511.9 L 289.0 509.5 L 287.9 506.6 L 267.1 495.5 L 262.8 488.9 L 207.3 476.3 L 197.7 475.7 L 196.9 473.8 L 194.6 463.3 L 198.1 455.0 L 201.3 449.8 L 204.0 449.7 L 210.4 442.8 L 224.5 415.4 L 230.9 413.1 L 236.7 407.2 L 235.0 380.3 L 231.9 371.0 L 235.7 367.8 L 244.0 366.7 L 254.1 361.8 L 254.7 359.7 L 252.0 356.4 L 249.9 349.2 L 251.0 345.6 L 266.1 335.3 L 266.3 326.1 L 247.4 318.4 L 247.9 277.6 L 262.6 269.8 L 268.3 263.3 L 277.0 265.3 L 280.7 267.7 L 294.1 268.5 L 306.3 265.9 L 325.1 267.5 L 334.2 270.0 L 338.1 265.9 L 343.2 264.3 L 351.5 266.2 L 355.0 247.6 L 359.3 243.3 L 362.0 232.6 L 356.9 230.2 L 355.8 223.7 L 358.6 221.7 L 367.0 221.5 L 391.7 226.6 L 395.3 225.0 L 400.2 216.4 L 405.6 212.4 L 414.9 211.9 L 416.1 199.0 L 425.1 183.8 L 429.9 181.0 L 437.6 170.5 L 440.7 164.1 L 438.9 162.3 L 445.0 152.7 L 446.9 159.3 L 451.9 162.3 L 471.0 159.3 L 474.5 154.2 L 475.4 150.1 L 481.1 148.7 L 506.8 154.0 L 504.9 156.2 L 506.2 157.8 L 514.8 163.0 L 518.9 163.0 L 520.5 151.3 L 544.5 135.1 L 549.0 125.7 L 551.5 124.6 L 562.2 129.3 L 568.9 130.3 L 576.5 128.1 L 573.6 122.7 L 575.1 120.7 L 576.2 104.2 L 592.7 106.0 L 655.3 108.4 L 654.9 115.5 L 685.5 117.2 L 683.5 120.2 L 692.0 125.0 L 714.2 121.9 L 723.4 116.6 L 733.0 113.8 L 739.5 109.4 L 747.8 108.1 L 751.5 109.8 L 751.2 115.3 L 755.0 129.4 L 753.5 156.2 L 759.9 161.2 L 782.4 164.5 L 787.4 167.5 L 796.8 184.7 L 805.4 216.2 L 797.1 233.3 L 797.6 253.6 L 802.8 262.7 L 799.7 266.9 L 796.0 280.5 L 800.6 283.1 L 797.7 287.8 L 788.8 295.1 L 770.0 305.7 L 767.5 309.3 L 767.3 316.0 L 765.4 319.4 L 756.9 320.9 L 748.6 317.4 L 744.1 317.7 L 736.7 321.9 L 738.0 324.5 L 739.6 326.0 Z" transform="scale(0.012) translate(-467 -368)"></path>
+        </g>
+      </g>
+      <!-- 중심 파동 — 성남(화면 중앙)에서 와이파이처럼 퍼지는 링 (centered 이후) -->
+      <g id="snRipples" aria-hidden="true">
+        <circle class="sn-ripple" cx="600" cy="300" r="30"></circle>
+        <circle class="sn-ripple" cx="600" cy="300" r="30"></circle>
+        <circle class="sn-ripple" cx="600" cy="300" r="30"></circle>
+        <circle class="sn-ripple" cx="600" cy="300" r="30"></circle>
+      </g>
+    </svg>
+    <div class="world-copy">
+      <h2>글로벌 중심도시, 성남</h2>
+      <p>미래가 시작되는 도시</p>
+    </div>
+  </section>
+
+  <!-- 화이트 플래시 / 블랙아웃 -->
+  <div class="cue-flash" id="cueFlash" aria-hidden="true"></div>
+  <div class="blackout" id="blackout" aria-hidden="true"></div>
+
+  <!-- 오퍼레이터 HUD (` 키 토글 — 관객 화면엔 안 보임) -->
+  <div class="op-hud" id="opHud" data-screen-label="오퍼레이터 HUD">
+    <div class="hud-row">
+      <span class="hud-now" id="hudNow">STANDBY</span>
+      <span class="hud-next" id="hudNext"></span>
+    </div>
+    <div class="hud-jumps" id="hudJumps"></div>
+    <div class="hud-keys">SPACE/→ 다음 큐 · ← 한 큐 뒤로 · ` HUD · (HUD 열림 시) 1~6 분야 점프 · 7 통합강제 · 8 시장강제 · B 블랙아웃 · R 리허설 배속</div>
+  </div>
+
+  <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+  <script src="webgl-bg.js"></script>
+  <script src="intro-fanfare.js"></script>
+  <script src="scene.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+  <script src="cues.js"></script>
+  <div id="tweaksMount"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="tweaks-app.jsx"></script>
 </body>
 </html>
