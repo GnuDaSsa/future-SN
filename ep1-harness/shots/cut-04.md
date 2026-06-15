@@ -1,9 +1,9 @@
-# 컷 04 — 로우앵글 / 바닥 보는 시선 (발끝 + 그림자)
+# 컷 04 — 로우앵글 / 끝없는 계단 올려다보는 시선
 
-- **카메라/구도:** 로우앵글, 바닥 보는 시선. 발끝 + 길게 늘어진 그림자.
+- **카메라/구도:** 로우앵글(학생 시점), 끝없어 보이는 계단을 올려다봄. 발끝 + 긴 그림자.
 - **LOCK:** LIGHT (그림자 방향) + STYLE · CHARACTER · LOCATION
-- **VARY (이 컷에서만):** 긴 그림자, 고개 숙인 실루엣 일부
-- **대사·SFX:** SFX — 느린 발소리
+- **VARY (이 컷에서만):** 위쪽 학교 정문까지 아득한 계단, 계단에 드리운 학생의 긴 아침 그림자
+- **대사·SFX:** SFX — 멀리 학교 예비종 "땡—땡—"
 - **클립:** E2 (멀티샷 빌드업)
 
 ---
@@ -11,7 +11,7 @@
 ## ▶ COPY BLOCK (GPT Image 2 / Seedance)
 
 ```
-Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painted background art, dramatic volumetric god rays, detailed cumulus clouds, soft lens flare, high color saturation, delicate atmospheric haze, cinematic film still, 16:9. Low angle looking down at the ground; the man's toes and a long cast shadow stretching down the slope; part of his bowed silhouette and lowered head visible at the top of frame. the same elderly Korean man, age 73, slim build, gentle deeply-wrinkled face, warm complexion, short white hair, round thin-framed glasses, a beige zip-up windbreaker over a brown knit vest, dark gray trousers, brown worn sneakers, holding a wooden cane in his right hand, kind tired eyes. a steep narrow residential hillside alley in an old Korean neighborhood, weathered low-rise houses with rooftop water tanks, cracked concrete pavement, power lines crossing overhead, a metal handrail along one side, potted plants beside doorways, the alley curving upward. early dawn, low warm sun from the upper-left, long soft shadows stretching down the slope, pale blue sky turning gold near the horizon, gentle morning mist in the distance, cool shadow areas with warm highlights. Keep the man's outfit, cane and shoes exactly as reference 1; use reference 2 for the alley layout, mood and light direction, repaint in the same style; match the color grading and rendering style of reference 3.
+Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painted background art, dramatic volumetric god rays, detailed cumulus clouds, soft lens flare, high color saturation, delicate atmospheric haze, cinematic film still, 16:9. Low angle from the boy's point of view looking up the seemingly endless concrete staircase toward the distant school gate at the top; his long morning shadow cast down the steps, part of his small bowed silhouette at the bottom of frame. the same Korean elementary school boy, about 10 years old, small slight build, round soft cheeks, big bright curious eyes, neat short black hair with a slight cowlick, a navy padded hooded school jacket over a white collared shirt, a round yellow safety name-tag badge on his chest, knee-length gray shorts, white sneakers, a large bright red school backpack worn on both shoulders, gripping the backpack straps with both hands. a steep narrow hillside street in front of an old Korean elementary school in an old Seongnam neighborhood, a long concrete staircase beside a sloped road, weathered low-rise houses and small shops, yellow school-zone safety fences and a painted crosswalk, a school gate with a banner up the slope, power lines crossing overhead, the road climbing steeply uphill. clear bright early morning around 8am, crisp cool air, warm sunlight from the upper-left, long soft shadows stretching down the slope, pale blue sky with a light golden glow on the rooftops, faint morning haze in the distance, fresh school-commute mood. Keep the outfit, red backpack, light direction and color grading consistent with the attached references.
 ```
 
 ---
@@ -22,5 +22,5 @@ Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painte
 - **슬롯3:** 컷03 키프레임
 
 ## 연출 메모
-- **그림자 방향이 이 컷의 핵심 LOCK** — 광원 upper-left → 그림자는 슬로프를 따라 우하단으로 길게.
-- 고개 숙인 실루엣은 일부만, '고생'의 무게감.
+- **그림자 방향이 이 컷의 핵심 LOCK** — 광원 upper-left → 그림자는 계단을 따라 우하단으로 길게.
+- 아득한 계단의 막막함 + 예비종 소리로 '지각 위기' 긴장.

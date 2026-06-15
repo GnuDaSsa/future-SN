@@ -1,9 +1,9 @@
 # 컷 01 — 익스트림 부감 / 드론 버드아이 (오프닝)
 
-- **카메라/구도:** 익스트림 부감, 드론 버드아이. 인물은 멀리 작은 점, 도시 스케일.
+- **카메라/구도:** 익스트림 부감, 드론 버드아이. 학생은 언덕 아래 작은 점, 위쪽에 학교. 동네 스케일.
 - **LOCK:** STYLE · CHARACTER · LOCATION · LIGHT
-- **VARY (이 컷에서만):** 인물이 멀리 아주 작은 점, 새벽 도시 전경 스케일
-- **대사·SFX:** SFX — 새벽 새소리, 바람
+- **VARY (이 컷에서만):** 학생이 언덕 맨 아래에서 학교를 올려다보는 작은 점, 등굣길 아침 전경
+- **대사·SFX:** SFX — 아침 새소리, 멀리 학교 예비 종소리
 - **클립:** E1 (단독 부감 오프닝)
 
 ---
@@ -11,7 +11,7 @@
 ## ▶ COPY BLOCK (GPT Image 2 / Seedance)
 
 ```
-Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painted background art, dramatic volumetric god rays, detailed cumulus clouds, soft lens flare, high color saturation, delicate atmospheric haze, cinematic film still, 16:9. Extreme high-angle drone bird's-eye view; the man a tiny distant figure; city-scale vista over the neighborhood. the same elderly Korean man, age 73, slim build, gentle deeply-wrinkled face, warm complexion, short white hair, round thin-framed glasses, a beige zip-up windbreaker over a brown knit vest, dark gray trousers, brown worn sneakers, holding a wooden cane in his right hand, kind tired eyes. a steep narrow residential hillside alley in an old Korean neighborhood, weathered low-rise houses with rooftop water tanks, cracked concrete pavement, power lines crossing overhead, a metal handrail along one side, potted plants beside doorways, the alley curving upward. early dawn, low warm sun from the upper-left, long soft shadows stretching down the slope, pale blue sky turning gold near the horizon, gentle morning mist in the distance, cool shadow areas with warm highlights. Keep the man's face, glasses, hair and 2-layer outfit exactly as reference 1; use reference 2 for the alley layout, mood and light direction, repaint in the same style.
+Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painted background art, dramatic volumetric god rays, detailed cumulus clouds, soft lens flare, high color saturation, delicate atmospheric haze, cinematic film still, 16:9. Extreme high-angle drone bird's-eye view; the boy a tiny distant figure at the bottom of the slope looking up toward the school; city-scale vista over the neighborhood. the same Korean elementary school boy, about 10 years old, small slight build, round soft cheeks, big bright curious eyes, neat short black hair with a slight cowlick, a navy padded hooded school jacket over a white collared shirt, a round yellow safety name-tag badge on his chest, knee-length gray shorts, white sneakers, a large bright red school backpack worn on both shoulders, gripping the backpack straps with both hands. a steep narrow hillside street in front of an old Korean elementary school in an old Seongnam neighborhood, a long concrete staircase beside a sloped road, weathered low-rise houses and small shops, yellow school-zone safety fences and a painted crosswalk, a school gate with a banner up the slope, power lines crossing overhead, the road climbing steeply uphill. clear bright early morning around 8am, crisp cool air, warm sunlight from the upper-left, long soft shadows stretching down the slope, pale blue sky with a light golden glow on the rooftops, faint morning haze in the distance, fresh school-commute mood. Keep the boy, school-street layout, light direction and color grading consistent with the attached references.
 ```
 
 ---
@@ -23,4 +23,4 @@ Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painte
 
 ## 연출 메모
 - 광원 **upper-left** 확인.
-- 인물은 식별만 될 정도의 작은 점 — 얼굴 디테일보다 도시 스케일·새벽 무드가 우선.
+- 학생은 식별만 될 정도의 작은 점(빨간 가방이 점처럼) — 얼굴 디테일보다 학교 앞 경사 스케일·아침 무드 우선.

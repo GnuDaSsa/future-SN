@@ -1,9 +1,9 @@
 # 컷 06 — 후방 광각 풀숏 (24mm 왜곡)
 
-- **카메라/구도:** 후방 광각 풀숏, 24mm 왜곡. 끝없는 언덕 과장, 작은 뒷모습.
+- **카메라/구도:** 후방 광각 풀숏, 24mm 왜곡. 끝없는 계단 과장, 작은 뒷모습(빨간 가방).
 - **LOCK:** STYLE · CHARACTER · LOCATION · LIGHT (全 LOCK) + ESCALATOR (원경 도입)
-- **VARY (이 컷에서만):** 광각으로 과장된 끝없는 슬로프, 저 멀리 에스컬레이터가 희미하게 처음 등장
-- **대사·SFX:** SFX — 도시 앰비언스
+- **VARY (이 컷에서만):** 광각으로 과장된 끝없는 계단, 저 멀리 위쪽에 도로 에스컬레이터가 희미하게 처음 등장
+- **대사·SFX:** SFX — 등굣길 앰비언스 (멀리 아이들 소리)
 - **클립:** E3 (단독 광각 뒷모습)
 
 > ⚠️ 에스컬레이터의 **첫 등장**. 단, 아직 멀고 희미하게 — 관객이 의식하지 못할 정도(컷8 매치컷의 복선).
@@ -13,13 +13,13 @@
 ## ▶ COPY BLOCK (GPT Image 2 / Seedance)
 
 ```
-Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painted background art, dramatic volumetric god rays, detailed cumulus clouds, soft lens flare, high color saturation, delicate atmospheric haze, cinematic film still, 16:9. Rear wide full shot with 24mm wide-angle distortion; the slope exaggerated into an endless climb, the man a small back-view figure low in frame. the same elderly Korean man, age 73, slim build, gentle deeply-wrinkled face, warm complexion, short white hair, round thin-framed glasses, a beige zip-up windbreaker over a brown knit vest, dark gray trousers, brown worn sneakers, holding a wooden cane in his right hand, kind tired eyes. a steep narrow residential hillside alley in an old Korean neighborhood, weathered low-rise houses with rooftop water tanks, cracked concrete pavement, power lines crossing overhead, a metal handrail along one side, potted plants beside doorways, the alley curving upward. early dawn, low warm sun from the upper-left, long soft shadows stretching down the slope, pale blue sky turning gold near the horizon, gentle morning mist in the distance, cool shadow areas with warm highlights. Far up the slope, faint in the morning mist, a modern outdoor hillside escalator installed along the alley, clean stainless-steel steps, glass side panels, a sloped weather canopy overhead, rubber handrails, small solar-style lamp posts beside it, blending into the old neighborhood — distant and barely noticeable. Keep the man's back-view outfit, hair and cane exactly as reference 1; use reference 2 for the alley layout, mood and light direction, repaint in the same style; match the color grading and rendering style of reference 3.
+Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painted background art, dramatic volumetric god rays, detailed cumulus clouds, soft lens flare, high color saturation, delicate atmospheric haze, cinematic film still, 16:9. Rear wide full shot with 24mm wide-angle distortion; the staircase exaggerated into an endless climb, the small boy with his red backpack low in frame, seen from behind. the same Korean elementary school boy, about 10 years old, small slight build, round soft cheeks, big bright curious eyes, neat short black hair with a slight cowlick, a navy padded hooded school jacket over a white collared shirt, a round yellow safety name-tag badge on his chest, knee-length gray shorts, white sneakers, a large bright red school backpack worn on both shoulders, gripping the backpack straps with both hands. a steep narrow hillside street in front of an old Korean elementary school in an old Seongnam neighborhood, a long concrete staircase beside a sloped road, weathered low-rise houses and small shops, yellow school-zone safety fences and a painted crosswalk, a school gate with a banner up the slope, power lines crossing overhead, the road climbing steeply uphill. clear bright early morning around 8am, crisp cool air, warm sunlight from the upper-left, long soft shadows stretching down the slope, pale blue sky with a light golden glow on the rooftops, faint morning haze in the distance, fresh school-commute mood. Far up the slope, faint in the morning haze, Seongnam's first outdoor road escalator beside the school staircase, two parallel escalators running side by side, about 28 meters long climbing the slope, clean stainless-steel steps, glass side panels, a sloped transparent weather canopy overhead — distant and barely noticeable. Keep the boy, staircase, light direction and color grading consistent with the attached references.
 ```
 
 ---
 
 ## 레퍼런스 슬롯
-- **슬롯1:** §B-1 캐릭터 시트 (3/4 백뷰 참조)
+- **슬롯1:** §B-1 캐릭터 시트 (3/4 백뷰 — 빨간 가방 참조)
 - **슬롯2:** §B-3 로케이션 키 비주얼
 - **슬롯3:** 컷05 키프레임
 

@@ -11,42 +11,42 @@
 
 ## 🔒 전 런 공통
 **모든 런에 첨부하는 글로벌 멀티레퍼런스 (런 간 색감·정체성 닻):**
-- `sheet_character.png` — 얼굴·안경·2겹 복장 고정
+- `sheet_character.png` — 얼굴·머리·네이비 점퍼·노란 명찰·빨간 가방 고정
 - `cut05.png` — 얼굴 선명·색감 기준판 (세 런 모두 투입 → 런 간 색감 통일)
 
 **모든 런 프롬프트 말미 고정 문구:**
 ```
-maintain the same elderly man's face from the reference, Makoto Shinkai anime style, consistent lighting from upper-left, identical 2-layer outfit (beige windbreaker over brown knit vest) and round thin-framed glasses, same color grading across all shots, 16:9
+maintain the same elementary school boy's face from the reference, Makoto Shinkai anime style, consistent lighting from upper-left, identical navy hooded jacket, yellow safety badge and large red backpack, same color grading across all shots, 16:9
 ```
 
 ---
 
-## 🅰️ RUN 1 — 4컷 (컷 1~4) · 오프닝 + 고생 빌드업
+## 🅰️ RUN 1 — 4컷 (컷 1~4) · 오프닝 + 등굣길 고생 빌드업
 **추가 레퍼런스:** `sheet_location.png`
 
 | 샷 | 스타트 프레임 | 모션 프롬프트 |
 |---|---|---|
-| 1 | `cut01.png` | slow drone descent over the dawn neighborhood, gentle cloud/mist drift |
-| 2 | `cut02.png` | one heavy step on the slope, cane tip planting, slight camera shake |
-| 3 | `cut03.png` | the hand tightens its grip on the cane, weight leaning in |
-| 4 | `cut04.png` | one slow trudging step, the long shadow shifting down the slope |
+| 1 | `cut01.png` | slow drone descent over the dawn school-zone neighborhood, gentle cloud/mist drift |
+| 2 | `cut02.png` | one heavy step climbing a stair, slight camera shake, tired commute |
+| 3 | `cut03.png` | the small hands hitch the heavy red backpack higher, knuckles tightening |
+| 4 | `cut04.png` | gaze tilting up the endless staircase, long shadow shifting down the steps |
 
-SFX/대사: 1 새소리·바람 / 2 발걸음·거친 숨 / 3 💬 "아이고… 무릎이야…" / 4 느린 발소리
+SFX/대사: 1 새소리·예비종 / 2 발걸음·가쁜 숨 / 3 💬 "헉… 늦겠다…" / 4 예비종 "땡—땡—"
 
 ---
 
-## 🅱️ RUN 2 — 3컷 (컷 5~7) · 고생 절정 + 눈 감기
+## 🅱️ RUN 2 — 3컷 (컷 5~7) · 고생 절정 + 눈 질끈 감기
 **추가 레퍼런스:** `sheet_location.png`
 
 | 샷 | 스타트 프레임 | 모션 프롬프트 |
 |---|---|---|
-| 5 | `cut05.png` | breathing hard, then a slow exhale, brow easing, faint breath plume |
-| 6 | `cut06.png` | trudging a few steps further up the exaggerated endless slope |
-| 7 | `cut07.png` | eyes slowly closing on a tired exhale, breath scattering in cool air |
+| 5 | `cut05.png` | panting hard, flushed cheeks, anxious about being late, breath visible |
+| 6 | `cut06.png` | trudging a few steps further up the exaggerated endless staircase |
+| 7 | `cut07.png` | eyes squeezing shut in exhausted near-defeat, shoulders slumping |
 
-SFX/대사: 5 💬 "후우…" / 6 도시 앰비언스 / 7 💬 "후우—"
+SFX/대사: 5 💬 "하아… 하아…" / 6 등굣길 앰비언스 / 7 💬 "으…"
 
-> ★ `cut07.png`(눈 감음·골목)이 RUN 3 매치컷의 스타트가 된다.
+> ★ `cut07.png`(눈 감음·계단길)이 RUN 3 매치컷의 스타트가 된다.
 
 ---
 
@@ -55,11 +55,11 @@ SFX/대사: 5 💬 "후우…" / 6 도시 앰비언스 / 7 💬 "후우—"
 
 | 샷 | 스타트 프레임 | 엔드 프레임 | 모션 프롬프트 |
 |---|---|---|---|
-| 8 ★매치컷 | `cut07.png` | `cut08.png` | eyes snap open with surprise as the alley behind him morphs into the hillside escalator |
-| 9 | `cut09.png` | — (모션) | stepping onto the escalator, hand to the rubber rail, riding upward, background sliding past |
-| 10 | `cut10.png` | — (모션) | warm grin, crane pulls up and back revealing the whole hillside, god rays pouring down |
+| 8 ★매치컷 | `cut07.png` | `cut08.png` | eyes snap open with surprise as the staircase behind him morphs into the road escalator |
+| 9 | `cut09.png` | — (모션) | stepping onto the ascending escalator, hands on the rail, riding up with a delighted grin, background sliding past |
+| 10 | `cut10.png` | — (모션) | beaming, crane pulls up and back revealing the whole school-zone neighborhood, god rays pouring down |
 
-SFX/대사: 8 💬 "…어?" · 기계음 / 9 기계음·바람 / 10 💬 "허허… 세상 참 좋아졌네."
+SFX/대사: 8 💬 "어?!" · 기계음 / 9 기계음·바람 / 10 💬 "우와—! 안 늦겠다!"
 
 > ★ 샷8 스타트 = `cut07.png` = 샷7과 동일 프레임 → 컷7→8 매치컷이 픽셀 단위로 끊긴다. (`02-matchcut-7-8.md`)
 
