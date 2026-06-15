@@ -26,7 +26,7 @@
 - 모든 클립의 [Image] 슬롯에 **해당 컷 키프레임 + §B-1 캐릭터 시트**를 함께 투입.
 - 고정 문구 항상 포함:
   ```
-  maintain the same elementary school boy's face from the reference, Makoto Shinkai anime style, consistent lighting from upper-left
+  maintain the same elementary school boy's face from the reference, strongly Makoto Shinkai photorealistic style (CoMix Wave Films), not Studio Ghibli, consistent lighting from upper-left
   ```
 - 인물 등장 클립은 얼굴이 가장 잘 보이는 키프레임을 [Image1](기준 프레임)으로.
 

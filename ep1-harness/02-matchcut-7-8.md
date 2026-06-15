@@ -15,7 +15,7 @@
 입력 = 컷7 확정 키프레임. 편집 지시문 (`shots/cut-08.md`와 동일):
 
 ```
-Keep this boy's pose, framing, head position, facial features, hair, navy hooded jacket, yellow badge, red backpack and the lighting from the upper-left 100% identical. Only change two things: (1) open his eyes wide with a surprised look and raised eyebrows; (2) replace the staircase background behind him with Seongnam's first outdoor road escalator beside the school staircase, two parallel escalators running side by side (one ascending, one descending), about 28 meters long climbing the slope, clean stainless-steel steps, glass side panels, a sloped transparent weather canopy overhead, rubber handrails, yellow safety markings, blending into the old school-zone neighborhood. Everything else unchanged. Makoto Shinkai anime film style, same color grading.
+Keep this boy's pose, framing, head position, facial features, hair, navy hooded jacket, yellow badge, red backpack and the lighting from the upper-left 100% identical. Only change two things: (1) open his eyes wide with a surprised look and raised eyebrows; (2) replace the staircase background behind him with Seongnam's first outdoor road escalator beside the school staircase, two parallel escalators running side by side (one ascending, one descending), about 28 meters long climbing the slope, clean stainless-steel steps, glass side panels, a sloped transparent weather canopy overhead, rubber handrails, yellow safety markings, blending into the old school-zone neighborhood. Everything else unchanged. Strongly Makoto Shinkai photorealistic style (CoMix Wave Films), not Studio Ghibli, same color grading.
 ```
 
 → 컷8이 컷7과 픽셀 단위로 정합 → 매치컷이 깔끔하게 끊긴다.
@@ -23,7 +23,7 @@ Keep this boy's pose, framing, head position, facial features, hair, navy hooded
 ### 3) Seedance 영상화 (E4 클립)
 - **컷7 키프레임 = first frame / 컷8 키프레임 = last frame** 지정.
 - 프롬프트: "눈 감았다 뜨는 사이 배경이 계단길에서 도로 에스컬레이터로 전환".
-- 고정 문구 포함: `maintain the same elementary school boy's face from the reference, Makoto Shinkai anime style, consistent lighting from upper-left`
+- 고정 문구 포함: `maintain the same elementary school boy's face from the reference, strongly Makoto Shinkai photorealistic style (CoMix Wave Films), not Studio Ghibli, consistent lighting from upper-left`
 
 ---
 

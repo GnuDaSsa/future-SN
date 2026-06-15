@@ -12,7 +12,7 @@
 ## A-1. STYLE LOCK — 화풍 (절대 변경 금지)
 
 ```
-Makoto Shinkai anime film style, painterly photorealistic rendering, hand-painted background art, dramatic volumetric god rays, detailed cumulus clouds, soft lens flare, high color saturation, delicate atmospheric haze, cinematic film still, 16:9
+Makoto Shinkai (CoMix Wave Films) signature anime style, ultra-detailed photorealistic background painting, razor-sharp clarity, intense dramatic volumetric god rays and light shafts, brilliant anamorphic lens flare and soft bloom, glistening specular highlights and reflective surfaces, vivid highly-saturated gradient skies with backlit detailed cumulus clouds, delicate atmospheric depth haze, shallow depth-of-field bokeh, semi-realistic Shinkai character rendering with detailed glossy eyes and soft realistic skin shading, emotional cinematic lighting, high-resolution cinematic film still, 16:9; NOT Studio Ghibli, not Hayao Miyazaki, no flat cel-shading, no gouache storybook look
 ```
 
 ## A-2. CHARACTER LOCK — 초등학생 (C1)
