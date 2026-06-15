@@ -31,8 +31,8 @@ extreme wide cityscape of the Tancheon stream and Seongnam skyline at magic hour
 
 ### 컷38 휩팬 몽타주 — 3장 (Seedance 멀티샷 1클립으로 묶음)
 - `cut38a.png` · ref: EP1 sheet_character(어린이) — `the EP1 elementary school child walking briskly toward the stream at dusk, red backpack`
-- `cut38b.png` · ref: scene-03 sheet_c3·sheet_c4 — `the white compact car (C3 driving, C4 in passenger seat) driving toward the stream, magic-hour windshield reflection`
-- `cut38c.png` · ref: scene-05 sheet_c6·sheet_c7 — `the elderly couple (C6, C7) walking hand in hand toward the stream`
+- `cut38b.png` · ref: ep3-solomon sheet_c3·sheet_c4 — `the white compact car (C3 driving, C4 in passenger seat) driving toward the stream, magic-hour windshield reflection`
+- `cut38c.png` · ref: ep5-clay sheet_c6·sheet_c7 — `the elderly couple (C6, C7) walking hand in hand toward the stream`
 > (원하면 EP2 여성·C5도 같은 방식으로 추가 컷 생성)
 
 ### 컷39 · `cut39.png` · ref: sheet_tancheon · 💬 아이 "엄마! 시작한대!!"

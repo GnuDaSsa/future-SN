@@ -11,11 +11,11 @@
 ## A-2. CHARACTER ROSTER — 각 EP 시트를 레퍼런스로 재사용 (재설계 금지)
 | 인물 | 시트 위치 |
 |---|---|
-| EP1 어린이(빨간 책가방) | `../codex-image-requests.md` → `sheet_character.png` (EP1) |
-| EP2 시민여성(베이지 트렌치) | `../scene-02-trashbin/` → `sheet_character.png` |
-| C3 청년남 / C4 청년녀 | `../scene-03-solomon/` → `sheet_c3.png` / `sheet_c4.png` |
-| C5 환자(마스크·후드) | `../scene-04-flu/` → `sheet_c5.png` |
-| C6 할머니 / C7 할아버지2 | `../scene-05-clay/` → `sheet_c6.png` / `sheet_c7.png` |
+| EP1 어린이(빨간 책가방) | `../act-01-discovery/ep1-escalator/` → `sheet_character.png` |
+| EP2 시민여성(베이지 트렌치) | `../act-01-discovery/ep2-trashbin/` → `sheet_character.png` |
+| C3 청년남 / C4 청년녀 | `../act-01-discovery/ep3-solomon/` → `sheet_c3.png` / `sheet_c4.png` |
+| C5 환자(마스크·후드) | `../act-01-discovery/ep4-flu/` → `sheet_c5.png` |
+| C6 할머니 / C7 할아버지2 | `../act-01-discovery/ep5-clay/` → `sheet_c6.png` / `sheet_c7.png` |
 > 각 인물은 본인 EP 시트를 그대로 투입해 얼굴·복장 고정. 매직아워 빛만 통일.
 
 ## A-3. SETTING — 탄천 둔치 + 성남 스카이라인
