@@ -12,7 +12,7 @@
 ## A-1. STYLE LOCK — 화풍 (씬1과 동일 · 절대 변경 금지)
 
 ```
-Makoto Shinkai (CoMix Wave Films) signature anime style, ultra-detailed photorealistic background painting, razor-sharp clarity, intense dramatic volumetric god rays and light shafts, brilliant anamorphic lens flare and soft bloom, glistening specular highlights and reflective surfaces, vivid highly-saturated gradient skies with backlit detailed cumulus clouds, delicate atmospheric depth haze, shallow depth-of-field bokeh, semi-realistic Shinkai character rendering with detailed glossy eyes and soft realistic skin shading, emotional cinematic lighting, high-resolution cinematic film still, 16:9; NOT Studio Ghibli, not Hayao Miyazaki, no flat cel-shading, no gouache storybook look
+2D anime illustration in the style of a Makoto Shinkai (CoMix Wave Films) anime film, hand-drawn Japanese animation look, cel-style drawn characters with clean linework, soft anime shading and large expressive glossy anime eyes, lush hand-painted anime background art with intricate detail, dramatic volumetric god rays and light shafts, brilliant lens flare and soft bloom, vivid highly-saturated gradient skies with backlit detailed cumulus clouds, delicate atmospheric haze, painterly anime rendering, anime movie key visual, 16:9; NOT photorealistic, not a photograph, not 3D, not CGI, not live-action, no realistic skin texture; keep Shinkai's rich detailed polish, NOT the plain flat Studio Ghibli look
 ```
 
 ## A-2. CHARACTER LOCK — 시민 여성 (C2)

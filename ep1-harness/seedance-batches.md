@@ -16,7 +16,7 @@
 
 **모든 런 프롬프트 말미 고정 문구:**
 ```
-maintain the same elementary school boy's face from the reference, strongly Makoto Shinkai photorealistic style (CoMix Wave Films), not Studio Ghibli, consistent lighting from upper-left, identical navy hooded jacket, yellow safety badge and large red backpack, same color grading across all shots, 16:9
+maintain the same elementary school boy's face from the reference, 2D Makoto Shinkai anime illustration, hand-drawn anime, not photorealistic, not a photo, consistent lighting from upper-left, identical navy hooded jacket, yellow safety badge and large red backpack, same color grading across all shots, 16:9
 ```
 
 ---

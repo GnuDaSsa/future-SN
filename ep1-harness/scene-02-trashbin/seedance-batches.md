@@ -12,7 +12,7 @@
 
 **고정 문구:**
 ```
-maintain the same young woman's face from the reference, Makoto Shinkai anime style, consistent lighting from upper-left, identical beige trench coat and brown shoulder bag, keep the orange/lime-green street bins exactly, same color grading across all shots, 16:9
+maintain the same young woman's face from the reference, 2D Makoto Shinkai anime illustration (hand-drawn, not photorealistic), consistent lighting from upper-left, identical beige trench coat and brown shoulder bag, keep the orange/lime-green street bins exactly, same color grading across all shots, 16:9
 ```
 
 ## 🅰️ RUN 1 — 컷 1~4 (추가 ref: `sheet_location`, `sheet_prop`)

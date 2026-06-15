@@ -8,7 +8,7 @@
 ## B-1. 캐릭터 시트 (최우선) ▶ COPY BLOCK
 - 레퍼런스: 없음
 ```
-Makoto Shinkai (CoMix Wave Films) signature anime style, ultra-detailed photorealistic background painting, razor-sharp clarity, intense dramatic volumetric god rays and light shafts, brilliant anamorphic lens flare and soft bloom, glistening specular highlights and reflective surfaces, vivid highly-saturated gradient skies with backlit detailed cumulus clouds, delicate atmospheric depth haze, shallow depth-of-field bokeh, semi-realistic Shinkai character rendering with detailed glossy eyes and soft realistic skin shading, emotional cinematic lighting, high-resolution cinematic film still, 16:9; NOT Studio Ghibli, not Hayao Miyazaki, no flat cel-shading, no gouache storybook look.
+2D anime illustration in the style of a Makoto Shinkai (CoMix Wave Films) anime film, hand-drawn Japanese animation look, cel-style drawn characters with clean linework, soft anime shading and large expressive glossy anime eyes, lush hand-painted anime background art with intricate detail, dramatic volumetric god rays and light shafts, brilliant lens flare and soft bloom, vivid highly-saturated gradient skies with backlit detailed cumulus clouds, delicate atmospheric haze, painterly anime rendering, anime movie key visual, 16:9; NOT photorealistic, not a photograph, not 3D, not CGI, not live-action, no realistic skin texture; keep Shinkai's rich detailed polish, NOT the plain flat Studio Ghibli look.
 Character reference sheet, 16:9 single sheet, clean light-gray background, model sheet layout:
 the same young Korean woman in her late twenties, slim build, gentle friendly face with light natural makeup, long dark brown hair tied in a low ponytail, a beige trench coat over a white knit top, slim black trousers, white sneakers, a brown leather shoulder bag, holding a takeout coffee cup in one hand and a crumpled snack wrapper in the other.
 Show the same woman in one consistent design across: full-body front view, full-body side profile (facing right), 3/4 back view, and a row of three head close-ups below — neutral expression, slightly troubled/sighing expression, and a bright satisfied smile. Identical face, hair, trench coat and bag in every view. Consistent proportions. No text labels.
@@ -20,7 +20,7 @@ Show the same woman in one consistent design across: full-body front view, full-
 ## B-2. 소품 시트 ▶ COPY BLOCK
 - 레퍼런스: `sheet_character.png`
 ```
-Makoto Shinkai (CoMix Wave Films) signature anime style, ultra-detailed photorealistic rendering, razor-sharp clarity, brilliant lens flare and soft bloom, glistening specular highlights, vivid highly-saturated colors, high-resolution cinematic film still, 16:9; NOT Studio Ghibli, not Hayao Miyazaki, no flat cel-shading.
+2D anime illustration in the style of a Makoto Shinkai (CoMix Wave Films) anime film, hand-drawn Japanese animation look, lush hand-painted detail, brilliant lens flare and soft bloom, vivid highly-saturated colors, painterly anime rendering, anime movie key visual, 16:9; NOT photorealistic, not a photograph, not 3D, not CGI, not live-action; keep Shinkai's rich detail, not the plain flat Studio Ghibli look.
 Prop reference sheet, clean light-gray background, no text labels:
 (1) a takeout coffee cup with a lid and sleeve, close-up; (2) a crumpled snack wrapper; (3) a brown leather shoulder bag. The same props the woman carries. Consistent colors and materials.
 ```
@@ -30,7 +30,7 @@ Prop reference sheet, clean light-gray background, no text labels:
 ## B-3. 로케이션 키 비주얼 ▶ COPY BLOCK
 - 레퍼런스: 없음
 ```
-Makoto Shinkai (CoMix Wave Films) signature anime style, ultra-detailed photorealistic background painting, razor-sharp clarity, intense dramatic volumetric god rays and light shafts, brilliant anamorphic lens flare and soft bloom, glistening specular highlights and reflective surfaces, vivid highly-saturated gradient skies with backlit detailed cumulus clouds, delicate atmospheric depth haze, shallow depth-of-field bokeh, emotional cinematic lighting, high-resolution cinematic film still, 16:9; NOT Studio Ghibli, not Hayao Miyazaki, no flat cel-shading, no gouache storybook look.
+2D anime illustration in the style of a Makoto Shinkai (CoMix Wave Films) anime film, hand-drawn Japanese animation look, lush hand-painted anime background art with intricate detail, dramatic volumetric god rays and light shafts, brilliant lens flare and soft bloom, vivid highly-saturated gradient skies with backlit detailed cumulus clouds, delicate atmospheric haze, painterly anime rendering, anime movie key visual, 16:9; NOT photorealistic, not a photograph, not 3D, not CGI, not live-action; keep Shinkai's rich detailed polish, NOT the plain flat Studio Ghibli look.
 Wide establishing shot, no characters:
 a wide main-road sidewalk in Yeosu-dong, Jungwon-gu, Seongnam, a modern Korean city street; a broad paved walkway along a busy multi-lane road, roadside street trees, tidy mid-rise buildings with shop signs, a bus stop nearby, a crosswalk with traffic lights, clean urban setting.
 warm late-afternoon golden hour, low sun from the upper-left, long warm shadows across the sidewalk, amber sunlight glinting off windows and passing cars, clear sky deepening to gold near the horizon, gentle warm urban haze.
@@ -42,7 +42,7 @@ warm late-afternoon golden hour, low sun from the upper-left, long warm shadows 
 ## B-4. 에셋 시트 — 가로 쓰레기통 (씬2 메인 닻) ▶ COPY BLOCK
 - 레퍼런스: `sheet_location.png`
 ```
-Makoto Shinkai (CoMix Wave Films) signature anime style, ultra-detailed photorealistic rendering, razor-sharp clarity, brilliant lens flare and soft bloom, glistening specular highlights and reflective surfaces, vivid highly-saturated colors, high-resolution cinematic film still, 16:9; NOT Studio Ghibli, not Hayao Miyazaki, no flat cel-shading.
+2D anime illustration in the style of a Makoto Shinkai (CoMix Wave Films) anime film, hand-drawn Japanese animation look, lush hand-painted detail, brilliant lens flare and soft bloom, vivid highly-saturated colors, painterly anime rendering, anime movie key visual, 16:9; NOT photorealistic, not a photograph, not 3D, not CGI, not live-action; keep Shinkai's rich detail, not the plain flat Studio Ghibli look.
 Asset reference sheet on a clean light-gray background, no text labels: a set of Seongnam's revived street trash bins standing side by side on the sidewalk, two 75-liter modern metal bins with charcoal dark-gray boxy bodies and curved domed colored tops: the left bin bright orange for general waste with a white '일반쓰레기 / Waste' label and a single horizontal rectangular drop slot, the right bin bright lime-green for recycling with a white '재활용품 / Recycle' label, two round circular top openings and small PLASTIC/BOTTLE/CAN category icons; both with white pictograms, mounted on a tidy base near the curb. Show a front view and a 3/4 view. Consistent shape and colors.
 ```
 **🔎 검수:** 두 통이 한 세트(나란히) · **일반=주황(직사각 투입구 1개) / 재활용=라임그린(원형 구멍 2개)** · 차콜 진회색 몸체 · 곡면 돔형 상단 · 흰 라벨.

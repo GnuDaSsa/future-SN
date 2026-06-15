@@ -13,7 +13,7 @@
 
 ## D-3. Seedance 고정 문구
 ```
-maintain the same young woman's face from the reference, Makoto Shinkai anime style, consistent lighting from upper-left, identical beige trench coat and brown shoulder bag, keep the orange/lime-green street bins exactly, same color grading
+maintain the same young woman's face from the reference, 2D Makoto Shinkai anime illustration (hand-drawn, not photorealistic), consistent lighting from upper-left, identical beige trench coat and brown shoulder bag, keep the orange/lime-green street bins exactly, same color grading
 ```
 
 ## D-4. 색감

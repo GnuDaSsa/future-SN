@@ -16,7 +16,7 @@
 > 입력 이미지 = **컷7 확정 키프레임**. 아래는 *생성*이 아니라 *편집* 지시문.
 
 ```
-Keep this boy's pose, framing, head position, facial features, hair, navy hooded jacket, yellow badge, red backpack and the lighting from the upper-left 100% identical. Only change two things: (1) open his eyes wide with a surprised look and raised eyebrows; (2) replace the staircase background behind him with Seongnam's first outdoor road escalator beside the school staircase, two parallel escalators running side by side (one ascending, one descending), about 28 meters long climbing the slope, clean stainless-steel steps, glass side panels, a sloped transparent weather canopy overhead, rubber handrails, yellow safety markings, blending into the old school-zone neighborhood. Everything else unchanged. Strongly Makoto Shinkai photorealistic style (CoMix Wave Films), not Studio Ghibli, same color grading.
+Keep this boy's pose, framing, head position, facial features, hair, navy hooded jacket, yellow badge, red backpack and the lighting from the upper-left 100% identical. Only change two things: (1) open his eyes wide with a surprised look and raised eyebrows; (2) replace the staircase background behind him with Seongnam's first outdoor road escalator beside the school staircase, two parallel escalators running side by side (one ascending, one descending), about 28 meters long climbing the slope, clean stainless-steel steps, glass side panels, a sloped transparent weather canopy overhead, rubber handrails, yellow safety markings, blending into the old school-zone neighborhood. Everything else unchanged. 2D anime illustration style of a Makoto Shinkai anime film, hand-drawn anime, not photorealistic, not a photo, same color grading.
 ```
 
 ---
