@@ -6,8 +6,13 @@
 > |---|---|---|
 > | **EP1** | 금광동 성남동초 등굣길 어린이 + 도로 에스컬레이터 (원안 노인/은행동 → 세션 업데이트) | (이 폴더 루트) `codex-image-requests.md` 등 |
 > | **EP2** | 중원구 여수동 큰길가 시민 + 부활한 가로 쓰레기통 (원안 모란역 → 업데이트) | [`scene-02-trashbin/`](scene-02-trashbin/) |
-> | **EP3** | 성남시 솔로몬의 선택 — 청년 C3·C4 미혼남녀 매칭 (기획서 원안) | [`scene-03-solomon/`](scene-03-solomon/) |
-> | EP4·EP5·ACT2·ACT3 | 무료 독감접종 / 율동공원 황톳길 / 탄천 수렴 / 드론쇼 (기획서 참조, 미착수) | — |
+> | **EP3** | 성남시 솔로몬의 선택 — 청년 C3·C4 미혼남녀 매칭 | [`scene-03-solomon/`](scene-03-solomon/) |
+> | **EP4** | 시민 무료 독감 예방접종 — C5 | [`scene-04-flu/`](scene-04-flu/) |
+> | **EP5** | 율동공원 맨발 황톳길 — 노부부 C6·C7 | [`scene-05-clay/`](scene-05-clay/) |
+> | **ACT2** | 탄천 수렴 — 주인공 전원 집결 (매직아워) | [`act-02-tancheon/`](act-02-tancheon/) |
+> | **ACT3** | 드론쇼 피날레 — "Thank you 민선8기 / Welcome 민선9기" (밤) | [`act-03-droneshow/`](act-03-droneshow/) |
+>
+> 전체 = 기획서 v2.1의 45컷(EP1~5 + ACT2~3). EP1·EP2는 실제 기사 반영 업데이트, EP3~ACT3는 원안 기반.
 >
 > 전 EP 화풍(A-1 STYLE LOCK) 동일 = **수정된 2D 애니**(실사 트리거 제거, `NOT photorealistic`). 인물·장소·빛·에셋만 EP별로 다름.
 > 핸드오프(`codex-image-requests.md`)는 **프롬프트 원문 그대로(verbatim) 투입** 규칙 필수.
